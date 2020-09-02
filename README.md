@@ -133,9 +133,6 @@ Now, set up the environment in the VM:
 ```bash
 ssh -p 40022 root@localhost
 
-setup-xorg-base dwm chromium
-echo "exec dwm" > ~/.xinitrc
-
 apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 openssl git
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
@@ -205,8 +202,7 @@ cat <<EOT>package.json
     "@theia/userstorage": "next",
     "@theia/variable-resolver": "next",
     "@theia/vsx-registry": "next",
-    "@theia/workspace": "next",
-    "theia-middleware": "^0.1.2"
+    "@theia/workspace": "next"
   },
   "devDependencies": {
     "@theia/cli": "next"
@@ -298,7 +294,7 @@ And finally, start Theia:
 yarn theia start ~/Workspaces/workspace-one --hostname 0.0.0.0 --port 3000 --ssl --cert FelicitasPojtingersTheiaCert.crt --certkey FelicitasPojtingersTheiaKey.key --plugins=local-dir:plugins
 ```
 
-You may now either use `xinit` to start dwm inside of the VM and browse to https://localhost:3000 using the Chromium browser you've installed in the VM (with `chromium-browser --no-sandbox`) or point the browser on your host to https://localhost:43000 to access Theia. If you want to reach another service inside the VM (say a development web server) from your host, you can use SSH port forwarding:
+You may now either point the browser on your host to https://localhost:43000 to access Theia. If you want to reach another service inside the VM (say a development web server) from your host, you can use SSH port forwarding:
 
 ```bash
 ssh -p 40022 root@localhost -L localhost:1234:localhost:1234
@@ -327,6 +323,52 @@ You may now start it like so:
 
 ```bash
 gotty -c mygottyusername:mygottypassword sh
+```
+
+You might also want to be able to develop a desktop app, so let's set up a desktop environment that can be reached from the browser:
+
+```bash
+apk add supervisor xvfb x11vnc fluxbox novnc chromium xterm
+
+x11vnc -storepasswd myvncpassword /etc/vncsecret
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/.novnc.key -out ~/.novnc.crt -config ssl.cfg -sha256
+
+cat <<EOT>supervisord.conf
+[supervisord]
+nodaemon=true
+
+[program:xvfb]
+priority=100
+command=/usr/bin/Xvfb :1 -screen 0 1024x800x24
+user=root
+autorestart=true
+
+[program:x11vnc]
+priority=200
+command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -noxdamage -wait 5 -shared
+user=root
+autorestart=true
+
+[program:fluxbox]
+priority=300
+command=/usr/bin/fluxbox
+user=root
+autorestart=true
+environment=DISPLAY=":1",HOME="/root",USER="root"
+
+[program:novnc]
+priority=400
+command=/usr/bin/novnc_server --vnc localhost:5900 --listen 8081 --ssl-only --key /root/.novnc.key --cert /root/.novnc.crt
+user=root
+autorestart=true
+EOT
+```
+
+Starting it is simple as well:
+
+```bash
+supervisord -n -c supervisord.conf
 ```
 
 ## License
