@@ -4,6 +4,8 @@ My personal Theia distribution, optimized for full stack development.
 
 ## Overview
 
+> Extensions marked with `(M)` have not yet been published to https://open-vsx.org/ and will be downloaded from the VSCode marketplace instead.
+
 ### Data and Documentation
 
 - Markdown language basics
@@ -13,6 +15,8 @@ My personal Theia distribution, optimized for full stack development.
 - JSON language basics
 - JSON language support
 - Protobuf language support
+- XML language basics
+- XML language support
 
 ### Databases
 
@@ -51,6 +55,16 @@ My personal Theia distribution, optimized for full stack development.
 - Styled Components
 - Emmet
 - ZipFS (M)
+
+### Java
+
+- Java language basics
+- Java language support
+- Debugger for Java
+- Java test runner
+- Maven for Java
+- Project manager for Java
+- JavaDoc Tools (M)
 
 ## Usage
 
@@ -122,7 +136,17 @@ ssh -p 40022 root@localhost
 setup-xorg-base dwm chromium
 echo "exec dwm" > ~/.xinitrc
 
-apk add go nodejs npm yarn build-base python3 openssl git
+apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 openssl git
+
+wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
+apk add /tmp/glibc-2.32-r0.apk
+
+cat <<EOT>/etc/profile.d/java.sh
+export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+EOT
+chmod +x /etc/profile.d/java.sh
 
 mkdir -p ~/Repos/felix-pojtingers-theia
 cd ~/Repos/felix-pojtingers-theia
@@ -220,6 +244,8 @@ curl --compressed -L -o plugins/redhat.vscode-yaml.vsix https://open-vsx.org/api
 curl --compressed -L -o plugins/vscode.json.vsix https://open-vsx.org/api/vscode/json/1.48.2/file/vscode.json-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.json-language-features.vsix https://open-vsx.org/api/vscode/json-language-features/1.48.2/file/vscode.json-language-features-1.48.2.vsix
 curl --compressed -L -o plugins/zxh404.vscode-proto3.vsix https://open-vsx.org/api/zxh404/vscode-proto3/0.4.2/file/zxh404.vscode-proto3-0.4.2.vsix
+curl --compressed -L -o plugins/vscode.xml.vsix https://open-vsx.org/api/vscode/xml/1.48.2/file/vscode.xml-1.48.2.vsix
+curl --compressed -L -o plugins/redhat.vscode-xml.vsix https://open-vsx.org/api/redhat/vscode-xml/0.13.0/file/redhat.vscode-xml-0.13.0.vsix
 curl --compressed -L -o plugins/vscode.sql.vsix https://open-vsx.org/api/vscode/sql/1.48.2/file/vscode.sql-1.48.2.vsix
 curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/0.23.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
@@ -243,7 +269,13 @@ curl --compressed -L -o plugins/vscode.css-language-features.vsix https://open-v
 curl --compressed -L -o plugins/jpoissonnier.vscode-styled-components.vsix https://open-vsx.org/api/jpoissonnier/vscode-styled-components/0.0.29/file/jpoissonnier.vscode-styled-components-0.0.29.vsix
 curl --compressed -L -o plugins/vscode.emmet.vsix https://open-vsx.org/api/vscode/emmet/1.48.2/file/vscode.emmet-1.48.2.vsix
 curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.0.0/vspackage
-
+curl --compressed -L -o plugins/vscode.java.vsix https://open-vsx.org/api/vscode/java/1.48.2/file/vscode.java-1.48.2.vsix
+curl --compressed -L -o plugins/redhat.java.vsix https://open-vsx.org/api/redhat/java/0.66.0/file/redhat.java-0.66.0.vsix
+curl --compressed -L -o plugins/vscjava.vscode-java-debug.vsix https://open-vsx.org/api/vscjava/vscode-java-debug/0.28.0/file/vscjava.vscode-java-debug-0.28.0.vsix
+curl --compressed -L -o plugins/vscjava.vscode-java-test.vsix https://open-vsx.org/api/vscjava/vscode-java-test/0.24.1/file/vscjava.vscode-java-test-0.24.1.vsix
+curl --compressed -L -o plugins/vscjava.vscode-maven.vsix https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix
+curl --compressed -L -o plugins/vscjava.vscode-java-dependency.vsix https://open-vsx.org/api/vscjava/vscode-java-dependency/0.12.0/file/vscjava.vscode-java-dependency-0.12.0.vsix
+curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
 
 cd plugins
 for z in *.vsix; do mkdir -p $z-extracted; unzip $z -d $z-extracted; rm $z; done
