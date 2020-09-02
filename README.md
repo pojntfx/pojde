@@ -145,6 +145,7 @@ apk add /tmp/glibc-2.32-r0.apk
 cat <<EOT>/etc/profile.d/java.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
 export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="/root/go/bin:$PATH"
 EOT
 chmod +x /etc/profile.d/java.sh
 
@@ -204,7 +205,8 @@ cat <<EOT>package.json
     "@theia/userstorage": "next",
     "@theia/variable-resolver": "next",
     "@theia/vsx-registry": "next",
-    "@theia/workspace": "next"
+    "@theia/workspace": "next",
+    "theia-middleware": "^0.1.2"
   },
   "devDependencies": {
     "@theia/cli": "next"
@@ -306,6 +308,25 @@ In a similar fashion, you can make services from your host accessible from the V
 
 ```bash
 ssh -p 40022 root@localhost -R localhost:1234:localhost:1234
+```
+
+Now, let's setup some more comfort features, starting with `gotty`:
+
+```bash
+go get github.com/yudai/gotty
+
+cat <<EOT>~/.gotty
+permit_write = true
+enable_tls = true
+EOT
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/.gotty.key -out ~/.gotty.crt -config ssl.cfg -sha256
+```
+
+You may now start it like so:
+
+```bash
+gotty -c mygottyusername:mygottypassword sh
 ```
 
 ## License
