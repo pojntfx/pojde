@@ -66,9 +66,20 @@ My personal Theia distribution, optimized for full stack development.
 - Project manager for Java
 - JavaDoc Tools (M)
 
+### Tools
+
+The following additional tools are distributed alongside Theia to enable additional workflows:
+
+- `gotty` Web Terminal to access `sh`
+- `noVNC` Web VNC to access a Fluxbox-based desktop environment containing xterm and Chromium
+
 ## Usage
 
-First, we'll use https://pojntfx.github.io/alpimager/ to get a custom Alpine Linux image; be sure to use your own SSH keys etc.:
+> Please use your own config values, such as IP addresses or SSH keys.
+
+### Creating the virtual machine
+
+First, we'll create a virtual machine that will serve as our base system using [alpimager](https://pojntfx.github.io/alpimager/):
 
 ```bash
 cat <<EOT>packages.txt
@@ -116,10 +127,12 @@ alpimager -output felicitas-pojtingers-theia.qcow2
 qemu-img resize felicitas-pojtingers-theia.qcow2 +20G
 ```
 
+### Starting the virtual machine
+
 First, start the VM your host (use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux). We'll enable port forwarding for SSH and Theia:
 
 ```bash
-qemu-system-x86_64 -m 4096 -accel hax -nic user,hostfwd=tcp::40022-:22,hostfwd=tcp::43000-:3000 -boot d -drive format=qcow2,file=felicitas-pojtingers-theia.qcow2
+qemu-system-x86_64 -m 4096 -accel hax -nic user,hostfwd=tcp::40022-:22 -boot d -drive format=qcow2,file=felicitas-pojtingers-theia.qcow2
 ```
 
 You can now SSH into the VM from your host and resize the filesystem:
@@ -128,12 +141,14 @@ You can now SSH into the VM from your host and resize the filesystem:
 ssh -p 40022 root@localhost resize2fs /dev/sda
 ```
 
-Now, set up the environment in the VM:
+### Setting up the environment
+
+Now, let's install & compile (when necessary) the tools:
 
 ```bash
 ssh -p 40022 root@localhost
 
-apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 openssl git
+apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 git
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
@@ -210,29 +225,6 @@ cat <<EOT>package.json
 }
 EOT
 
-cat <<EOT>ssl.cfg
-[req]
-distinguished_name = req_distinguished_name
-x509_extensions = v3_req
-prompt = no
-[req_distinguished_name]
-C = NZ
-ST = AU
-L = Auckland
-O = Quonsepto
-OU = MyDivision
-CN = dev.felicitas.pojtinger.com
-[v3_req]
-keyUsage = critical, digitalSignature, keyAgreement
-extendedKeyUsage = serverAuth
-subjectAltName = @alt_names
-[alt_names]
-DNS.1 = dev.felicitas.pojtinger.com
-EOT
-
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout FelicitasPojtingersTheiaKey.key -out FelicitasPojtingersTheiaCert.crt -config ssl.cfg -sha256
-chmod 400 FelicitasPojtingersTheiaKey.key
-
 mkdir -p plugins
 
 curl --compressed -L -o plugins/vscode.markdown.vsix https://open-vsx.org/api/vscode/markdown/1.48.2/file/vscode.markdown-1.48.2.vsix
@@ -286,55 +278,65 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 
 yarn
 yarn theia build
-```
 
-And finally, start Theia:
-
-```bash
-yarn theia start ~/Workspaces/workspace-one --hostname 0.0.0.0 --port 3000 --ssl --cert FelicitasPojtingersTheiaCert.crt --certkey FelicitasPojtingersTheiaKey.key --plugins=local-dir:plugins
-```
-
-You may now either point the browser on your host to https://localhost:43000 to access Theia. If you want to reach another service inside the VM (say a development web server) from your host, you can use SSH port forwarding:
-
-```bash
-ssh -p 40022 root@localhost -L localhost:1234:localhost:1234
-```
-
-In a similar fashion, you can make services from your host accessible from the VM like so:
-
-```bash
-ssh -p 40022 root@localhost -R localhost:1234:localhost:1234
-```
-
-Now, let's setup some more comfort features, starting with `gotty`:
-
-```bash
 go get github.com/yudai/gotty
 
-cat <<EOT>~/.gotty
-permit_write = true
-enable_tls = true
-EOT
-
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/.gotty.key -out ~/.gotty.crt -config ssl.cfg -sha256
-```
-
-You may now start it like so:
-
-```bash
-gotty -c mygottyusername:mygottypassword sh
-```
-
-You might also want to be able to develop a desktop app, so let's set up a desktop environment that can be reached from the browser:
-
-```bash
 apk add supervisor xvfb x11vnc fluxbox novnc chromium xterm
 
 x11vnc -storepasswd myvncpassword /etc/vncsecret
 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/.novnc.key -out ~/.novnc.crt -config ssl.cfg -sha256
+apk add nginx
 
-cat <<EOT>supervisord.conf
+cat <<EOT>/etc/nginx/conf.d/default.conf
+map \$http_upgrade \$connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 8000;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host \$host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection \$connection_upgrade;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+
+server {
+    listen 8001;
+
+    location / {
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$remote_addr;
+        proxy_set_header Host \$http_host;
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
+server {
+    listen 8002;
+
+    location / {
+        proxy_pass http://localhost:3002;
+        proxy_set_header Host \$host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection \$connection_upgrade;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+EOT
+
+cat <<EOT>/etc/supervisord.conf
 [supervisord]
 nodaemon=true
 
@@ -359,17 +361,62 @@ environment=DISPLAY=":1",HOME="/root",USER="root"
 
 [program:novnc]
 priority=400
-command=/usr/bin/novnc_server --vnc localhost:5900 --listen 8081 --ssl-only --key /root/.novnc.key --cert /root/.novnc.crt
+command=/usr/bin/novnc_server --vnc localhost:5900 --listen 3002
+user=root
+autorestart=true
+
+[program:nginx]
+priority=500
+command=/usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf
+user=root
+autorestart=true
+
+[program:theia]
+priority=600
+directory=/root/Repos/felicitas-pojtingers-theia
+command=/usr/bin/yarn theia start ~/Workspaces/workspace-one --hostname 127.0.0.1 --port 3000 --plugins=local-dir:plugins
+user=root
+autorestart=true
+
+[program:gotty]
+priority=700
+command=/root/go/bin/gotty -p 3001 --address 127.0.0.1 -w sh
 user=root
 autorestart=true
 EOT
 ```
 
-Starting it is simple as well:
+### Starting all tools
+
+Now, let's start the tooling & enable automatic startup on boot:
 
 ```bash
-supervisord -n -c supervisord.conf
+rc-service supervisord restart
+rc-update add supervisord default
 ```
+
+### Access the tools
+
+You're done! All tools should now be running, but you still have to set up access to them:
+
+```bash
+ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -p 40022 root@localhost
+```
+
+Now, you can access them like so:
+
+| Tool name | Tool address          | Tool notes                                                                         |
+| --------- | --------------------- | ---------------------------------------------------------------------------------- |
+| Theia     | http://localhost:8000 | -                                                                                  |
+| gotty     | http://localhost:8001 | -                                                                                  |
+| noVNC     | http://localhost:8002 | Use password `myvncpassword` and start Chrome with `chromium-browser --no-sandbox` |
+
+If you want too, you can of course also add port forwarding to QEMU directly as shown above for port 22 to 40022 and skip SSH forwarding, but be aware that there might be issues with Theia Webviews. These should be resolved by using SSH to forward to localhost as shown in the command above; in the future, I'll demonstrate setting up HTTPS to fix the issue properly.
+
+## Missing Features
+
+- Basic Auth (planned)
+- HTTPS (planned)
 
 ## License
 
