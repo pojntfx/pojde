@@ -276,6 +276,11 @@ mkdir -p ~/Workspaces/workspace-one
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 export NODE_OPTIONS="--max-old-space-size=8192"
 
+fallocate -l 5G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+
 yarn
 yarn theia build
 
