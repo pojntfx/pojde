@@ -70,7 +70,7 @@ My personal Theia distribution, optimized for full stack development.
 
 The following additional tools are distributed alongside Theia to enable additional workflows:
 
-- `gotty` Web Terminal to access `sh`
+- `wetty` Web Terminal to access `sh`
 - `noVNC` Web VNC to access a Fluxbox-based desktop environment containing xterm and Chromium
 
 ## Usage
@@ -284,13 +284,14 @@ swapon /swapfile
 yarn
 yarn theia build
 
-go get github.com/yudai/gotty
+yarn global add wetty
 
 apk add supervisor xvfb x11vnc fluxbox novnc chromium xterm
 
 x11vnc -storepasswd myvncpassword /etc/vncsecret
 
 apk add nginx
+mkdir -p /run/nginx
 
 cat <<EOT>/etc/nginx/conf.d/default.conf
 map \$http_upgrade \$connection_upgrade {
@@ -383,9 +384,10 @@ command=/usr/bin/yarn theia start ~/Workspaces/workspace-one --hostname 127.0.0.
 user=root
 autorestart=true
 
-[program:gotty]
+[program:wetty]
 priority=700
-command=/root/go/bin/gotty -p 3001 --address 127.0.0.1 -w sh
+directory=/root
+command=/usr/local/bin/wetty -p 3001 -c sh -b /
 user=root
 autorestart=true
 EOT
@@ -413,7 +415,7 @@ Now, you can access them like so:
 | Tool name | Tool address          | Tool notes                                                                         |
 | --------- | --------------------- | ---------------------------------------------------------------------------------- |
 | Theia     | http://localhost:8000 | -                                                                                  |
-| gotty     | http://localhost:8001 | -                                                                                  |
+| wetty     | http://localhost:8001 | -                                                                                  |
 | noVNC     | http://localhost:8002 | Use password `myvncpassword` and start Chrome with `chromium-browser --no-sandbox` |
 
 If you want too, you can of course also add port forwarding to QEMU directly as shown above for port 22 to 40022 and skip SSH forwarding, but be aware that there might be issues with Theia Webviews. These should be resolved by using SSH to forward to localhost as shown in the command above; in the future, I'll demonstrate setting up HTTPS to fix the issue properly.
