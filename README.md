@@ -303,6 +303,8 @@ x11vnc -storepasswd myvncpassword /etc/vncsecret
 
 apk add nginx
 
+bash -c 'openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=pojntfx.dev.alphahorizon.io -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=100.64.154.245\nDNS.1=pojntfx.dev.alphahorizon.io\nDNS.2=*.pojntfx.dev.alphahorizon.io\nDNS.3=localhost\nDNS.4=*.webview.localhost')) -sha256 -days 3650'
+
 cat <<EOT>/etc/nginx/conf.d/default.conf
 map \$http_upgrade \$connection_upgrade {
     default upgrade;
@@ -310,7 +312,10 @@ map \$http_upgrade \$connection_upgrade {
 }
 
 server {
-    listen 8000;
+    listen 8000 ssl;
+    ssl_certificate      server.crt;
+    ssl_certificate_key  server.key;
+    server_name pojntfx.dev.alphahorizon.io;
 
     location / {
         proxy_set_header X-Real-IP \$remote_addr;
@@ -324,7 +329,10 @@ server {
 }
 
 server {
-    listen 8001;
+    listen 8001 ssl;
+    ssl_certificate      server.crt;
+    ssl_certificate_key  server.key;
+    server_name pojntfx.dev.alphahorizon.io;
 
     location / {
         proxy_pass http://localhost:3001;
@@ -338,7 +346,10 @@ server {
 }
 
 server {
-    listen 8002;
+    listen 8002 ssl;
+    ssl_certificate      server.crt;
+    ssl_certificate_key  server.key;
+    server_name pojntfx.dev.alphahorizon.io;
 
     location / {
         proxy_pass http://localhost:3002;
@@ -420,20 +431,19 @@ You're done! All tools should now be running, but you still have to set up acces
 ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -p 40022 root@localhost
 ```
 
-Now, you can access them like so:
+Now, you can access them like so; you'll have to add the SSL certificate to your trust store (see [a video I made on the subject](https://www.youtube.com/watch?v=_PJc7RcMnw8)):
 
-| Tool name | Tool address          | Tool notes                                                                         |
-| --------- | --------------------- | ---------------------------------------------------------------------------------- |
-| wetty     | http://localhost:8000 | -                                                                                  |
-| Theia     | http://localhost:8001 | -                                                                                  |
-| noVNC     | http://localhost:8002 | Use password `myvncpassword` and start Chrome with `chromium-browser --no-sandbox` |
+| Tool name | Tool address           | Tool notes                                                                         |
+| --------- | ---------------------- | ---------------------------------------------------------------------------------- |
+| wetty     | https://localhost:8000 | -                                                                                  |
+| Theia     | https://localhost:8001 | -                                                                                  |
+| noVNC     | https://localhost:8002 | Use password `myvncpassword` and start Chrome with `chromium-browser --no-sandbox` |
 
 If you want too, you can of course also add port forwarding to QEMU directly as shown above for port 22 to 40022 and skip SSH forwarding, but be aware that there might be issues with Theia Webviews. These should be resolved by using SSH to forward to localhost as shown in the command above; in the future, I'll demonstrate setting up HTTPS to fix the issue properly.
 
 ## Missing Features
 
 - Basic Auth (planned)
-- HTTPS (planned)
 
 ## License
 
