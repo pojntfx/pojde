@@ -148,18 +148,25 @@ Now, let's install & compile (when necessary) the tools:
 ```bash
 ssh -p 40022 root@localhost
 
-apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 git
+apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 git bash
+
+ln -sf /bin/bash /bin/sh
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
 apk add /tmp/glibc-2.32-r0.apk
 
-cat <<EOT>/etc/profile.d/java.sh
+cat <<EOT>/etc/profile.d/main.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
 export PATH="\$JAVA_HOME/bin:\$PATH"
 export PATH="/root/go/bin:\$PATH"
 EOT
-chmod +x /etc/profile.d/java.sh
+chmod +x /etc/profile.d/main.sh
+
+cat <<EOT>/root/.bashrc
+source /etc/profile
+EOT
+chmod +x /root/.bashrc
 
 mkdir -p ~/Repos/felicitas-pojtingers-theia
 cd ~/Repos/felicitas-pojtingers-theia
@@ -178,7 +185,11 @@ cat <<EOT>package.json
   "theia": {
     "frontend": {
       "config": {
-        "applicationName": "Felicitas Pojtinger's Theia"
+        "applicationName": "Felicitas Pojtinger's Theia",
+        "preferences": {
+          "go.formatTool": "goimports",
+          "terminal.integrated.shell.linux": "/bin/bash"
+        }
       }
     }
   },
@@ -387,7 +398,7 @@ autorestart=true
 [program:wetty]
 priority=700
 directory=/root
-command=/usr/local/bin/wetty -p 3001 -c sh -b /
+command=/usr/local/bin/wetty -p 3001 -c bash -b /
 user=root
 autorestart=true
 EOT
