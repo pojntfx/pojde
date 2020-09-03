@@ -373,7 +373,7 @@ autorestart=true
 
 [program:nginx]
 priority=500
-command=/usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf
+command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
 user=root
 autorestart=true
 
