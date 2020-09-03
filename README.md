@@ -156,8 +156,8 @@ apk add /tmp/glibc-2.32-r0.apk
 
 cat <<EOT>/etc/profile.d/java.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
-export PATH="$JAVA_HOME/bin:$PATH"
-export PATH="/root/go/bin:$PATH"
+export PATH="\$JAVA_HOME/bin:\$PATH"
+export PATH="/root/go/bin:\$PATH"
 EOT
 chmod +x /etc/profile.d/java.sh
 
