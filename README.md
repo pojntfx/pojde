@@ -302,7 +302,6 @@ apk add supervisor xvfb x11vnc fluxbox novnc chromium xterm
 x11vnc -storepasswd myvncpassword /etc/vncsecret
 
 apk add nginx
-mkdir -p /run/nginx
 
 cat <<EOT>/etc/nginx/conf.d/default.conf
 map \$http_upgrade \$connection_upgrade {
@@ -314,13 +313,13 @@ server {
     listen 8000;
 
     location / {
-        proxy_pass http://localhost:3000;
-        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$remote_addr;
+        proxy_set_header Host \$http_host;
+        proxy_pass http://127.0.0.1:3000;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection \$connection_upgrade;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header Connection "upgrade";
     }
 }
 
@@ -328,13 +327,13 @@ server {
     listen 8001;
 
     location / {
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$remote_addr;
-        proxy_set_header Host \$http_host;
-        proxy_pass http://127.0.0.1:3001;
+        proxy_pass http://localhost:3001;
+        proxy_set_header Host \$host;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection \$connection_upgrade;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     }
 }
 
@@ -357,48 +356,48 @@ cat <<EOT>/etc/supervisord.conf
 [supervisord]
 nodaemon=true
 
-[program:xvfb]
+[program:wetty]
 priority=100
+directory=/root
+command=/usr/local/bin/wetty -p 3000 -c bash -b /
+user=root
+autorestart=true
+
+[program:theia]
+priority=200
+directory=/root/Repos/felicitas-pojtingers-theia
+command=/usr/bin/yarn theia start ~/Workspaces/workspace-one --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins
+user=root
+autorestart=true
+
+[program:xvfb]
+priority=300
 command=/usr/bin/Xvfb :1 -screen 0 1024x800x24
 user=root
 autorestart=true
 
 [program:x11vnc]
-priority=200
+priority=400
 command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -noxdamage -wait 5 -shared
 user=root
 autorestart=true
 
 [program:fluxbox]
-priority=300
+priority=500
 command=/usr/bin/fluxbox
 user=root
 autorestart=true
 environment=DISPLAY=":1",HOME="/root",USER="root"
 
 [program:novnc]
-priority=400
+priority=600
 command=/usr/bin/novnc_server --vnc localhost:5900 --listen 3002
 user=root
 autorestart=true
 
 [program:nginx]
-priority=500
-command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
-user=root
-autorestart=true
-
-[program:theia]
-priority=600
-directory=/root/Repos/felicitas-pojtingers-theia
-command=/usr/bin/yarn theia start ~/Workspaces/workspace-one --hostname 127.0.0.1 --port 3000 --plugins=local-dir:plugins
-user=root
-autorestart=true
-
-[program:wetty]
 priority=700
-directory=/root
-command=/usr/local/bin/wetty -p 3001 -c bash -b /
+command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
 user=root
 autorestart=true
 EOT
@@ -425,8 +424,8 @@ Now, you can access them like so:
 
 | Tool name | Tool address          | Tool notes                                                                         |
 | --------- | --------------------- | ---------------------------------------------------------------------------------- |
-| Theia     | http://localhost:8000 | -                                                                                  |
-| wetty     | http://localhost:8001 | -                                                                                  |
+| wetty     | http://localhost:8000 | -                                                                                  |
+| Theia     | http://localhost:8001 | -                                                                                  |
 | noVNC     | http://localhost:8002 | Use password `myvncpassword` and start Chrome with `chromium-browser --no-sandbox` |
 
 If you want too, you can of course also add port forwarding to QEMU directly as shown above for port 22 to 40022 and skip SSH forwarding, but be aware that there might be issues with Theia Webviews. These should be resolved by using SSH to forward to localhost as shown in the command above; in the future, I'll demonstrate setting up HTTPS to fix the issue properly.
