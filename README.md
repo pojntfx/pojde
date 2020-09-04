@@ -53,6 +53,14 @@ My personal Theia distribution, optimized for full stack development.
 - Python language basics
 - Python language support
 
+### C/C++
+
+- C/C++ language basics
+- C/C++ language support
+- GDB and LLDB debugging
+- CMake language basics
+- CMake tools (M)
+
 ### JavaScript/TypeScript and Web Technologies
 
 - JavaScript language basics
@@ -158,7 +166,7 @@ Now, let's install & compile (when necessary) the tools:
 ```bash
 ssh -p 40022 root@localhost
 
-apk add go nodejs npm yarn openjdk14 rustup maven protoc build-base python3 py3-pip git bash
+apk add go nodejs npm yarn openjdk14 rustup maven protoc build-base python3 py3-pip autoconf automake cmake clang-extra-tools gdb lldb git bash
 
 ln -sf /bin/bash /bin/sh
 
@@ -208,7 +216,6 @@ cat <<EOT>package.json
     "@theia/callhierarchy": "next",
     "@theia/console": "next",
     "@theia/core": "next",
-    "@theia/cpp-debug": "next",
     "@theia/debug": "next",
     "@theia/editor": "next",
     "@theia/editor-preview": "next",
@@ -275,6 +282,11 @@ curl --compressed -L -o plugins/vscode.rust.vsix https://open-vsx.org/api/vscode
 curl --compressed -L -o plugins/rust-lang.rust.vsix https://open-vsx.org/api/rust-lang/rust/0.7.8/file/rust-lang.rust-0.7.8.vsix
 curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.48.2/file/vscode.python-1.48.2.vsix
 curl --compressed -L -o plugins/ms-python.python.vsix https://open-vsx.org/api/ms-python/python/2020.8.105369/file/ms-python.python-2020.8.105369.vsix
+curl --compressed -L -o plugins/vscode.cpp.vsix https://open-vsx.org/api/vscode/cpp/1.48.2/file/vscode.cpp-1.48.2.vsix
+curl --compressed -L -o plugins/webfreak.debug.vsix https://open-vsx.org/api/webfreak/debug/0.25.0/file/webfreak.debug-0.25.0.vsix
+curl --compressed -L -o plugins/llvm-vs-code-extensions.vscode-clangd.vsix https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.5/file/llvm-vs-code-extensions.vscode-clangd-0.1.5.vsix
+curl --compressed -L -o plugins/twxs.cmake.vsix https://open-vsx.org/api/twxs/cmake/0.0.17/file/twxs.cmake-0.0.17.vsix
+curl --compressed -L -o plugins/cmake-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cmake-tools/1.4.1/vspackage
 curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/vscode/javascript/1.48.2/file/vscode.javascript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript.vsix https://open-vsx.org/api/vscode/typescript/1.48.2/file/vscode.typescript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript-language-features.vsix https://open-vsx.org/api/vscode/typescript-language-features/1.48.2/file/vscode.typescript-language-features-1.48.2.vsix
