@@ -48,6 +48,11 @@ My personal Theia distribution, optimized for full stack development.
 - Rust language basics
 - Rust language support
 
+### Python
+
+- Python language basics
+- Python language support
+
 ### JavaScript/TypeScript and Web Technologies
 
 - JavaScript language basics
@@ -153,7 +158,7 @@ Now, let's install & compile (when necessary) the tools:
 ```bash
 ssh -p 40022 root@localhost
 
-apk add go nodejs npm yarn openjdk14 rustup maven protoc build-base python3 git bash
+apk add go nodejs npm yarn openjdk14 rustup maven protoc build-base python3 py3-pip git bash
 
 ln -sf /bin/bash /bin/sh
 
@@ -268,6 +273,8 @@ curl --compressed -L -o plugins/vscode.go.vsix https://open-vsx.org/api/vscode/g
 curl --compressed -L -o plugins/golang.Go.vsix https://open-vsx.org/api/golang/Go/0.16.1/file/golang.Go-0.16.1.vsix
 curl --compressed -L -o plugins/vscode.rust.vsix https://open-vsx.org/api/vscode/rust/1.48.2/file/vscode.rust-1.48.2.vsix
 curl --compressed -L -o plugins/rust-lang.rust.vsix https://open-vsx.org/api/rust-lang/rust/0.7.8/file/rust-lang.rust-0.7.8.vsix
+curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.48.2/file/vscode.python-1.48.2.vsix
+curl --compressed -L -o plugins/ms-python.python.vsix https://open-vsx.org/api/ms-python/python/2020.8.105369/file/ms-python.python-2020.8.105369.vsix
 curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/vscode/javascript/1.48.2/file/vscode.javascript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript.vsix https://open-vsx.org/api/vscode/typescript/1.48.2/file/vscode.typescript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript-language-features.vsix https://open-vsx.org/api/vscode/typescript-language-features/1.48.2/file/vscode.typescript-language-features-1.48.2.vsix
