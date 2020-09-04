@@ -43,6 +43,11 @@ My personal Theia distribution, optimized for full stack development.
 - Go language basics
 - Go language support
 
+### Rust
+
+- Rust language basics
+- Rust language support
+
 ### JavaScript/TypeScript and Web Technologies
 
 - JavaScript language basics
@@ -148,7 +153,7 @@ Now, let's install & compile (when necessary) the tools:
 ```bash
 ssh -p 40022 root@localhost
 
-apk add go nodejs npm yarn openjdk14 maven protoc build-base python3 git bash
+apk add go nodejs npm yarn openjdk14 rustup maven protoc build-base python3 git bash
 
 ln -sf /bin/bash /bin/sh
 
@@ -188,7 +193,8 @@ cat <<EOT>package.json
         "applicationName": "Felix Pojtinger's Theia",
         "preferences": {
           "go.formatTool": "goimports",
-          "terminal.integrated.shell.linux": "/bin/bash"
+          "terminal.integrated.shell.linux": "/bin/bash",
+          "vim.debug.silent": true
         }
       }
     }
@@ -260,6 +266,8 @@ curl --compressed -L -o plugins/esbenp.prettier-vscode.vsix https://open-vsx.org
 curl --compressed -L -o plugins/vscodevim.vim.vsix https://open-vsx.org/api/vscodevim/vim/1.16.0/file/vscodevim.vim-1.16.0.vsix
 curl --compressed -L -o plugins/vscode.go.vsix https://open-vsx.org/api/vscode/go/1.48.2/file/vscode.go-1.48.2.vsix
 curl --compressed -L -o plugins/golang.Go.vsix https://open-vsx.org/api/golang/Go/0.16.1/file/golang.Go-0.16.1.vsix
+curl --compressed -L -o plugins/vscode.rust.vsix https://open-vsx.org/api/vscode/rust/1.48.2/file/vscode.rust-1.48.2.vsix
+curl --compressed -L -o plugins/rust-lang.rust.vsix https://open-vsx.org/api/rust-lang/rust/0.7.8/file/rust-lang.rust-0.7.8.vsix
 curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/vscode/javascript/1.48.2/file/vscode.javascript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript.vsix https://open-vsx.org/api/vscode/typescript/1.48.2/file/vscode.typescript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript-language-features.vsix https://open-vsx.org/api/vscode/typescript-language-features/1.48.2/file/vscode.typescript-language-features-1.48.2.vsix
