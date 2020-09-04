@@ -22,6 +22,7 @@ My personal Theia distribution, optimized for full stack development.
 - JSON language basics
 - JSON language support
 - Protobuf language support
+- GraphQL language support
 - XML language basics
 - XML language support
 
@@ -75,8 +76,8 @@ My personal Theia distribution, optimized for full stack development.
 - TypeScript and JavaScript language features
 - HTML language basics
 - HTML language features
-- CSS language basics
-- CSS language features
+- CSS, LESS and SCSS language basics
+- CSS, LESS and SCSS language features
 - Styled Components
 - Emmet
 - ZipFS (M)
@@ -272,6 +273,7 @@ curl --compressed -L -o plugins/redhat.vscode-yaml.vsix https://open-vsx.org/api
 curl --compressed -L -o plugins/vscode.json.vsix https://open-vsx.org/api/vscode/json/1.48.2/file/vscode.json-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.json-language-features.vsix https://open-vsx.org/api/vscode/json-language-features/1.48.2/file/vscode.json-language-features-1.48.2.vsix
 curl --compressed -L -o plugins/zxh404.vscode-proto3.vsix https://open-vsx.org/api/zxh404/vscode-proto3/0.4.2/file/zxh404.vscode-proto3-0.4.2.vsix
+curl --compressed -L -o plugins/Prisma.vscode-graphql.vsix https://open-vsx.org/api/Prisma/vscode-graphql/0.3.1/file/Prisma.vscode-graphql-0.3.1.vsix
 curl --compressed -L -o plugins/vscode.xml.vsix https://open-vsx.org/api/vscode/xml/1.48.2/file/vscode.xml-1.48.2.vsix
 curl --compressed -L -o plugins/redhat.vscode-xml.vsix https://open-vsx.org/api/redhat/vscode-xml/0.13.0/file/redhat.vscode-xml-0.13.0.vsix
 curl --compressed -L -o plugins/vscode.shellscript.vsix https://open-vsx.org/api/vscode/shellscript/1.48.2/file/vscode.shellscript-1.48.2.vsix
@@ -311,7 +313,6 @@ curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.c
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
-
 
 cd plugins
 for z in *.vsix; do mkdir -p $z-extracted; unzip $z -d $z-extracted; rm $z; done
