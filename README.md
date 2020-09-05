@@ -96,7 +96,7 @@ My personal Theia distribution, optimized for full stack development.
 
 ## Usage
 
-1. Copy [packages.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/repositories) and [setup.sh](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/setup.sh) to a local directory
+1. Copy [packages.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/setup.sh) to a local directory
 2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
 3. Create the disk image by running `alpimager -output felix-pojtingers-theia.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
 4. Increase the disk image size by running `qemu-img resize felix-pojtingers-theia.qcow2 +20G`
