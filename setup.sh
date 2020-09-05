@@ -25,6 +25,8 @@ sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 
 ln -sf /bin/bash /bin/sh
 
+apk add go
+
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
 apk add /tmp/glibc-2.32-r0.apk
@@ -183,7 +185,7 @@ yarn global add wetty
 
 x11vnc -storepasswd mysvcpassword /etc/vncsecret
 
-openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=pojntfx.dev.alphahorizon.io -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=100.64.154.245\nDNS.1=pojntfx.dev.alphahorizon.io\nDNS.2=*.pojntfx.dev.alphahorizon.io\nDNS.3=localhost\nDNS.4=*.webview.localhost')) -sha256 -days 3650
+openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=pojntfx.dev.alphahorizon.io -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=100.64.154.245\nIP.2=100.64.154.247\nDNS.1=pojntfx.dev.alphahorizon.io\nDNS.2=*.pojntfx.dev.alphahorizon.io\nDNS.3=localhost\nDNS.4=*.webview.localhost')) -sha256 -days 3650
 
 printf "pojntfx:$(openssl passwd -apr1 mysvcpassword)\n" >/etc/nginx/.htpasswd
 
