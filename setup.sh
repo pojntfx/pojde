@@ -185,6 +185,8 @@ yarn global add wetty
 
 x11vnc -storepasswd mysvcpassword /etc/vncsecret
 
+fc-cache -f
+
 openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=pojntfx.dev.alphahorizon.io -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=100.64.154.245\nIP.2=100.64.154.247\nDNS.1=pojntfx.dev.alphahorizon.io\nDNS.2=*.pojntfx.dev.alphahorizon.io\nDNS.3=localhost\nDNS.4=*.webview.localhost')) -sha256 -days 3650
 
 printf "pojntfx:$(openssl passwd -apr1 mysvcpassword)\n" >/etc/nginx/.htpasswd
