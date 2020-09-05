@@ -29,5 +29,6 @@ fluxbox
 novnc
 chromium
 xterm
+font-noto
 nginx
 openssl
