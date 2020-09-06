@@ -278,7 +278,7 @@ autorestart=true
 
 [program:xvfb]
 priority=300
-command=/usr/bin/Xvfb :1 -screen 0 1024×768x24
+command=/usr/bin/Xvfb :1 -screen 0 1024x768x24
 user=root
 autorestart=true
 
