@@ -8,6 +8,7 @@ build-base
 autoconf
 automake
 cmake
+clang
 clang-extra-tools
 gdb
 lldb
