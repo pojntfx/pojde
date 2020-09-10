@@ -71,7 +71,6 @@ cat <<EOT >package.json
         "preferences": {
           "go.formatTool": "goimports",
           "terminal.integrated.shell.linux": "/bin/bash",
-          "vim.debug.silent": true,
           "workbench.colorTheme": "dark",
           "go.autocompleteUnimportedPackages": true,
           "go.useLanguageServer": true,
@@ -85,6 +84,13 @@ cat <<EOT >package.json
             "target": "${command:cmake.launchTargetPath}",
             "args": [],
             "cwd": "${workspaceFolder}"
+          },
+          "java.home": "/usr/lib/jvm/java-14-openjdk",
+          "files.exclude": {
+            "**/.classpath": true,
+            "**/.project": true,
+            "**/.settings": true,
+            "**/.factorypath": true
           }
         }
       }
