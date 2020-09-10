@@ -23,6 +23,7 @@ My personal Theia distribution, optimized for full stack development.
 - Markdown language support
 - YAML language basics
 - YAML language support
+- TOML language support
 - JSON language basics
 - JSON language support
 - Protobuf language support
@@ -42,6 +43,7 @@ My personal Theia distribution, optimized for full stack development.
 - GDB and LLDB debugging
 - CMake language basics
 - CMake tools
+- Make language basics
 
 ### Rust
 
