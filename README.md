@@ -40,10 +40,11 @@ My personal Theia distribution, optimized for full stack development.
 
 - C/C++ language basics
 - C/C++ language support
-- GDB and LLDB debugging
+- C/C++ debugging with GDB and LLDB
 - CMake language basics
 - CMake tools
 - Make language basics
+- C++ test explorer
 
 ### Rust
 
@@ -64,6 +65,15 @@ My personal Theia distribution, optimized for full stack development.
 - Maven for Java
 - Project manager for Java
 - JavaDoc Tools
+
+### C#
+
+> C# language support is not yet working; trying to start OmniSharp fails with `[ERROR] TypeError: i.SemanticTokensLegend is not a constructor`
+
+- C# language basics
+- C# language support
+- C# debugging with Mono
+- C# XML documentation comments
 
 ### Python
 

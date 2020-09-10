@@ -35,6 +35,8 @@ cat <<EOT >/etc/profile.d/main.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
 export PATH="\$JAVA_HOME/bin:\$PATH"
 export PATH="/root/go/bin:\$PATH"
+export DOTNET_ROOT="/root/.dotnet"
+export PATH="\$DOTNET_ROOT:\$PATH"
 EOT
 chmod +x /etc/profile.d/main.sh
 
@@ -43,8 +45,30 @@ source /etc/profile
 EOT
 chmod +x /root/.bashrc
 
-mkdir -p ~/Repos/lldb-mi
+mkdir -p ~/Repos/mono.git
+git clone git@github.com:mono/mono.git ~/Repos/mono.git
+cd ~/Repos/mono.git
+git checkout mono-6.10.0.105
+apk add gettext gettext-dev libtool
+./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
+mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
+sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
+make get-monolite-latest
+make -j$(nproc)
+make install
 
+curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c 3.0
+
+mkdir -p /root/.omnisharp
+cat <<EOT >/root/.omnisharp/omnisharp.json
+{
+   "MSBuild": {
+       "UseLegacySdkResolver": true
+   }
+}
+EOT
+
+mkdir -p ~/Repos/lldb-mi
 git clone git@github.com:lldb-tools/lldb-mi.git ~/Repos/lldb-mi
 cd ~/Repos/lldb-mi
 cmake .
@@ -67,10 +91,6 @@ cat <<EOT >package.json
   "theia": {
     "frontend": {
       "config": {
-        "applicationName": "Felix Pojtinger's Theia",
-        "preferences": {
-          "go.formatTool": "goimports",
-          "terminal.integrated.shell.linux": "/bin/bash",
           "workbench.colorTheme": "dark",
           "go.autocompleteUnimportedPackages": true,
           "go.useLanguageServer": true,
@@ -91,7 +111,8 @@ cat <<EOT >package.json
             "**/.project": true,
             "**/.settings": true,
             "**/.factorypath": true
-          }
+          },
+          "omnisharp.useGlobalMono": "always"
         }
       }
     }
@@ -163,6 +184,7 @@ curl --compressed -L -o plugins/llvm-vs-code-extensions.vscode-clangd.vsix https
 curl --compressed -L -o plugins/twxs.cmake.vsix https://open-vsx.org/api/twxs/cmake/0.0.17/file/twxs.cmake-0.0.17.vsix
 curl --compressed -L -o plugins/cmake-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cmake-tools/1.4.1/vspackage
 curl --compressed -L -o plugins/vscode.make.vsix https://open-vsx.org/api/vscode/make/1.48.2/file/vscode.make-1.48.2.vsix
+curl --compressed -L -o plugins/matepek.vscode-catch2-test-adapter.vsix https://open-vsx.org/api/matepek/vscode-catch2-test-adapter/3.4.1/file/matepek.vscode-catch2-test-adapter-3.4.1.vsix
 curl --compressed -L -o plugins/vscode.rust.vsix https://open-vsx.org/api/vscode/rust/1.48.2/file/vscode.rust-1.48.2.vsix
 curl --compressed -L -o plugins/rust-lang.rust.vsix https://open-vsx.org/api/rust-lang/rust/0.7.8/file/rust-lang.rust-0.7.8.vsix
 curl --compressed -L -o plugins/vscode.go.vsix https://open-vsx.org/api/vscode/go/1.48.2/file/vscode.go-1.48.2.vsix
@@ -174,6 +196,10 @@ curl --compressed -L -o plugins/vscjava.vscode-java-test.vsix https://open-vsx.o
 curl --compressed -L -o plugins/vscjava.vscode-maven.vsix https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix
 curl --compressed -L -o plugins/vscjava.vscode-java-dependency.vsix https://open-vsx.org/api/vscjava/vscode-java-dependency/0.12.0/file/vscjava.vscode-java-dependency-0.12.0.vsix
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
+curl --compressed -L -o plugins/vscode.csharp.vsix https://open-vsx.org/api/vscode/csharp/1.48.2/file/vscode.csharp-1.48.2.vsix
+curl --compressed -L -o plugins/muhammad-sammy.csharp.vsix https://open-vsx.org/api/muhammad-sammy/csharp/1.23.2/file/muhammad-sammy.csharp-1.23.2.vsix
+curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.15.8/vspackage
+curl --compressed -L -o plugins/k--kato.docomment.vsix https://open-vsx.org/api/k--kato/docomment/0.1.18/file/k--kato.docomment-0.1.18.vsix
 curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.48.2/file/vscode.python-1.48.2.vsix
 curl --compressed -L -o plugins/ms-python.python.vsix https://open-vsx.org/api/ms-python/python/2020.8.105369/file/ms-python.python-2020.8.105369.vsix
 curl --compressed -L -o plugins/vscode.ruby.vsix https://open-vsx.org/api/vscode/ruby/1.48.2/file/vscode.ruby-1.48.2.vsix
