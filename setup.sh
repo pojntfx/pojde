@@ -43,6 +43,13 @@ source /etc/profile
 EOT
 chmod +x /root/.bashrc
 
+mkdir -p ~/Repos/lldb-mi
+
+git clone git@github.com:lldb-tools/lldb-mi.git ~/Repos/lldb-mi
+cd ~/Repos/lldb-mi
+cmake .
+cmake --build . --target install
+
 mkdir -p ~/Repos/felix-pojtingers-theia
 cd ~/Repos/felix-pojtingers-theia
 
@@ -64,7 +71,21 @@ cat <<EOT >package.json
         "preferences": {
           "go.formatTool": "goimports",
           "terminal.integrated.shell.linux": "/bin/bash",
-          "vim.debug.silent": true
+          "vim.debug.silent": true,
+          "workbench.colorTheme": "dark",
+          "go.autocompleteUnimportedPackages": true,
+          "go.useLanguageServer": true,
+          "vim.debug.silent": true,
+          "sqltools.useNodeRuntime": true,
+          "files.enableTrash": false,
+          "cmake.configureOnOpen": true,
+          "cmake.debugConfig": {
+            "type": "lldb-mi",
+            "request": "launch",
+            "target": "${command:cmake.launchTargetPath}",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+          }
         }
       }
     }

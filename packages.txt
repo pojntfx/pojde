@@ -12,6 +12,9 @@ clang
 clang-extra-tools
 gdb
 lldb
+lldb-dev
+llvm10-static
+llvm-dev
 rustup
 openjdk14
 maven
