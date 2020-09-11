@@ -40,3 +40,5 @@ mono
 gettext
 gettext-dev
 libtool
+godot
+xf86-video-intel

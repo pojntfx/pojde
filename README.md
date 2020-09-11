@@ -8,7 +8,7 @@ My personal Theia distribution, optimized for full stack development.
 
 - [wetty](https://github.com/butlerx/wetty), a web terminal
 - My distribution of [Theia](https://theia-ide.org/), a web IDE
-- [noVNC](https://novnc.com/info.html), a web VNC client (with [Fluxbox](http://fluxbox.org/) & Chromium)
+- [noVNC](https://novnc.com/info.html), a web VNC client (with [Fluxbox](http://fluxbox.org/), Chromium and the [Godot editor](https://godotengine.org/))
 
 ### Collaboration and Comfort
 
@@ -74,6 +74,15 @@ My personal Theia distribution, optimized for full stack development.
 - C# language support
 - C# debugging with Mono
 - C# XML documentation comments
+
+### GDScript (Godot)
+
+> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state.
+
+- Godot editor support
+- GDScript language basics (in Theia and Gotot Editor)
+- GDScript language support (in Theia and Godot Editor)
+- `.tscn` and `.tres` language basics (in Theia and Godot Editor)
 
 ### Python
 

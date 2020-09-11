@@ -112,7 +112,8 @@ cat <<EOT >package.json
             "**/.settings": true,
             "**/.factorypath": true
           },
-          "omnisharp.useGlobalMono": "always"
+          "omnisharp.useGlobalMono": "always",
+          "godot_tools.editor_path": "/usr/bin/godot"
         }
       }
     }
@@ -219,6 +220,7 @@ curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.c
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
+curl --compressed -L -o plugins/geequlim.godot-tools.vsix https://open-vsx.org/api/geequlim/godot-tools/1.0.1/file/geequlim.godot-tools-1.0.1.vsix
 
 cd plugins
 for z in *.vsix; do
@@ -333,7 +335,7 @@ autorestart=true
 
 [program:xvfb]
 priority=300
-command=/usr/bin/Xvfb :1 -screen 0 1024x768x24
+command=/usr/bin/Xvfb :1 -screen 0 1280x720x24 +iglx
 user=root
 autorestart=true
 
