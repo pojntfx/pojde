@@ -57,16 +57,8 @@ make get-monolite-latest
 make -j$(nproc)
 make install
 
-curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c 3.0
-
-mkdir -p /root/.omnisharp
-cat <<EOT >/root/.omnisharp/omnisharp.json
-{
-   "MSBuild": {
-       "UseLegacySdkResolver": true
-   }
-}
-EOT
+curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 mkdir -p ~/Repos/lldb-mi
 git clone git@github.com:lldb-tools/lldb-mi.git ~/Repos/lldb-mi
@@ -198,7 +190,7 @@ curl --compressed -L -o plugins/vscjava.vscode-maven.vsix https://open-vsx.org/a
 curl --compressed -L -o plugins/vscjava.vscode-java-dependency.vsix https://open-vsx.org/api/vscjava/vscode-java-dependency/0.12.0/file/vscjava.vscode-java-dependency-0.12.0.vsix
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
 curl --compressed -L -o plugins/vscode.csharp.vsix https://open-vsx.org/api/vscode/csharp/1.48.2/file/vscode.csharp-1.48.2.vsix
-curl --compressed -L -o plugins/muhammad-sammy.csharp.vsix https://open-vsx.org/api/muhammad-sammy/csharp/1.23.2/file/muhammad-sammy.csharp-1.23.2.vsix
+curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
 curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.15.8/vspackage
 curl --compressed -L -o plugins/k--kato.docomment.vsix https://open-vsx.org/api/k--kato/docomment/0.1.18/file/k--kato.docomment-0.1.18.vsix
 curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.48.2/file/vscode.python-1.48.2.vsix
@@ -229,6 +221,9 @@ for z in *.vsix; do
     rm $z
 done
 cd ..
+
+rm /root/Repos/felix-pojtingers-theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+ln -s $(which mono) /root/Repos/felix-pojtingers-theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 
 mkdir -p ~/Workspaces/workspace-one
 
