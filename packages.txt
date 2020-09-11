@@ -36,7 +36,6 @@ xterm
 font-noto
 nginx
 openssl
-mono
 gettext
 gettext-dev
 libtool
