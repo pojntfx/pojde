@@ -68,16 +68,14 @@ My personal Theia distribution, optimized for full stack development.
 
 ### C#
 
-> C# language support is not yet working; trying to start OmniSharp fails with `[ERROR] TypeError: i.SemanticTokensLegend is not a constructor`
-
 - C# language basics
 - C# language support
-- C# debugging with Mono
+- C# debugging with Mono (see https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) for a launch configuration
 - C# XML documentation comments
 
 ### GDScript (Godot)
 
-> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state.
+> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state. Use the included Godot editor instead.
 
 - Godot editor support
 - GDScript language basics (in Theia and Gotot Editor)
