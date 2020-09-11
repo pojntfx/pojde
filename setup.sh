@@ -1,4 +1,18 @@
 #!/bin/bash
+
+## Configure your IDE here
+export FULL_NAME="Felix Pojtinger"
+export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"
+export IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"
+export EMAIL="felix@pojtinger.com"
+export GITHUB_USERNAME="pojntfx" # For your public SSH keys
+export USERNAME="pojntfx"
+export PASSWORD="mysvcpassword"
+export IDE_NAME="felix-pojtingers-theia"
+export DOMAIN="pojntfx.dev.alphahorizon.io" # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
+export IP="100.64.154.245"                  # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+## You shouldn't have to change anything below
+
 setup-timezone -z UTC
 
 cat <<-EOF >/etc/network/interfaces
@@ -7,11 +21,11 @@ iface eth0 inet dhcp
 EOF
 
 cat <<EOF >/etc/motd
-Welcome to Felix Pojtinger's Alpine Linux Distribution!
+${MOTD}
 EOF
 
 mkdir -m 700 -p /root/.ssh
-wget -O - https://github.com/pojntfx.keys | tee /root/.ssh/authorized_keys
+wget -O - https://github.com/${GITHUB_USERNAME}.keys | tee /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
 
 ln -s networking /etc/init.d/net.lo
@@ -35,7 +49,7 @@ cat <<EOT >/etc/profile.d/main.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
 export PATH="\$JAVA_HOME/bin:\$PATH"
 export PATH="/root/go/bin:\$PATH"
-export DOTNET_ROOT="/root/.dotnet"
+export DOTNET_ROOT="/usr/share/dotnet"
 export PATH="\$DOTNET_ROOT:\$PATH"
 EOT
 chmod +x /etc/profile.d/main.sh
@@ -46,7 +60,7 @@ EOT
 chmod +x /root/.bashrc
 
 mkdir -p ~/Repos/mono.git
-git clone git@github.com:mono/mono.git ~/Repos/mono.git
+git clone https://github.com/mono/mono.git ~/Repos/mono.git
 cd ~/Repos/mono.git
 git checkout mono-6.10.0.105
 apk add gettext gettext-dev libtool
@@ -61,28 +75,30 @@ curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-d
 ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 mkdir -p ~/Repos/lldb-mi
-git clone git@github.com:lldb-tools/lldb-mi.git ~/Repos/lldb-mi
+git clone https://github.com/lldb-tools/lldb-mi.git ~/Repos/lldb-mi
 cd ~/Repos/lldb-mi
 cmake .
 cmake --build . --target install
 
-mkdir -p ~/Repos/felix-pojtingers-theia
-cd ~/Repos/felix-pojtingers-theia
+mkdir -p ~/Repos/${IDE_NAME}
+cd ~/Repos/${IDE_NAME}
 
 cat <<EOT >package.json
 {
-  "name": "@pojntfx/felix-pojtingers-theia",
+  "name": "@${USERNAME}/${IDE_NAME}",
   "version": "0.0.1-alpha1",
-  "description": "Felix Pojtinger's Theia IDE",
+  "description": "${IDE_DESCRIPTION}",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Felix Pojtinger <felix@pojtinger.com>",
+  "author": "${FULL_NAME} <${EMAIL}>",
   "license": "AGPL-3.0",
   "theia": {
     "frontend": {
       "config": {
+        "applicationName": "${IDE_DESCRIPTION}",
+        "preferences": {
           "workbench.colorTheme": "dark",
           "go.autocompleteUnimportedPackages": true,
           "go.useLanguageServer": true,
@@ -222,8 +238,8 @@ for z in *.vsix; do
 done
 cd ..
 
-rm /root/Repos/felix-pojtingers-theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-ln -s $(which mono) /root/Repos/felix-pojtingers-theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+rm /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+ln -s $(which mono) /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 
 mkdir -p ~/Workspaces/workspace-one
 
@@ -235,13 +251,13 @@ yarn theia build
 
 yarn global add wetty
 
-x11vnc -storepasswd mysvcpassword /etc/vncsecret
+x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 
 fc-cache -f
 
-openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=pojntfx.dev.alphahorizon.io -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf '[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=100.64.154.245\nIP.2=100.64.154.247\nDNS.1=pojntfx.dev.alphahorizon.io\nDNS.2=*.pojntfx.dev.alphahorizon.io\nDNS.3=localhost\nDNS.4=*.webview.localhost')) -sha256 -days 3650
+openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=${DOMAIN} -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=${IP}\nDNS.1=${DOMAIN}\nDNS.2=*.${DOMAIN}\nDNS.3=localhost\nDNS.4=*.webview.localhost")) -sha256 -days 3650
 
-printf "pojntfx:$(openssl passwd -apr1 mysvcpassword)\n" >/etc/nginx/.htpasswd
+printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
 
 cat <<EOT >/etc/nginx/conf.d/default.conf
 map \$http_upgrade \$connection_upgrade {
@@ -253,7 +269,7 @@ server {
     listen 8000 ssl;
     ssl_certificate      server.crt;
     ssl_certificate_key  server.key;
-    server_name pojntfx.dev.alphahorizon.io;
+    server_name ${DOMAIN};
 
     location / {
         proxy_set_header X-Real-IP \$remote_addr;
@@ -273,7 +289,7 @@ server {
     listen 8001 ssl;
     ssl_certificate      server.crt;
     ssl_certificate_key  server.key;
-    server_name pojntfx.dev.alphahorizon.io;
+    server_name ${DOMAIN};
 
     location / {
         proxy_pass http://localhost:3001;
@@ -293,7 +309,7 @@ server {
     listen 8002 ssl;
     ssl_certificate      server.crt;
     ssl_certificate_key  server.key;
-    server_name pojntfx.dev.alphahorizon.io;
+    server_name ${DOMAIN};
 
     location / {
         proxy_pass http://localhost:3002;
@@ -323,7 +339,7 @@ autorestart=true
 
 [program:theia]
 priority=200
-directory=/root/Repos/felix-pojtingers-theia
+directory=/root/Repos/${IDE_NAME}
 command=/usr/bin/yarn theia start ~/Workspaces/workspace-one --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins
 user=root
 autorestart=true
