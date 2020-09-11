@@ -73,12 +73,12 @@ My personal Theia distribution, optimized for full stack development.
 - C# debugging with Mono (see https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) for a launch configuration
 - C# XML documentation comments
 
-### GDScript (Godot)
+### Godot
 
 > GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state. Use the included Godot editor instead.
 
 - Godot editor support
-- GDScript language basics (in Theia and Gotot Editor)
+- GDScript language basics (in Theia and Godot Editor)
 - GDScript language support (in Theia and Godot Editor)
 - `.tscn` and `.tres` language basics (in Theia and Godot Editor)
 
