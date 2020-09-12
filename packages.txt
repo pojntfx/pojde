@@ -41,3 +41,4 @@ gettext-dev
 libtool
 godot
 xf86-video-intel
+nasm

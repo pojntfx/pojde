@@ -51,6 +51,7 @@ export PATH="\$JAVA_HOME/bin:\$PATH"
 export PATH="/root/go/bin:\$PATH"
 export DOTNET_ROOT="/usr/share/dotnet"
 export PATH="\$DOTNET_ROOT:\$PATH"
+export LIBRARY_PATH="/lib:/usr/lib"
 EOT
 chmod +x /etc/profile.d/main.sh
 
