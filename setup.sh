@@ -269,7 +269,9 @@ x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 
 fc-cache -f
 
-openssl req -newkey rsa:2048 -x509 -nodes -keyout /etc/nginx/server.key -new -out /etc/nginx/server.crt -subj /CN=${DOMAIN} -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=@alt_names\n[ alt_names ]\nIP.1=${IP}\nDNS.1=${DOMAIN}\nDNS.2=*.${DOMAIN}\nDNS.3=localhost\nDNS.4=*.webview.localhost")) -sha256 -days 3650
+openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
+  -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.${DOMAIN},IP:${IP}"
 
 printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
 
