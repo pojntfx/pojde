@@ -100,7 +100,7 @@ cat <<EOT >package.json
       "config": {
         "applicationName": "${IDE_DESCRIPTION}",
         "preferences": {
-          "workbench.colorTheme": "dark",
+          "workbench.colorTheme": "light",
           "go.autocompleteUnimportedPackages": true,
           "go.useLanguageServer": true,
           "vim.debug.silent": true,
@@ -122,7 +122,12 @@ cat <<EOT >package.json
             "**/.factorypath": true
           },
           "omnisharp.useGlobalMono": "always",
-          "godot_tools.editor_path": "/usr/bin/godot"
+          "godot_tools.editor_path": "/usr/bin/godot",
+          "typescript.updateImportsOnFileMove.enabled": "always",
+          "terminal.integrated.shell.linux": "/bin/bash",
+          "testMate.cpp.log.logSentry": "disable_3",
+          "npm.packageManager": "yarn",
+          "firefox.executable": "/usr/bin/firefox"
         }
       }
     }
@@ -217,6 +222,12 @@ curl --compressed -L -o plugins/rebornix.ruby.vsix https://open-vsx.org/api/rebo
 curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/vscode/javascript/1.48.2/file/vscode.javascript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript.vsix https://open-vsx.org/api/vscode/typescript/1.48.2/file/vscode.typescript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript-language-features.vsix https://open-vsx.org/api/vscode/typescript-language-features/1.48.2/file/vscode.typescript-language-features-1.48.2.vsix
+curl --compressed -L -o plugins/vscode.npm-1.49.0.vsix https://open-vsx.org/api/vscode/npm/1.49.0/file/vscode.npm-1.49.0.vsix
+curl --compressed -L -o plugins/Orta.vscode-jest-4.0.0-alpha.1.vsix https://open-vsx.org/api/Orta/vscode-jest/4.0.0-alpha.1/file/Orta.vscode-jest-4.0.0-alpha.1.vsix
+curl --compressed -L -o plugins/node-debug-1.35.3.vsix https://github.com/theia-ide/vscode-node-debug/releases/download/v1.35.3/node-debug-1.35.3.vsix
+curl --compressed -L -o plugins/node-debug2-1.33.0.vsix https://github.com/theia-ide/vscode-node-debug2/releases/download/v1.33.0/node-debug2-1.33.0.vsix
+curl --compressed -L -o plugins/msjsdiag.debugger-for-chrome-4.12.6.vsix https://open-vsx.org/api/msjsdiag/debugger-for-chrome/4.12.6/file/msjsdiag.debugger-for-chrome-4.12.6.vsix
+curl --compressed -L -o plugins/firefox-devtools.vscode-firefox-debug-2.9.1.vsix https://open-vsx.org/api/firefox-devtools/vscode-firefox-debug/2.9.1/file/firefox-devtools.vscode-firefox-debug-2.9.1.vsix
 curl --compressed -L -o plugins/vscode.html.vsix https://open-vsx.org/api/vscode/html/1.48.2/file/vscode.html-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.html-language-features.vsix https://open-vsx.org/api/vscode/html-language-features/1.48.2/file/vscode.html-language-features-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.css.vsix https://open-vsx.org/api/vscode/css/1.48.2/file/vscode.css-1.48.2.vsix

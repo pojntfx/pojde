@@ -19,6 +19,7 @@ rustup
 openjdk14
 maven
 python3
+python2
 py3-pip
 ruby
 ruby-bundler
@@ -32,6 +33,7 @@ x11vnc
 fluxbox
 novnc
 chromium
+firefox
 xterm
 font-noto
 nginx
