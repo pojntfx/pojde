@@ -109,6 +109,7 @@ My personal Theia distribution, optimized for full stack development.
 - Styled Components
 - Emmet
 - ZipFS
+- Image Preview
 
 ### Databases
 
