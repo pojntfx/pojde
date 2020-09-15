@@ -8,7 +8,7 @@ My personal Theia distribution, optimized for full stack development.
 
 - [wetty](https://github.com/butlerx/wetty), a web terminal
 - My distribution of [Theia](https://theia-ide.org/), a web IDE
-- [noVNC](https://novnc.com/info.html), a web VNC client (with [Fluxbox](http://fluxbox.org/), Chromium and the [Godot editor](https://godotengine.org/))
+- [noVNC](https://novnc.com/info.html), a web VNC client (with [Fluxbox](http://fluxbox.org/), Chromium, Firefox and the [Godot editor](https://godotengine.org/))
 
 ### Collaboration and Comfort
 
@@ -97,6 +97,11 @@ My personal Theia distribution, optimized for full stack development.
 - JavaScript language basics
 - TypeScript language basics
 - TypeScript and JavaScript language features
+- NPM support (to debug scripts, use a launch configuration, not right click -> debug)
+- Jest support
+- NodeJS debugging
+- Chrome debugging
+- Firefox debugging
 - HTML language basics
 - HTML language features
 - CSS, LESS and SCSS language basics
