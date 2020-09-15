@@ -116,6 +116,7 @@ cat <<EOT >package.json
           },
           "java.home": "/usr/lib/jvm/java-14-openjdk",
           "files.exclude": {
+            "**/.git": true,
             "**/.classpath": true,
             "**/.project": true,
             "**/.settings": true,
