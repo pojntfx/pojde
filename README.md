@@ -129,7 +129,7 @@ My personal Theia distribution, optimized for full stack development.
 6. Log into the machine and resize the file system by running `ssh -p 40022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
 7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -p 40022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
 
-To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. You'll also have to trust the SSL certificate (see [a video I made on the subject](https://www.youtube.com/watch?v=_PJc7RcMnw8)).
+To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. You'll also have to trust the SSL certificate (see [a video I made on the subject for macOS](https://www.youtube.com/watch?v=_PJc7RcMnw8) and [another one I made for Linux](https://www.youtube.com/watch?v=byFN8vH2SaM)).
 
 - wetty: [https://localhost:8000](https://localhost:8000)
 - Theia: [https://localhost:8001](https://localhost:8001)
