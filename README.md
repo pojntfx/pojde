@@ -135,6 +135,8 @@ To access the services, use the passwords you've specified in `setup.sh` and the
 - Theia: [https://localhost:8001](https://localhost:8001)
 - noVNC: [https://localhost:8002](https://localhost:8002)
 
+Note that Safari is not supported in Theia due to an [issue with WebSockets and HTTP basic auth](https://bugs.webkit.org/show_bug.cgi?id=80362). To use Theia on Safari, open noVNC, add it to the homescreen and use Chromium in noVNC to browse to Theia.
+
 ## License
 
 Felix Pojtinger's Theia (c) 2020 Felix Pojtinger
