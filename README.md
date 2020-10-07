@@ -70,6 +70,8 @@ My personal Theia distribution, optimized for full stack development.
 
 ### C#
 
+> To enable C#, set `ENABLE_CSHARP_SUPPORT` to `"1"` in `setup.sh`
+
 - C# language basics
 - C# language support
 - C# debugging with Mono (see https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) for a launch configuration

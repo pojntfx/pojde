@@ -12,7 +12,7 @@ if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="felicitas-pojtingers-theia"; fi
 if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi            # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
 if [ -z ${IP+x} ]; then export IP="100.64.154.245"; fi                                 # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi                    # Set to "0" if you're not running this on a fresh system
-if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export export ENABLE_CSHARP_SUPPORT="1"; fi # Set to "0" if you don't want C# support; compiling Mono can take some time.
+if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
@@ -105,6 +105,9 @@ gvfs_pkgs=$(apk search gvfs -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\
 apk add $gvfs_pkgs
 ttfs=$(apk search -q ttf- | grep -v '\-doc')
 apk add $ttfs
+
+apk del ttf-linux-libertine
+apk del ttf-google-opensans
 
 mkdir -p ~/Desktop
 
