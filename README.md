@@ -138,6 +138,25 @@ My personal Theia distribution, optimized for full stack development.
 - Docker language basics
 - Kubernetes
 
+### Themes
+
+- Light (Theia)
+- Dark (Theia)
+- Panda
+- Eva
+- Min
+- macOS Modern
+- One Light
+- One Dark
+- Monokai Pro
+- Shades of Purple
+- Dracula
+- Horizon
+- New Moon
+- GitHub
+- Material Theme
+- Material Theme Icons
+
 ### Desktop
 
 - XFCE4
