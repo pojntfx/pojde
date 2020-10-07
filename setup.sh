@@ -283,6 +283,7 @@ cat <<EOT >package.json
 }
 EOT
 
+rm -rf plugins
 mkdir -p plugins
 
 curl --compressed -L -o plugins/eamodio.gitlens.vsix https://open-vsx.org/api/eamodio/gitlens/10.2.1/file/eamodio.gitlens-10.2.1.vsix

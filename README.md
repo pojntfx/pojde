@@ -131,6 +131,7 @@ My personal Theia distribution, optimized for full stack development.
 - Lynx
 - Godot Editor
 - Flatpak
+- On-Screen Keyboard
 
 ## Usage
 
