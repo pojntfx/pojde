@@ -28,8 +28,10 @@ My personal Theia distribution, optimized for full stack development.
 - JSON language support
 - Protobuf language support
 - GraphQL language support
+- OpenAPI/Swagger language support
 - XML language basics
 - XML language support
+- Image Preview
 
 ### Shell
 
@@ -107,10 +109,10 @@ My personal Theia distribution, optimized for full stack development.
 - HTML language features
 - CSS, LESS and SCSS language basics
 - CSS, LESS and SCSS language features
+- Vetur
 - Styled Components
 - Emmet
 - ZipFS
-- Image Preview
 - Kite Autocomplete for JavaScript
 
 ### Databases
