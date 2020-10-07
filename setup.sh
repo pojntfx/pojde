@@ -140,6 +140,7 @@ xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-
 rc-update add dbus default
 rc-update add udev default
 rc-update add fuse default
+rc-update add docker default
 
 export SKAFFOLD_ARCHITECTURE=$(uname -m)
 if [ $SKAFFOLD_ARCHITECTURE = "x86_64" ]; then
