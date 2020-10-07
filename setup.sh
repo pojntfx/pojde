@@ -81,6 +81,61 @@ cd ~/Repos/lldb-mi
 cmake .
 cmake --build . --target install
 
+mkdir -p ~/.theia
+
+cat <<EOT >~/.theia/keymaps.json
+[
+    {
+        "command": "-file.rename",
+        "keybinding": "f2",
+        "context": "navigatorActive",
+        "resolved": [
+            {
+                "key": {
+                    "code": "F2",
+                    "keyCode": 113,
+                    "easyString": "f2"
+                },
+                "ctrl": false,
+                "shift": false,
+                "alt": false,
+                "meta": false
+            }
+        ],
+        "scope": 1
+    },
+    {
+        "command": "file.rename",
+        "keybinding": "alt+r",
+        "context": "navigatorActive",
+        "resolved": [
+            {
+                "key": {
+                    "code": "KeyR",
+                    "keyCode": 82,
+                    "easyString": "r"
+                },
+                "ctrl": false,
+                "shift": false,
+                "alt": true,
+                "meta": false
+            }
+        ],
+        "scope": 1
+    },
+    {
+        "command": "editor.action.rename",
+        "keybinding": "alt+r",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    },
+    {
+        "command": "-editor.action.rename",
+        "keybinding": "f2",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    }
+]
+EOT
+
 mkdir -p ~/Repos/${IDE_NAME}
 cd ~/Repos/${IDE_NAME}
 
