@@ -4,7 +4,7 @@ My personal Theia distribution, optimized for full stack development.
 
 ## Overview
 
-### Tools
+### Services
 
 - [wetty](https://github.com/butlerx/wetty), a web terminal
 - My distribution of [Theia](https://theia-ide.org/), a web IDE
@@ -133,6 +133,8 @@ My personal Theia distribution, optimized for full stack development.
 - `skaffold` (see [https://skaffold.dev/](https://skaffold.dev/))
 - `k3d` (see [https://k3d.io/](https://k3d.io/))
 - `k3sup` (see [https://k3sup.dev/](https://k3sup.dev/))
+- Docker language basics
+- Kubernetes
 
 ### Desktop
 
