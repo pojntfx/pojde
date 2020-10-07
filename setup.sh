@@ -100,36 +100,38 @@ cat <<EOT >package.json
       "config": {
         "applicationName": "${IDE_DESCRIPTION}",
         "preferences": {
-          "workbench.colorTheme": "light",
-          "go.autocompleteUnimportedPackages": true,
-          "go.useLanguageServer": true,
-          "vim.debug.silent": true,
-          "sqltools.useNodeRuntime": true,
-          "files.enableTrash": false,
-          "cmake.configureOnOpen": true,
-          "cmake.debugConfig": {
-            "type": "lldb-mi",
-            "request": "launch",
-            "target": "${command:cmake.launchTargetPath}",
-            "args": [],
-            "cwd": "${workspaceFolder}"
-          },
-          "java.home": "/usr/lib/jvm/java-14-openjdk",
-          "files.exclude": {
-            "**/.git": true,
-            "**/.classpath": true,
-            "**/.project": true,
-            "**/.settings": true,
-            "**/.factorypath": true
-          },
-          "omnisharp.useGlobalMono": "always",
-          "godot_tools.editor_path": "/usr/bin/godot",
-          "typescript.updateImportsOnFileMove.enabled": "always",
-          "terminal.integrated.shell.linux": "/bin/bash",
-          "testMate.cpp.log.logSentry": "disable_3",
-          "npm.packageManager": "yarn",
-          "firefox.executable": "/usr/bin/firefox"
-        }
+           "workbench.colorTheme": "light",
+           "go.autocompleteUnimportedPackages": true,
+           "go.useLanguageServer": true,
+           "vim.debug.silent": true,
+           "sqltools.useNodeRuntime": true,
+           "files.enableTrash": false,
+           "cmake.configureOnOpen": true,
+           "cmake.debugConfig": {
+             "type": "lldb-mi",
+             "request": "launch",
+             "target": "${command:cmake.launchTargetPath}",
+             "args": [],
+             "cwd": "${workspaceFolder}"
+           },
+           "java.home": "/usr/lib/jvm/java-14-openjdk",
+           "files.exclude": {
+             "**/.git": true,
+             "**/.classpath": true,
+             "**/.project": true,
+             "**/.settings": true,
+             "**/.factorypath": true
+           },
+           "omnisharp.useGlobalMono": "always",
+           "godot_tools.editor_path": "/usr/bin/godot",
+           "typescript.updateImportsOnFileMove.enabled": "always",
+           "terminal.integrated.shell.linux": "/bin/bash",
+           "testMate.cpp.log.logSentry": "disable_3",
+           "npm.packageManager": "yarn",
+           "firefox.executable": "/usr/bin/firefox",
+           "editor.cursorSmoothCaretAnimation": true,
+           "editor.smoothScrolling": true
+         }
       }
     }
   },
