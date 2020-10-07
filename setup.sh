@@ -429,6 +429,7 @@ yarn theia build
 
 yarn global add wetty
 yarn global add jest
+yarn global add @vue/cli
 
 x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 
