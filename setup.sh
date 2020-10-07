@@ -252,38 +252,40 @@ cat <<EOT >package.json
       "config": {
         "applicationName": "${IDE_DESCRIPTION}",
         "preferences": {
-           "workbench.colorTheme": "light",
-           "go.autocompleteUnimportedPackages": true,
-           "go.useLanguageServer": true,
-           "vim.debug.silent": true,
-           "sqltools.useNodeRuntime": true,
-           "files.enableTrash": false,
-           "cmake.configureOnOpen": true,
-           "cmake.debugConfig": {
-             "type": "lldb-mi",
-             "request": "launch",
-             "target": "${command:cmake.launchTargetPath}",
-             "args": [],
-             "cwd": "${workspaceFolder}"
-           },
-           "java.home": "/usr/lib/jvm/java-14-openjdk",
-           "files.exclude": {
-             "**/.git": true,
-             "**/.classpath": true,
-             "**/.project": true,
-             "**/.settings": true,
-             "**/.factorypath": true
-           },
-           "omnisharp.useGlobalMono": "always",
-           "godot_tools.editor_path": "/usr/bin/godot",
-           "typescript.updateImportsOnFileMove.enabled": "always",
-           "terminal.integrated.shell.linux": "/bin/bash",
-           "testMate.cpp.log.logSentry": "disable_3",
-           "npm.packageManager": "yarn",
-           "firefox.executable": "/usr/bin/firefox",
-           "editor.cursorSmoothCaretAnimation": true,
-           "editor.smoothScrolling": true
-         }
+            "workbench.colorTheme": "Horizon",
+            "go.autocompleteUnimportedPackages": true,
+            "go.useLanguageServer": true,
+            "vim.debug.silent": true,
+            "sqltools.useNodeRuntime": true,
+            "files.enableTrash": false,
+            "cmake.configureOnOpen": true,
+            "cmake.debugConfig": {
+              "type": "lldb-mi",
+              "request": "launch",
+              "target": "${command:cmake.launchTargetPath}",
+              "args": [],
+              "cwd": "${workspaceFolder}"
+            },
+            "java.home": "/usr/lib/jvm/java-14-openjdk",
+            "files.exclude": {
+              "**/.git": true,
+              "**/.classpath": true,
+              "**/.project": true,
+              "**/.settings": true,
+              "**/.factorypath": true
+            },
+            "omnisharp.useGlobalMono": "always",
+            "godot_tools.editor_path": "/usr/bin/godot",
+            "typescript.updateImportsOnFileMove.enabled": "always",
+            "terminal.integrated.shell.linux": "/bin/bash",
+            "testMate.cpp.log.logSentry": "disable_3",
+            "npm.packageManager": "yarn",
+            "firefox.executable": "/usr/bin/firefox",
+            "editor.cursorSmoothCaretAnimation": true,
+            "editor.smoothScrolling": true,
+            "kite.showWelcomeNotificationOnStartup": false,
+            "workbench.iconTheme": "eq-material-theme-icons"
+        }
       }
     }
   },
@@ -405,6 +407,19 @@ curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.v
 curl --compressed -L -o plugins/geequlim.godot-tools.vsix https://open-vsx.org/api/geequlim/godot-tools/1.0.1/file/geequlim.godot-tools-1.0.1.vsix
 curl --compressed -L -o plugins/vscode.docker.vsix https://open-vsx.org/api/vscode/docker/1.49.3/file/vscode.docker-1.49.3.vsix
 curl --compressed -L -o plugins/ms-kubernetes-tools.vscode-kubernetes-tools.vsix https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools/1.2.1/file/ms-kubernetes-tools.vscode-kubernetes-tools-1.2.1.vsix
+curl --compressed -L -o plugins/theme-panda.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tinkertrain/vsextensions/theme-panda/1.3.0/vspackage
+curl --compressed -L -o plugins/min-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/miguelsolorio/vsextensions/min-theme/1.4.6/vspackage
+curl --compressed -L -o plugins/macos-modern-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/davidbwaters/vsextensions/macos-modern-theme/1.6.10/vspackage
+curl --compressed -L -o plugins/vscode-theme-onelight.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onelight/2.2.2/vspackage
+curl --compressed -L -o plugins/vscode-theme-onedark.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onedark/2.2.2/vspackage
+curl --compressed -L -o plugins/theme-monokai-pro-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/monokai/vsextensions/theme-monokai-pro-vscode/1.1.17/vspackage
+curl --compressed -L -o plugins/shades-of-purple.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ahmadawais/vsextensions/shades-of-purple/6.12.0/vspackage
+curl --compressed -L -o plugins/theme-dracula.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dracula-theme/vsextensions/theme-dracula/2.22.1/vspackage
+curl --compressed -L -o plugins/horizon-theme-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/jolaleye/vsextensions/horizon-theme-vscode/2.0.2/vspackage
+curl --compressed -L -o plugins/new-moon-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/taniarascia/vsextensions/new-moon-vscode/1.8.8/vspackage
+curl --compressed -L -o plugins/github-vscode-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/github-vscode-theme/1.1.5/vspackage
+curl --compressed -L -o plugins/vsc-material-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Equinusocio/vsextensions/vsc-material-theme/33.0.0/vspackage
+curl --compressed -L -o plugins/vsc-material-theme-icons.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Equinusocio/vsextensions/vsc-material-theme-icons/1.2.0/vspackage
 
 cd plugins
 for z in *.vsix; do
