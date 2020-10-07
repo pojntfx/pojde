@@ -133,17 +133,36 @@ My personal Theia distribution, optimized for full stack development.
 - Flatpak
 - On-Screen Keyboard
 
-## Usage
+## Installation
 
-1. Copy [packages.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/setup.sh) to a local directory
+### Virtualized Installation With `alpimager`
+
+1. Copy [packages.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/setup.sh) to a local directory. Do not delete these files after running the commands below; you'll need them again once you want to update the IDE.
 2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
 3. First, get [alpimager](https://pojntfx.github.io/alpimager/), install it and create the disk image by running `alpimager -output felix-pojtingers-theia.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
 4. Increase the disk image size by running `qemu-img resize felix-pojtingers-theia.qcow2 +20G`
 5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::40022-:22 -boot d -drive format=qcow2,file=felix-pojtingers-theia.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=felix-pojtingers-theia.qcow2`. If you do so, there is no need to use `-p 40022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
 6. Log into the machine and resize the file system by running `ssh -p 40022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
 7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -p 40022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
+8. Continue to [Usage](#usage)
 
-To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. You'll also have to trust the SSL certificate (see [a video I made on the subject for macOS](https://www.youtube.com/watch?v=_PJc7RcMnw8) and [another one I made for Linux](https://www.youtube.com/watch?v=byFN8vH2SaM)).
+To update to a newer version of Theia, simply re-run the steps above. Make sure to persist your data somewhere that is not the VM beforehand; an update resets the VM. If you prefer to update without resetting the VM, see [Native Installation On An Existing Alpine Linux Installation](#native-installation-on-an-existing-alpine-linux-installation).
+
+### Native Installation On An Existing Alpine Linux Installation
+
+While using the virtualized system is the preferred method due to it creating reproducable and easily distributable installations, it is also possible to set up a native installation.
+
+1. Copy [packages.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/felix-pojtingers-theia/blob/master/setup.sh) to a local directory on the target machine. Do not delete these files after running the commands below; you'll need them again once you want to update the IDE.
+2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
+3. Change `ENABLE_OS_SETUP="1"` in `setup.sh` to `ENABLE_OS_SETUP="0"`
+4. Start the installation by running `sh setup.sh`
+5. Continue to [Usage](#usage)
+
+To update the IDE, simply run `sh setup.sh` again.
+
+## Usage
+
+To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. You'll also have to trust the SSL certificate (see [a video I made on the subject for macOS](https://www.youtube.com/watch?v=_PJc7RcMnw8) and [another one I made for Linux](https://www.youtube.com/watch?v=byFN8vH2SaM)). If you don't use SSH forwarding or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
 
 - wetty: [https://localhost:8000](https://localhost:8000)
 - Theia: [https://localhost:8001](https://localhost:8001)
