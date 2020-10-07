@@ -44,6 +44,8 @@ apk add go
 mkdir -p /usr/lib/go/misc/wasm/
 curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
 
+rustup-init -y
+
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
 apk add /tmp/glibc-2.32-r0.apk
@@ -55,6 +57,7 @@ export PATH="/root/go/bin:\$PATH"
 export DOTNET_ROOT="/usr/share/dotnet"
 export PATH="\$DOTNET_ROOT:\$PATH"
 export LIBRARY_PATH="/lib:/usr/lib"
+export PATH="/root/.cargo/bin:\$PATH"
 
 ulimit -n 65000
 EOT
