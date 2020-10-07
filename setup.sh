@@ -386,6 +386,7 @@ curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/
 curl --compressed -L -o plugins/vscode.typescript.vsix https://open-vsx.org/api/vscode/typescript/1.48.2/file/vscode.typescript-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.typescript-language-features.vsix https://open-vsx.org/api/vscode/typescript-language-features/1.48.2/file/vscode.typescript-language-features-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.npm-1.49.0.vsix https://open-vsx.org/api/vscode/npm/1.49.0/file/vscode.npm-1.49.0.vsix
+curl --compressed -L -o plugins/es7-react-js-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsznajder/vsextensions/es7-react-js-snippets/3.0.0/vspackage
 curl --compressed -L -o plugins/Orta.vscode-jest-4.0.0-alpha.1.vsix https://open-vsx.org/api/Orta/vscode-jest/4.0.0-alpha.1/file/Orta.vscode-jest-4.0.0-alpha.1.vsix
 curl --compressed -L -o plugins/node-debug-1.35.3.vsix https://github.com/theia-ide/vscode-node-debug/releases/download/v1.35.3/node-debug-1.35.3.vsix
 curl --compressed -L -o plugins/node-debug2-1.33.0.vsix https://github.com/theia-ide/vscode-node-debug2/releases/download/v1.33.0/node-debug2-1.33.0.vsix

@@ -100,6 +100,7 @@ My personal Theia distribution, optimized for full stack development.
 - JavaScript language basics
 - TypeScript language basics
 - TypeScript and JavaScript language features
+- ES7 React/Redux/GraphQL/React-Native snippets
 - NPM support (to debug scripts, use a launch configuration, not right click -> debug)
 - Jest support
 - NodeJS debugging
