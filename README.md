@@ -114,6 +114,9 @@ My personal Theia distribution, optimized for full stack development.
 ### Databases
 
 - SQL language basics
+- SQLite
+- PostgreSQL Client
+- MariaDB Client
 - SQLTools
 - SQLTools PostgreSQL Driver
 - SQLTools SQLite Driver

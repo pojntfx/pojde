@@ -47,3 +47,6 @@ libtool
 godot
 xf86-video-intel
 nasm
+sqlite
+postgresql-client
+mariadb-client
