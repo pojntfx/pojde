@@ -86,6 +86,7 @@ My personal Theia distribution, optimized for full stack development.
 
 - Python language basics
 - Python language support
+- Kite Autocomplete for Python
 
 ### Ruby
 
@@ -110,6 +111,7 @@ My personal Theia distribution, optimized for full stack development.
 - Emmet
 - ZipFS
 - Image Preview
+- Kite Autocomplete for JavaScript
 
 ### Databases
 

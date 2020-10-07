@@ -159,6 +159,22 @@ arkade get skaffold
 arkade get k3d
 arkade get k3sup
 
+echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
+
+cat <<EOT >/etc/init.d/kited
+#!/sbin/openrc-run                                                                                                                                                                                                    
+
+name=\$RC_SVCNAME
+command="/root/.local/share/kite/kited"
+pidfile="/run/\$RC_SVCNAME.pid"
+command_background="yes"
+EOT
+chmod +x /etc/init.d/kited
+pip install -U pylint --user
+pip install -U autopep8 --user
+
+rc-update add kited default
+
 mkdir -p ~/.theia
 
 cat <<EOT >~/.theia/keymaps.json
@@ -356,6 +372,7 @@ if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
 fi
 curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.48.2/file/vscode.python-1.48.2.vsix
 curl --compressed -L -o plugins/ms-python.python.vsix https://open-vsx.org/api/ms-python/python/2020.8.105369/file/ms-python.python-2020.8.105369.vsix
+curl --compressed -L -o plugins/kiteco.kite.vsix https://open-vsx.org/api/kiteco/kite/0.127.0/file/kiteco.kite-0.127.0.vsix
 curl --compressed -L -o plugins/vscode.ruby.vsix https://open-vsx.org/api/vscode/ruby/1.48.2/file/vscode.ruby-1.48.2.vsix
 curl --compressed -L -o plugins/rebornix.ruby.vsix https://open-vsx.org/api/rebornix/ruby/0.27.0/file/rebornix.ruby-0.27.0.vsix
 curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/vscode/javascript/1.48.2/file/vscode.javascript-1.48.2.vsix
