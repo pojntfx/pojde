@@ -1,18 +1,18 @@
 #!/bin/bash
 
 ## Configure your IDE here
-export FULL_NAME="Felicitas Pojtinger"
-export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"
-export IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"
-export EMAIL="felicitas@pojtinger.com"
-export GITHUB_USERNAME="pojntfx" # For your public SSH keys
-export USERNAME="pojntfx"        # For accessing the IDE
-export PASSWORD="mysvcpassword"  # For accessing the IDE
-export IDE_NAME="felicitas-pojtingers-theia"
-export DOMAIN="pojntfx.dev.alphahorizon.io" # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
-export IP="100.64.154.245"                  # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
-export ENABLE_OS_SETUP="1"                  # Set to "0" if you're not running this on a fresh system
-export ENABLE_CSHARP_SUPPORT="1"            # Set to "0" if you don't want C# support; compiling Mono can take some time.
+if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felicitas Pojtinger"; fi
+if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
+if [ -z ${IDE_DESCRIPTION+x} ]; then export IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
+if [ -z ${EMAIL+x} ]; then export EMAIL="felicitas@pojtinger.com"; fi
+if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For your public SSH keys
+if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the IDE
+if [ -z ${PASSWORD+x} ]; then export PASSWORD="mysvcpassword"; fi         # For accessing the IDE
+if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="felicitas-pojtingers-theia"; fi
+if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi            # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
+if [ -z ${IP+x} ]; then export IP="100.64.154.245"; fi                                 # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi                    # Set to "0" if you're not running this on a fresh system
+if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export export ENABLE_CSHARP_SUPPORT="1"; fi # Set to "0" if you don't want C# support; compiling Mono can take some time.
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
