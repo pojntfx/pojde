@@ -58,6 +58,7 @@ export DOTNET_ROOT="/usr/share/dotnet"
 export PATH="\$DOTNET_ROOT:\$PATH"
 export LIBRARY_PATH="/lib:/usr/lib"
 export PATH="/root/.cargo/bin:\$PATH"
+export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
 
 ulimit -n 65000
 EOT
