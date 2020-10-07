@@ -91,6 +91,43 @@ cmake --build . --target install
 
 echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/inotify && sysctl -p
 
+gvfs_pkgs=$(apk search gvfs -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
+apk add $gvfs_pkgs
+ttfs=$(apk search -q ttf- | grep -v '\-doc')
+apk add $ttfs
+
+mkdir -p ~/Desktop
+
+cat <<EOT >~/Desktop/Chromium.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Chromium
+Comment=Access the Internet
+Exec=chromium-browser --no-sandbox %U
+Icon=chromium
+Path=
+Terminal=false
+StartupNotify=false
+EOT
+
+cat <<EOT >~/Desktop/Onboard.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Onboard
+Comment=Flexible onscreen keyboard
+Exec=onboard
+Icon=onboard
+Path=
+Terminal=false
+StartupNotify=false
+EOT
+
+rc-update add dbus default
+rc-update add udev default
+rc-update add fuse default
+
 mkdir -p ~/.theia
 
 cat <<EOT >~/.theia/keymaps.json
@@ -427,7 +464,7 @@ autorestart=true
 
 [program:xvfb]
 priority=300
-command=/usr/bin/Xvfb :1 -screen 0 1280x720x24 +iglx
+command=/usr/bin/Xvfb :1 -screen 0 1400x1050x24 +iglx
 user=root
 autorestart=true
 
@@ -437,9 +474,9 @@ command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -no
 user=root
 autorestart=true
 
-[program:fluxbox]
+[program:startxfce4]
 priority=500
-command=/usr/bin/fluxbox
+command=/usr/bin/startxfce4
 user=root
 autorestart=true
 environment=DISPLAY=":1",HOME="/root",USER="root"
