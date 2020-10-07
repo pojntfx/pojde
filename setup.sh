@@ -52,6 +52,8 @@ export PATH="/root/go/bin:\$PATH"
 export DOTNET_ROOT="/usr/share/dotnet"
 export PATH="\$DOTNET_ROOT:\$PATH"
 export LIBRARY_PATH="/lib:/usr/lib"
+
+ulimit -n 65000
 EOT
 chmod +x /etc/profile.d/main.sh
 
