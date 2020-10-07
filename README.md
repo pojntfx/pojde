@@ -122,6 +122,16 @@ My personal Theia distribution, optimized for full stack development.
 - SQLTools SQLite Driver
 - SQLTools MySQL Driver
 
+### DevOps
+
+- `arkade` (see [https://github.com/alexellis/arkade](https://github.com/alexellis/arkade))
+- `kubectl` (see [https://kubernetes.io/docs/reference/kubectl/overview/](https://kubernetes.io/docs/reference/kubectl/overview/))
+- `k9s` (see [https://k9scli.io/](https://k9scli.io/))
+- `helm` (see [https://helm.sh/](https://helm.sh/))
+- `skaffold` (see [https://skaffold.dev/](https://skaffold.dev/))
+- `k3d` (see [https://k3d.io/](https://k3d.io/))
+- `k3sup` (see [https://k3sup.dev/](https://k3sup.dev/))
+
 ### Desktop
 
 - XFCE4

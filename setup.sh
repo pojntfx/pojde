@@ -63,6 +63,7 @@ export PATH="\$DOTNET_ROOT:\$PATH"
 export LIBRARY_PATH="/lib:/usr/lib"
 export PATH="/root/.cargo/bin:\$PATH"
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
+export PATH="$PATH:/root/.arkade/bin/"
 
 ulimit -n 65000
 EOT
@@ -139,6 +140,23 @@ xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-
 rc-update add dbus default
 rc-update add udev default
 rc-update add fuse default
+
+export SKAFFOLD_ARCHITECTURE=$(uname -m)
+if [ $SKAFFOLD_ARCHITECTURE = "x86_64" ]; then
+    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+else
+    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
+fi
+install /tmp/skaffold /usr/local/bin
+
+curl -sLS https://dl.get-arkade.dev | sh
+
+arkade get kubectl
+arkade get k9s
+arkade get helm
+arkade get skaffold
+arkade get k3d
+arkade get k3sup
 
 mkdir -p ~/.theia
 
