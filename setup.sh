@@ -11,29 +11,33 @@ export PASSWORD="mysvcpassword"  # For accessing the IDE
 export IDE_NAME="felicitas-pojtingers-theia"
 export DOMAIN="pojntfx.dev.alphahorizon.io" # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
 export IP="100.64.154.245"                  # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+export ENABLE_OS_SETUP="1"                  # Set to "0" if you're not running this on a fresh system
+export ENABLE_CSHARP_SUPPORT="1"            # Set to "0" if you don't want C# support; compiling Mono can take some time.
 ## You shouldn't have to change anything below
 
-setup-timezone -z UTC
+if [ $ENABLE_OS_SETUP = "1" ]; then
+    setup-timezone -z UTC
 
-cat <<-EOF >/etc/network/interfaces
+    cat <<-EOF >/etc/network/interfaces
 iface lo inet loopback
 iface eth0 inet dhcp
 EOF
 
-cat <<EOF >/etc/motd
+    cat <<EOF >/etc/motd
 ${MOTD}
 EOF
+
+    ln -s networking /etc/init.d/net.lo
+    ln -s networking /etc/init.d/net.eth0
+
+    rc-update add sshd default
+    rc-update add net.eth0 default
+    rc-update add net.lo boot
+fi
 
 mkdir -m 700 -p /root/.ssh
 wget -O - https://github.com/${GITHUB_USERNAME}.keys | tee /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
-
-ln -s networking /etc/init.d/net.lo
-ln -s networking /etc/init.d/net.eth0
-
-rc-update add sshd default
-rc-update add net.eth0 default
-rc-update add net.lo boot
 
 sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 
@@ -69,21 +73,25 @@ source /etc/profile
 EOT
 chmod +x /root/.bashrc
 
-mkdir -p ~/Repos/mono.git
-git clone https://github.com/mono/mono.git ~/Repos/mono.git
-cd ~/Repos/mono.git
-git checkout mono-6.10.0.105
-apk add gettext gettext-dev libtool
-./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
-mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
-sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
-make get-monolite-latest
-make -j$(nproc)
-make install
+if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
+    rm -rf ~/Repos/mono.git
+    mkdir -p ~/Repos/mono.git
+    git clone https://github.com/mono/mono.git ~/Repos/mono.git
+    cd ~/Repos/mono.git
+    git checkout mono-6.10.0.105
+    apk add gettext gettext-dev libtool
+    ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
+    mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
+    sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
+    make get-monolite-latest
+    make -j$(nproc)
+    make install
 
-curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
-ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+    curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+    ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+fi
 
+rm -rf ~/Repos/lldb-mi
 mkdir -p ~/Repos/lldb-mi
 git clone https://github.com/lldb-tools/lldb-mi.git ~/Repos/lldb-mi
 cd ~/Repos/lldb-mi
@@ -321,10 +329,12 @@ curl --compressed -L -o plugins/vscjava.vscode-java-test.vsix https://open-vsx.o
 curl --compressed -L -o plugins/vscjava.vscode-maven.vsix https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix
 curl --compressed -L -o plugins/vscjava.vscode-java-dependency.vsix https://open-vsx.org/api/vscjava/vscode-java-dependency/0.12.0/file/vscjava.vscode-java-dependency-0.12.0.vsix
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
-curl --compressed -L -o plugins/vscode.csharp.vsix https://open-vsx.org/api/vscode/csharp/1.48.2/file/vscode.csharp-1.48.2.vsix
-curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
-curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.15.8/vspackage
-curl --compressed -L -o plugins/k--kato.docomment.vsix https://open-vsx.org/api/k--kato/docomment/0.1.18/file/k--kato.docomment-0.1.18.vsix
+if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
+    curl --compressed -L -o plugins/vscode.csharp.vsix https://open-vsx.org/api/vscode/csharp/1.48.2/file/vscode.csharp-1.48.2.vsix
+    curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
+    curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.15.8/vspackage
+    curl --compressed -L -o plugins/k--kato.docomment.vsix https://open-vsx.org/api/k--kato/docomment/0.1.18/file/k--kato.docomment-0.1.18.vsix
+fi
 curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.48.2/file/vscode.python-1.48.2.vsix
 curl --compressed -L -o plugins/ms-python.python.vsix https://open-vsx.org/api/ms-python/python/2020.8.105369/file/ms-python.python-2020.8.105369.vsix
 curl --compressed -L -o plugins/vscode.ruby.vsix https://open-vsx.org/api/vscode/ruby/1.48.2/file/vscode.ruby-1.48.2.vsix
@@ -361,8 +371,10 @@ for z in *.vsix; do
 done
 cd ..
 
-rm /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-ln -s $(which mono) /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
+    rm /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+    ln -s $(which mono) /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+fi
 
 mkdir -p ~/Workspaces/workspace-one
 
