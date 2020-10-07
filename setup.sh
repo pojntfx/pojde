@@ -159,6 +159,9 @@ arkade get skaffold
 arkade get k3d
 arkade get k3sup
 
+ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
+ln -s ~/.arkade/bin/helm /usr/local/bin/helm
+
 echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
 cat <<EOT >/etc/init.d/kited
@@ -398,6 +401,8 @@ curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visu
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
 curl --compressed -L -o plugins/geequlim.godot-tools.vsix https://open-vsx.org/api/geequlim/godot-tools/1.0.1/file/geequlim.godot-tools-1.0.1.vsix
+curl --compressed -L -o plugins/vscode.docker.vsix https://open-vsx.org/api/vscode/docker/1.49.3/file/vscode.docker-1.49.3.vsix
+curl --compressed -L -o plugins/ms-kubernetes-tools.vscode-kubernetes-tools.vsix https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools/1.2.1/file/ms-kubernetes-tools.vscode-kubernetes-tools-1.2.1.vsix
 
 cd plugins
 for z in *.vsix; do
