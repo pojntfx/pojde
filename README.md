@@ -8,7 +8,7 @@ My personal Theia distribution, optimized for full stack development.
 
 - [wetty](https://github.com/butlerx/wetty), a web terminal
 - My distribution of [Theia](https://theia-ide.org/), a web IDE
-- [noVNC](https://novnc.com/info.html), a web VNC client (with [Fluxbox](http://fluxbox.org/), Chromium, Firefox and the [Godot editor](https://godotengine.org/))
+- [noVNC](https://novnc.com/info.html), a web VNC client with a full desktop environment (see [Desktop](#desktop))
 
 ### Collaboration and Comfort
 
@@ -75,7 +75,7 @@ My personal Theia distribution, optimized for full stack development.
 
 ### Godot
 
-> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state. Use the included Godot editor instead.
+> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state. Use the included Godot editor instead (see [Desktop](#desktop)).
 
 - Godot editor support
 - GDScript language basics (in Theia and Godot Editor)
@@ -121,6 +121,16 @@ My personal Theia distribution, optimized for full stack development.
 - SQLTools PostgreSQL Driver
 - SQLTools SQLite Driver
 - SQLTools MySQL Driver
+
+### Desktop
+
+- XFCE4
+- Chromium
+- Firefox
+- GNOME Web (Epiphany/WebKit)
+- Lynx
+- Godot Editor
+- Flatpak
 
 ## Usage
 
