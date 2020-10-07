@@ -81,6 +81,8 @@ cd ~/Repos/lldb-mi
 cmake .
 cmake --build . --target install
 
+echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/inotify && sysctl -p
+
 mkdir -p ~/.theia
 
 cat <<EOT >~/.theia/keymaps.json
