@@ -1,6 +1,7 @@
 openssh
 sudo
 curl
+vim
 e2fsprogs-extra
 bash
 git
