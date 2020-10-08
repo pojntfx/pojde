@@ -190,13 +190,18 @@ To update to a newer version of Theia, simply re-run the steps above. Make sure 
 
 While using the virtualized system is the preferred method due to it creating reproducable and easily distributable installations, it is also possible to set up a native installation.
 
-1. Copy [packages.txt](https://github.com/pojntfx/felicitas-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felicitas-pojtingers-theia/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/felicitas-pojtingers-theia/blob/master/setup.sh) to a local directory on the target machine. Do not delete these files after running the commands below; you'll need them again once you want to update the IDE.
-2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
-3. Change `ENABLE_OS_SETUP="1"` in `setup.sh` to `ENABLE_OS_SETUP="0"`
-4. Start the installation by running `sh setup.sh`
-5. Continue to [Usage](#usage)
+1. Run `mkdir -p /etc/theia` to create the configuration directory
+2. Run `curl -o /etc/theia/packages.txt https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/packages.txt` to download the list of the required packages
+3. Run `curl -o /etc/theia/repositories.txt https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/repositories.txt` to download the recommended repositories
+4. Run `curl -o /etc/theia/setup.sh https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/setup.sh` to download the installation script
+5. Run `sed -i /etc/theia/setup.sh -e 's/ENABLE_OS_SETUP="1"/ENABLE_OS_SETUP="0"/g'` to disable the OS setup steps
+6. Adjust the other settings (especially the password) in `/etc/theia/setup.sh` to your liking
+7. Setup the repositories by running `cp /etc/theia/repositories.txt /etc/apk/repositories`
+8. Install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
+9. Start the installation by running `sh /etc/theia/setup.sh`
+10. Continue to [Usage](#usage)
 
-To update the IDE, simply run `sh setup.sh` again.
+To update the IDE, simply replace the contents of `/etc/theia/setup.sh` below the configuration section with the newest version from GitHub and run `sh /etc/theia/setup.sh` again.
 
 ## Usage
 
