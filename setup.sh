@@ -14,7 +14,7 @@ if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
 if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
-if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/theia-workspace"; fi
+if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
