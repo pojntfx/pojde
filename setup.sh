@@ -185,6 +185,7 @@ pip install -U autopep8 --user
 
 rc-update add kited default
 
+rm -rf ~/.theia
 mkdir -p ~/.theia
 
 cat <<EOT >~/.theia/keymaps.json
