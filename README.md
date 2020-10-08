@@ -201,7 +201,7 @@ While using the virtualized system is the preferred method due to it creating re
 9. Start the installation by running `sh /etc/theia/setup.sh`
 10. Continue to [Usage](#usage)
 
-To update the IDE, simply replace the contents of `/etc/theia/setup.sh` below the configuration section with the newest version from GitHub and run `sh /etc/theia/setup.sh` again.
+To update the IDE, re-run the steps above (don't forget to adjust your settings).
 
 ## Usage
 
