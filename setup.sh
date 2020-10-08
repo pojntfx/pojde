@@ -74,6 +74,9 @@ EOT
 chmod +x /etc/profile.d/main.sh
 
 cat <<EOT >/root/.bashrc
+HISTSIZE= 
+HISTFILESIZE=
+
 source /etc/profile
 EOT
 chmod +x /root/.bashrc
