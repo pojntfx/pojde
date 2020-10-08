@@ -9,10 +9,12 @@ if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For 
 if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the IDE
 if [ -z ${PASSWORD+x} ]; then export PASSWORD="mysvcpassword"; fi         # For accessing the IDE
 if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="felix-pojtingers-theia"; fi
-if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi            # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
-if [ -z ${IP+x} ]; then export IP="100.64.154.245"; fi                                 # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
-if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi                    # Set to "0" if you're not running this on a fresh system
-if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
+if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi     # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
+if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
+if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
+if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
+if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/theia-workspace"; fi
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
@@ -77,10 +79,10 @@ EOT
 chmod +x /root/.bashrc
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-    rm -rf ~/Repos/mono.git
-    mkdir -p ~/Repos/mono.git
-    git clone https://github.com/mono/mono.git ~/Repos/mono.git
-    cd ~/Repos/mono.git
+    rm -rf ${INSTALL_DIR}/mono.git
+    mkdir -p ${INSTALL_DIR}/mono.git
+    git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
+    cd ${INSTALL_DIR}/mono.git
     git checkout mono-6.10.0.105
     apk add gettext gettext-dev libtool
     ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
@@ -94,10 +96,10 @@ if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
     ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 fi
 
-rm -rf ~/Repos/lldb-mi
-mkdir -p ~/Repos/lldb-mi
-git clone https://github.com/lldb-tools/lldb-mi.git ~/Repos/lldb-mi
-cd ~/Repos/lldb-mi
+rm -rf ${INSTALL_DIR}/lldb-mi
+mkdir -p ${INSTALL_DIR}/lldb-mi
+git clone https://github.com/lldb-tools/lldb-mi.git ${INSTALL_DIR}/lldb-mi
+cd ${INSTALL_DIR}/lldb-mi
 cmake .
 cmake --build . --target install
 
@@ -238,8 +240,8 @@ cat <<EOT >~/.theia/keymaps.json
 ]
 EOT
 
-mkdir -p ~/Repos/${IDE_NAME}
-cd ~/Repos/${IDE_NAME}
+mkdir -p ${INSTALL_DIR}/theia
+cd ${INSTALL_DIR}/theia
 
 cat <<EOT >package.json
 {
@@ -436,11 +438,11 @@ done
 cd ..
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-    rm /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-    ln -s $(which mono) /root/Repos/${IDE_NAME}/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+    rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+    ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 fi
 
-mkdir -p ~/Workspaces/workspace-one
+mkdir -p ${WORKSPACE_DIR}
 
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 export NODE_OPTIONS="--max-old-space-size=8192"
@@ -539,8 +541,8 @@ autorestart=true
 
 [program:theia]
 priority=200
-directory=/root/Repos/${IDE_NAME}
-command=/usr/bin/yarn theia start ~/Workspaces/workspace-one --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins
+directory=${INSTALL_DIR}/theia
+command=/usr/bin/yarn theia start ${WORKSPACE_DIR} --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins
 user=root
 autorestart=true
 
