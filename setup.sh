@@ -457,7 +457,7 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 yarn
 yarn theia build
 
-yarn global add wetty
+yarn global add wetty@1.4.1
 yarn global add jest
 yarn global add @vue/cli
 
