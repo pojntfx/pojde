@@ -188,7 +188,7 @@ To update to a newer version of Theia, simply re-run the steps above. Make sure 
 
 ### Native Installation On An Existing Alpine Linux Installation
 
-While using the virtualized system is the preferred method due to it creating reproducable and easily distributable installations, it is also possible to set up a native installation.
+While using the virtualized system is the preferred method due to it creating reproducable and easily distributable installations, it is also possible to set up a native installation. Run the commands below as root.
 
 1. Run `mkdir -p /etc/theia` to create the configuration directory
 2. Run `curl -o /etc/theia/packages.txt https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/packages.txt` to download the list of the required packages
