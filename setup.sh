@@ -47,6 +47,9 @@ ln -sf /bin/bash /bin/sh
 ln -sf /usr/bin/nvim /usr/bin/vi
 ln -sf /usr/bin/nvim /usr/bin/vim
 
+apk update
+apk upgrade
+
 apk add go
 
 mkdir -p /usr/lib/go/misc/wasm/
