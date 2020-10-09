@@ -19,7 +19,6 @@ llvm-dev
 protoc
 protobuf
 protobuf-dev
-rustup
 openjdk14
 maven
 python3
