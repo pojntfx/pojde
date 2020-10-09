@@ -44,8 +44,6 @@ chmod 600 /root/.ssh/authorized_keys
 sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 
 ln -sf /bin/bash /bin/sh
-ln -sf /usr/bin/nvim /usr/bin/vi
-ln -sf /usr/bin/nvim /usr/bin/vim
 
 apk update
 apk upgrade
@@ -109,6 +107,17 @@ git clone https://github.com/lldb-tools/lldb-mi.git ${INSTALL_DIR}/lldb-mi
 cd ${INSTALL_DIR}/lldb-mi
 cmake .
 cmake --build . --target install
+
+rm -rf ${INSTALL_DIR}/neovim
+mkdir -p ${INSTALL_DIR}/neovim
+git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
+cd ${INSTALL_DIR}/neovim
+make
+make install
+
+ln -sf /usr/local/bin/nvim /usr/bin/nvim
+ln -sf /usr/local/bin/nvim /usr/bin/vi
+ln -sf /usr/local/bin/nvim /usr/bin/vim
 
 echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/inotify && sysctl -p
 
@@ -308,7 +317,8 @@ cat <<EOT >package.json
             "editor.cursorSmoothCaretAnimation": true,
             "editor.smoothScrolling": true,
             "kite.showWelcomeNotificationOnStartup": false,
-            "workbench.iconTheme": "eq-material-theme-icons"
+            "workbench.iconTheme": "eq-material-theme-icons",
+            "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
         }
       }
     }
@@ -361,7 +371,7 @@ mkdir -p plugins
 curl --compressed -L -o plugins/eamodio.gitlens.vsix https://open-vsx.org/api/eamodio/gitlens/10.2.1/file/eamodio.gitlens-10.2.1.vsix
 curl --compressed -L -o plugins/mhutchie.git-graph.vsix https://open-vsx.org/api/mhutchie/git-graph/1.25.0/file/mhutchie.git-graph-1.25.0.vsix
 curl --compressed -L -o plugins/esbenp.prettier-vscode.vsix https://open-vsx.org/api/esbenp/prettier-vscode/5.5.0/file/esbenp.prettier-vscode-5.5.0.vsix
-curl --compressed -L -o plugins/vscodevim.vim.vsix https://open-vsx.org/api/vscodevim/vim/1.16.0/file/vscodevim.vim-1.16.0.vsix
+curl --compressed -L -o plugins/asvetliakov.vscode-neovim.vsix https://open-vsx.org/api/asvetliakov/vscode-neovim/0.0.63/file/asvetliakov.vscode-neovim-0.0.63.vsix
 curl --compressed -L -o plugins/vscode.markdown.vsix https://open-vsx.org/api/vscode/markdown/1.48.2/file/vscode.markdown-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.markdown-language-features.vsix https://open-vsx.org/api/vscode/markdown-language-features/1.48.2/file/vscode.markdown-language-features-1.48.2.vsix
 curl --compressed -L -o plugins/vscode.yaml.vsix https://open-vsx.org/api/vscode/yaml/1.48.2/file/vscode.yaml-1.48.2.vsix
