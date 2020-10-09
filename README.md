@@ -199,7 +199,7 @@ While using the virtualized system is the preferred method due to it creating re
 7. Setup the repositories by running `cp /etc/theia/repositories.txt /etc/apk/repositories`
 8. Upgrade your system by running `apk update && apk upgrade`
 9. On an AMD64 system (your average server), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
-   On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e 's/\godot//g' | sed -e 's/\xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
+   On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
 10. Start the installation by running `sh /etc/theia/setup.sh`
 11. Continue to [Usage](#usage)
 
