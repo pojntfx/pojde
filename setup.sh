@@ -55,6 +55,7 @@ apk add go
 mkdir -p /usr/lib/go/misc/wasm/
 curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
 
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup-init -y
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
@@ -163,8 +164,8 @@ rc-service udev restart
 rc-service fuse restart
 rc-service docker restart
 
-export SKAFFOLD_ARCHITECTURE=$(uname -m)
-if [ $SKAFFOLD_ARCHITECTURE = "x86_64" ]; then
+export SYSTEM_ARCHITECTURE=$(uname -m)
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
     curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 else
     curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
