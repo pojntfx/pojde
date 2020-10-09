@@ -155,6 +155,11 @@ rc-update add udev default
 rc-update add fuse default
 rc-update add docker default
 
+rc-service dbus restart
+rc-service udev restart
+rc-service fuse restart
+rc-service docker restart
+
 export SKAFFOLD_ARCHITECTURE=$(uname -m)
 if [ $SKAFFOLD_ARCHITECTURE = "x86_64" ]; then
     curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
@@ -190,6 +195,7 @@ pip install -U pylint --user
 pip install -U autopep8 --user
 
 rc-update add kited default
+rc-service kited restart
 
 rm -rf ~/.theia
 mkdir -p ~/.theia
@@ -586,3 +592,4 @@ autorestart=true
 EOT
 
 rc-update add supervisord default
+rc-service supervisord restart

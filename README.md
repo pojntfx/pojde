@@ -200,7 +200,7 @@ While using the virtualized system is the preferred method due to it creating re
 8. Upgrade your system by running `apk update && apk upgrade`
 9. Install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
 10. Start the installation by running `sh /etc/theia/setup.sh`
-11. Run `rc-service supervisord restart` and continue to [Usage](#usage)
+11. Continue to [Usage](#usage)
 
 To update the IDE, re-run the steps above (don't forget to adjust your settings).
 
