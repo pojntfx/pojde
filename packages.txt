@@ -91,3 +91,4 @@ pulseaudio-alsa
 alsa-plugins-pulse
 onboard
 docker
+neovim
