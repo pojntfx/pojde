@@ -15,7 +15,7 @@ My personal Theia distribution, optimized for full stack development.
 - GitLens
 - Git Graph
 - Prettier
-- VS Code Neovim
+- Vim
 
 ### Data and Documentation
 
