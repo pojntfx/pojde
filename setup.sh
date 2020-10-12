@@ -53,8 +53,7 @@ apk add go
 mkdir -p /usr/lib/go/misc/wasm/
 curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-rustup-init -y
+curl https://sh.rustup.rs | bash -s -- -y
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
 wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
