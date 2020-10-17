@@ -21,6 +21,7 @@ protobuf
 protobuf-dev
 openjdk14
 openjdk11
+openjdk8
 maven
 gradle
 python3
