@@ -477,6 +477,7 @@ curl --compressed -L -o plugins/redhat.java.vsix https://open-vsx.org/api/redhat
 curl --compressed -L -o plugins/vscjava.vscode-java-debug.vsix https://open-vsx.org/api/vscjava/vscode-java-debug/0.28.0/file/vscjava.vscode-java-debug-0.28.0.vsix
 curl --compressed -L -o plugins/vscjava.vscode-java-test.vsix https://open-vsx.org/api/vscjava/vscode-java-test/0.24.2/file/vscjava.vscode-java-test-0.24.2.vsix
 curl --compressed -L -o plugins/vscjava.vscode-maven.vsix https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix
+curl --compressed -L -o plugins/richardwillis.vscode-gradle.vsix https://open-vsx.org/api/richardwillis/vscode-gradle/3.5.2/file/richardwillis.vscode-gradle-3.5.2.vsix
 curl --compressed -L -o plugins/vscjava.vscode-java-dependency.vsix https://open-vsx.org/api/vscjava/vscode-java-dependency/0.13.0/file/vscjava.vscode-java-dependency-0.13.0.vsix
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then

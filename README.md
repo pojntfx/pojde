@@ -65,6 +65,7 @@ My personal Theia distribution, optimized for full stack development.
 - Debugger for Java
 - Java test runner
 - Maven for Java
+- Gradle tasks
 - Project manager for Java
 - JavaDoc Tools
 
