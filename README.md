@@ -66,6 +66,7 @@ My personal Theia distribution, optimized for full stack development.
 - Java test runner
 - Maven for Java
 - Gradle tasks
+- Gradle language support
 - Project manager for Java
 - JavaDoc Tools
 
@@ -202,6 +203,7 @@ While using the virtualized system is the preferred method due to it creating re
 9. On an AMD64 system (your average server), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
 
    On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e 's/gvfs-gphoto2//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
+
 10. Start the installation by running `sh /etc/theia/setup.sh`
 11. Continue to [Usage](#usage)
 
