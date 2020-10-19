@@ -94,3 +94,4 @@ alsa-plugins-pulse
 onboard
 docker
 unzip
+gource
