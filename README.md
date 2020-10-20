@@ -120,6 +120,13 @@ My personal Theia distribution, optimized for full stack development.
 - Emmet
 - ZipFS
 - Kite Autocomplete for JavaScript
+- `wasmtime`
+
+### Zig
+
+- Zig language basics
+- Zig language support
+- Zig snippets
 
 ### Databases
 

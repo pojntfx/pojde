@@ -95,3 +95,4 @@ onboard
 docker
 unzip
 gource
+zig
