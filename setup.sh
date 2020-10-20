@@ -69,6 +69,8 @@ export LIBRARY_PATH="/lib:/usr/lib"
 export PATH="/root/.cargo/bin:\$PATH"
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
 export PATH="\$PATH:/root/.arkade/bin/"
+export WASMTIME_HOME="\$HOME/.wasmtime"
+export PATH="\$WASMTIME_HOME/bin:\$PATH"
 
 ulimit -n 65000
 EOT
@@ -208,6 +210,8 @@ pip install -U autopep8 --user
 
 rc-update add kited default
 rc-service kited restart
+
+curl https://wasmtime.dev/install.sh -sSf | bash
 
 rm -rf ~/.theia
 mkdir -p ~/.theia
@@ -511,6 +515,8 @@ curl --compressed -L -o plugins/jpoissonnier.vscode-styled-components.vsix https
 curl --compressed -L -o plugins/octref.vetur.vsix https://open-vsx.org/api/octref/vetur/0.28.0/file/octref.vetur-0.28.0.vsix
 curl --compressed -L -o plugins/vscode.emmet.vsix https://open-vsx.org/api/vscode/emmet/1.50.0/file/vscode.emmet-1.50.0.vsix
 curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.2.2/vspackage
+curl --compressed -L -o plugins/zig-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/lorenzopirro/vsextensions/zig-snippets/1.3.0/vspackage
+curl --compressed -L -o plugins/zig.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tiehuis/vsextensions/zig/0.2.5/vspackage
 curl --compressed -L -o plugins/vscode.sql.vsix https://open-vsx.org/api/vscode/sql/1.50.0/file/vscode.sql-1.50.0.vsix
 curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/0.23.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
