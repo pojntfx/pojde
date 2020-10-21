@@ -1,6 +1,6 @@
-# Felicitas Pojtinger's Theia
+# pojde
 
-My personal Theia distribution, optimized for full stack development.
+Headless Linux distribution for full-stack software development with web access for all components. Develop from anywhere using any device with a browser!
 
 ## Overview
 
@@ -195,11 +195,11 @@ My personal Theia distribution, optimized for full stack development.
 
 ### Virtualized Installation With `alpimager`
 
-1. Copy [packages.txt](https://github.com/pojntfx/felicitas-pojtingers-theia/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/felicitas-pojtingers-theia/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/felicitas-pojtingers-theia/blob/master/setup.sh) to a local directory. Do not delete these files after running the commands below; you'll need them again once you want to update the IDE.
+1. Copy [packages.txt](https://github.com/pojntfx/pojde/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/pojde/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/pojde/blob/master/setup.sh) to a local directory. Do not delete these files after running the commands below; you'll need them again once you want to update the IDE.
 2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
-3. First, get [alpimager](https://pojntfx.github.io/alpimager/), install it and create the disk image by running `alpimager -output felicitas-pojtingers-theia.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
-4. Increase the disk image size by running `qemu-img resize felicitas-pojtingers-theia.qcow2 +20G`
-5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::40022-:22 -boot d -drive format=qcow2,file=felicitas-pojtingers-theia.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=felicitas-pojtingers-theia.qcow2`. If you do so, there is no need to use `-p 40022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
+3. First, get [alpimager](https://pojntfx.github.io/alpimager/), install it and create the disk image by running `alpimager -output pojde.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
+4. Increase the disk image size by running `qemu-img resize pojde.qcow2 +20G`
+5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::40022-:22 -boot d -drive format=qcow2,file=pojde.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=pojde.qcow2`. If you do so, there is no need to use `-p 40022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
 6. Log into the machine and resize the file system by running `ssh -p 40022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
 7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -L localhost:8003:localhost:8003 -p 40022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
 8. Continue to [Usage](#usage)
@@ -210,19 +210,19 @@ To update to a newer version of Theia, simply re-run the steps above. Make sure 
 
 While using the virtualized system is the preferred method due to it creating reproducable and easily distributable installations, it is also possible to set up a native installation. Run the commands below as root.
 
-1. Run `mkdir -p /etc/theia` to create the configuration directory
-2. Run `curl -o /etc/theia/packages.txt https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/packages.txt` to download the list of the required packages
-3. Run `curl -o /etc/theia/repositories.txt https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/repositories.txt` to download the recommended repositories
-4. Run `curl -o /etc/theia/setup.sh https://raw.githubusercontent.com/pojntfx/felicitas-pojtingers-theia/master/setup.sh` to download the installation script
-5. Run `sed -i /etc/theia/setup.sh -e 's/ENABLE_OS_SETUP="1"/ENABLE_OS_SETUP="0"/g'` to disable the OS setup steps
-6. Adjust the other settings (especially the password) in `/etc/theia/setup.sh` to your liking
-7. Setup the repositories by running `cp /etc/theia/repositories.txt /etc/apk/repositories`
+1. Run `mkdir -p /etc/pojde` to create the configuration directory
+2. Run `curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt` to download the list of the required packages
+3. Run `curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt` to download the recommended repositories
+4. Run `curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh` to download the installation script
+5. Run `sed -i /etc/pojde/setup.sh -e 's/ENABLE_OS_SETUP="1"/ENABLE_OS_SETUP="0"/g'` to disable the OS setup steps
+6. Adjust the other settings (especially the password) in `/etc/pojde/setup.sh` to your liking
+7. Setup the repositories by running `cp /etc/pojde/repositories.txt /etc/apk/repositories`
 8. Upgrade your system by running `apk update && apk upgrade`
-9. On an AMD64 system (your average server or desktop), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
+9. On an AMD64 system (your average server or desktop), install the packages by running `apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
 
-   On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
+   On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
 
-10. Start the installation by running `sh /etc/theia/setup.sh`. You can also set the internal variables by overwriting them here (i.e. with `IP="100.64.154.241" sh /etc/theia/setup.sh`). If you're on a Raspberry Pi and connected via Wifi, you'll loose the connection after installation; simply restart your Pi afterwards.
+10. Start the installation by running `sh /etc/pojde/setup.sh`. You can also set the internal variables by overwriting them here (i.e. with `IP="100.64.154.241" sh /etc/pojde/setup.sh`). If you're on a Raspberry Pi and connected via Wifi, you'll loose the connection after installation; simply restart your Pi afterwards.
 11. Continue to [Usage](#usage)
 
 To update the IDE, re-run the steps above (don't forget to adjust your settings).
@@ -247,6 +247,6 @@ Note that Safari is not supported in Theia due to an [issue with WebSockets and 
 
 ## License
 
-Felicitas Pojtinger's Theia (c) 2020 Felicitas Pojtinger
+pojde (c) 2020 Felicitas Pojtinger
 
 SPDX-License-Identifier: AGPL-3.0
