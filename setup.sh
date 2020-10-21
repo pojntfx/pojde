@@ -364,7 +364,8 @@ cat <<EOT >package.json
       "config": {
         "applicationName": "${IDE_DESCRIPTION}",
         "preferences": {
-            "workbench.colorTheme": "Horizon",
+            "workbench.iconTheme": "eq-material-theme-icons",
+            "workbench.colorTheme": "GitHub Dark",
             "go.autocompleteUnimportedPackages": true,
             "go.useLanguageServer": true,
             "vim.debug.silent": true,
@@ -396,7 +397,8 @@ cat <<EOT >package.json
             "editor.cursorSmoothCaretAnimation": true,
             "editor.smoothScrolling": true,
             "kite.showWelcomeNotificationOnStartup": false,
-            "workbench.iconTheme": "eq-material-theme-icons"
+            "clangd.path": "/usr/bin/clangd",
+            "rust-client.rustupPath": "/root/.cargo/bin/rustup"
         }
       }
     }
