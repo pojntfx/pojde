@@ -470,99 +470,106 @@ rm -rf ~/.local/share/code-server/extensions/
 
 mkdir -p plugins
 
-curl --compressed -L -o plugins/eamodio.gitlens.vsix https://open-vsx.org/api/eamodio/gitlens/10.2.1/file/eamodio.gitlens-10.2.1.vsix
-curl --compressed -L -o plugins/mhutchie.git-graph.vsix https://open-vsx.org/api/mhutchie/git-graph/1.26.0/file/mhutchie.git-graph-1.26.0.vsix
-curl --compressed -L -o plugins/esbenp.prettier-vscode.vsix https://open-vsx.org/api/esbenp/prettier-vscode/5.7.1/file/esbenp.prettier-vscode-5.7.1.vsix
-curl --compressed -L -o plugins/vscodevim.vim.vsix https://open-vsx.org/api/vscodevim/vim/1.16.0/file/vscodevim.vim-1.16.0.vsix
-curl --compressed -L -o plugins/vscode.markdown.vsix https://open-vsx.org/api/vscode/markdown/1.50.0/file/vscode.markdown-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.markdown-language-features.vsix https://open-vsx.org/api/vscode/markdown-language-features/1.50.0/file/vscode.markdown-language-features-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.yaml.vsix https://open-vsx.org/api/vscode/yaml/1.50.0/file/vscode.yaml-1.50.0.vsix
-curl --compressed -L -o plugins/redhat.vscode-yaml.vsix https://open-vsx.org/api/redhat/vscode-yaml/0.11.1/file/redhat.vscode-yaml-0.10.1.vsix
-curl --compressed -L -o plugins/bungcip.better-toml.vsix https://open-vsx.org/api/bungcip/better-toml/0.3.2/file/bungcip.better-toml-0.3.2.vsix
-curl --compressed -L -o plugins/vscode.json.vsix https://open-vsx.org/api/vscode/json/1.50.0/file/vscode.json-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.json-language-features.vsix https://open-vsx.org/api/vscode/json-language-features/1.50.0/file/vscode.json-language-features-1.50.0.vsix
-curl --compressed -L -o plugins/zxh404.vscode-proto3.vsix https://open-vsx.org/api/zxh404/vscode-proto3/0.4.2/file/zxh404.vscode-proto3-0.4.2.vsix
-curl --compressed -L -o plugins/Prisma.vscode-graphql.vsix https://open-vsx.org/api/Prisma/vscode-graphql/0.3.1/file/Prisma.vscode-graphql-0.3.1.vsix
 curl --compressed -L -o plugins/vscode-openapi.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/42Crunch/vsextensions/vscode-openapi/3.7.0/vspackage
-curl --compressed -L -o plugins/vscode.xml.vsix https://open-vsx.org/api/vscode/xml/1.50.0/file/vscode.xml-1.50.0.vsix
-curl --compressed -L -o plugins/redhat.vscode-xml.vsix https://open-vsx.org/api/redhat/vscode-xml/0.13.0/file/redhat.vscode-xml-0.13.0.vsix
-curl --compressed -L -o plugins/vscode.image-preview-1.50.0.vsix https://open-vsx.org/api/vscode/image-preview/1.50.0/file/vscode.image-preview-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.shellscript.vsix https://open-vsx.org/api/vscode/shellscript/1.50.0/file/vscode.shellscript-1.50.0.vsix
-curl --compressed -L -o plugins/shell-format.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/foxundermoon/vsextensions/shell-format/7.0.1/vspackage
-curl --compressed -L -o plugins/vscode.cpp.vsix https://open-vsx.org/api/vscode/cpp/1.50.0/file/vscode.cpp-1.50.0.vsix
-curl --compressed -L -o plugins/webfreak.debug.vsix https://open-vsx.org/api/webfreak/debug/0.25.0/file/webfreak.debug-0.25.0.vsix
-curl --compressed -L -o plugins/llvm-vs-code-extensions.vscode-clangd.vsix https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.7/file/llvm-vs-code-extensions.vscode-clangd-0.1.7.vsix
-curl --compressed -L -o plugins/twxs.cmake.vsix https://open-vsx.org/api/twxs/cmake/0.0.17/file/twxs.cmake-0.0.17.vsix
-curl --compressed -L -o plugins/cmake-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cmake-tools/1.4.2/vspackage
-curl --compressed -L -o plugins/vscode.make.vsix https://open-vsx.org/api/vscode/make/1.50.0/file/vscode.make-1.50.0.vsix
-curl --compressed -L -o plugins/matepek.vscode-catch2-test-adapter.vsix https://open-vsx.org/api/matepek/vscode-catch2-test-adapter/3.4.2/file/matepek.vscode-catch2-test-adapter-3.4.2.vsix
-curl --compressed -L -o plugins/vscode.rust.vsix https://open-vsx.org/api/vscode/rust/1.50.0/file/vscode.rust-1.50.0.vsix
-curl --compressed -L -o plugins/matklad.rust-analyzer.vsix https://open-vsx.org/api/matklad/rust-analyzer/0.2.352/file/matklad.rust-analyzer-0.2.352.vsix
-curl --compressed -L -o plugins/serayuzgur.crates.vsix https://open-vsx.org/api/serayuzgur/crates/0.5.3/file/serayuzgur.crates-0.5.3.vsix
-curl --compressed -L -o plugins/vscode.go.vsix https://open-vsx.org/api/vscode/go/1.50.0/file/vscode.go-1.50.0.vsix
-curl --compressed -L -o plugins/golang.Go.vsix https://open-vsx.org/api/golang/Go/0.17.2/file/golang.Go-0.17.2.vsix
-curl --compressed -L -o plugins/vscode.java.vsix https://open-vsx.org/api/vscode/java/1.50.0/file/vscode.java-1.50.0.vsix
-curl --compressed -L -o plugins/redhat.java.vsix https://open-vsx.org/api/redhat/java/0.68.0/file/redhat.java-0.68.0.vsix
-curl --compressed -L -o plugins/vscjava.vscode-java-debug.vsix https://open-vsx.org/api/vscjava/vscode-java-debug/0.28.0/file/vscjava.vscode-java-debug-0.28.0.vsix
-curl --compressed -L -o plugins/vscjava.vscode-java-test.vsix https://open-vsx.org/api/vscjava/vscode-java-test/0.24.2/file/vscjava.vscode-java-test-0.24.2.vsix
-curl --compressed -L -o plugins/vscjava.vscode-maven.vsix https://open-vsx.org/api/vscjava/vscode-maven/0.21.2/file/vscjava.vscode-maven-0.21.2.vsix
-curl --compressed -L -o plugins/richardwillis.vscode-gradle.vsix https://open-vsx.org/api/richardwillis/vscode-gradle/3.5.2/file/richardwillis.vscode-gradle-3.5.2.vsix
 curl --compressed -L -o plugins/gradle-language.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/naco-siren/vsextensions/gradle-language/0.2.3/vspackage
-curl --compressed -L -o plugins/vscjava.vscode-java-dependency.vsix https://open-vsx.org/api/vscjava/vscode-java-dependency/0.13.0/file/vscjava.vscode-java-dependency-0.13.0.vsix
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
-if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-    curl --compressed -L -o plugins/vscode.csharp.vsix https://open-vsx.org/api/vscode/csharp/1.50.0/file/vscode.csharp-1.50.0.vsix
-    curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
-    curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.16.2/vspackage
-    curl --compressed -L -o plugins/k--kato.docomment.vsix https://open-vsx.org/api/k--kato/docomment/0.1.18/file/k--kato.docomment-0.1.18.vsix
-fi
-curl --compressed -L -o plugins/vscode.python.vsix https://open-vsx.org/api/vscode/python/1.50.0/file/vscode.python-1.50.0.vsix
-curl --compressed -L -o plugins/ms-python.python.vsix https://open-vsx.org/api/ms-python/python/2020.9.112786/file/ms-python.python-2020.9.112786.vsix
-curl --compressed -L -o plugins/kiteco.kite.vsix https://open-vsx.org/api/kiteco/kite/0.128.0/file/kiteco.kite-0.128.0.vsix
-curl --compressed -L -o plugins/vscode.ruby.vsix https://open-vsx.org/api/vscode/ruby/1.50.0/file/vscode.ruby-1.50.0.vsix
-curl --compressed -L -o plugins/rebornix.ruby.vsix https://open-vsx.org/api/rebornix/ruby/0.27.0/file/rebornix.ruby-0.27.0.vsix
-curl --compressed -L -o plugins/vscode.javascript.vsix https://open-vsx.org/api/vscode/javascript/1.50.0/file/vscode.javascript-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.typescript.vsix https://open-vsx.org/api/vscode/typescript/1.50.0/file/vscode.typescript-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.typescript-language-features.vsix https://open-vsx.org/api/vscode/typescript-language-features/1.50.0/file/vscode.typescript-language-features-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.npm-1.50.0.vsix https://open-vsx.org/api/vscode/npm/1.50.0/file/vscode.npm-1.50.0.vsix
 curl --compressed -L -o plugins/es7-react-js-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsznajder/vsextensions/es7-react-js-snippets/3.0.0/vspackage
-curl --compressed -L -o plugins/Orta.vscode-jest-4.0.0-alpha.1.vsix https://open-vsx.org/api/Orta/vscode-jest/4.0.0-alpha.1/file/Orta.vscode-jest-4.0.0-alpha.1.vsix
-curl --compressed -L -o plugins/node-debug-1.35.3.vsix https://open-vsx.org/api/ms-vscode/node-debug/1.44.8/file/ms-vscode.node-debug-1.44.8.vsix
-curl --compressed -L -o plugins/node-debug2-1.33.0.vsix https://open-vsx.org/api/ms-vscode/node-debug2/1.42.5/file/ms-vscode.node-debug2-1.42.5.vsix
-curl --compressed -L -o plugins/ms-vscode.js-debug.vsix https://open-vsx.org/api/ms-vscode/js-debug/1.50.2/file/ms-vscode.js-debug-1.50.2.vsix
-curl --compressed -L -o plugins/msjsdiag.debugger-for-chrome-4.12.6.vsix https://open-vsx.org/api/msjsdiag/debugger-for-chrome/4.12.6/file/msjsdiag.debugger-for-chrome-4.12.6.vsix
-curl --compressed -L -o plugins/firefox-devtools.vscode-firefox-debug-2.9.1.vsix https://open-vsx.org/api/firefox-devtools/vscode-firefox-debug/2.9.1/file/firefox-devtools.vscode-firefox-debug-2.9.1.vsix
-curl --compressed -L -o plugins/vscode.html.vsix https://open-vsx.org/api/vscode/html/1.50.0/file/vscode.html-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.html-language-features.vsix https://open-vsx.org/api/vscode/html-language-features/1.50.0/file/vscode.html-language-features-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.css.vsix https://open-vsx.org/api/vscode/css/1.50.0/file/vscode.css-1.50.0.vsix
-curl --compressed -L -o plugins/vscode.css-language-features.vsix https://open-vsx.org/api/vscode/css-language-features/1.50.0/file/vscode.css-language-features-1.50.0.vsix
-curl --compressed -L -o plugins/jpoissonnier.vscode-styled-components.vsix https://open-vsx.org/api/jpoissonnier/vscode-styled-components/1.0.0/file/jpoissonnier.vscode-styled-components-1.0.0.vsix
-curl --compressed -L -o plugins/octref.vetur.vsix https://open-vsx.org/api/octref/vetur/0.28.0/file/octref.vetur-0.28.0.vsix
-curl --compressed -L -o plugins/vscode.emmet.vsix https://open-vsx.org/api/vscode/emmet/1.50.0/file/vscode.emmet-1.50.0.vsix
 curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.2.2/vspackage
 curl --compressed -L -o plugins/zig-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/lorenzopirro/vsextensions/zig-snippets/1.3.0/vspackage
 curl --compressed -L -o plugins/zig.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tiehuis/vsextensions/zig/0.2.5/vspackage
-curl --compressed -L -o plugins/vscode.sql.vsix https://open-vsx.org/api/vscode/sql/1.50.0/file/vscode.sql-1.50.0.vsix
+sleep 1 # MS Rate limit
 curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/0.23.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
-curl --compressed -L -o plugins/geequlim.godot-tools.vsix https://open-vsx.org/api/geequlim/godot-tools/1.0.1/file/geequlim.godot-tools-1.0.1.vsix
-curl --compressed -L -o plugins/vscode.docker.vsix https://open-vsx.org/api/vscode/docker/1.50.3/file/vscode.docker-1.50.3.vsix
-curl --compressed -L -o plugins/ms-kubernetes-tools.vscode-kubernetes-tools.vsix https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools/1.2.1/file/ms-kubernetes-tools.vscode-kubernetes-tools-1.2.1.vsix
 curl --compressed -L -o plugins/theme-panda.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tinkertrain/vsextensions/theme-panda/1.3.0/vspackage
 curl --compressed -L -o plugins/min-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/miguelsolorio/vsextensions/min-theme/1.4.6/vspackage
+sleep 1 # MS Rate limit
 curl --compressed -L -o plugins/native-macos.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsoloha/vsextensions/native-macos/0.5.1/vspackage
 curl --compressed -L -o plugins/vscode-theme-onelight.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onelight/2.2.2/vspackage
 curl --compressed -L -o plugins/vscode-theme-onedark.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onedark/2.2.2/vspackage
 curl --compressed -L -o plugins/theme-monokai-pro-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/monokai/vsextensions/theme-monokai-pro-vscode/1.1.17/vspackage
 curl --compressed -L -o plugins/shades-of-purple.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ahmadawais/vsextensions/shades-of-purple/6.12.0/vspackage
 curl --compressed -L -o plugins/theme-dracula.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dracula-theme/vsextensions/theme-dracula/2.22.1/vspackage
+sleep 1 # MS Rate limit
 curl --compressed -L -o plugins/horizon-theme-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/jolaleye/vsextensions/horizon-theme-vscode/2.0.2/vspackage
 curl --compressed -L -o plugins/new-moon-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/taniarascia/vsextensions/new-moon-vscode/1.8.8/vspackage
 curl --compressed -L -o plugins/github-vscode-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/github-vscode-theme/1.1.5/vspackage
 curl --compressed -L -o plugins/vsc-material-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Equinusocio/vsextensions/vsc-material-theme/33.0.0/vspackage
 curl --compressed -L -o plugins/vsc-material-theme-icons.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Equinusocio/vsextensions/vsc-material-theme-icons/1.2.0/vspackage
+
+curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
+curl --compressed -L -o plugins/mono-debug-0.16.2.vsix.vsix https://github.com/microsoft/vscode-mono-debug/releases/download/v0.16.2/mono-debug-0.16.2.vsix
+curl --compressed -L -o plugins/cmake-tools.vsix https://github.com/microsoft/vscode-cmake-tools/releases/download/1.4.2/cmake-tools.vsix
+
+curl --compressed -L -o plugins/gitlens.vsix 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download'
+curl --compressed -L -o plugins/prettier-vscode.vsix 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download'
+curl --compressed -L -o plugins/vim.vsix 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' # Locked to work with code-server
+curl --compressed -L -o plugins/markdown.vsix 'https://open-vsx.org/api/vscode/markdown' | jq '.files.download'
+curl --compressed -L -o plugins/markdown-language-features.vsix 'https://open-vsx.org/api/vscode/markdown-language-features' | jq '.files.download'
+curl --compressed -L -o plugins/yaml.vsix 'https://open-vsx.org/api/vscode/yaml' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-yaml.vsix 'https://open-vsx.org/api/redhat/vscode-yaml' | jq '.files.download'
+curl --compressed -L -o plugins/better-toml.vsix 'https://open-vsx.org/api/bungcip/better-toml' | jq '.files.download'
+curl --compressed -L -o plugins/json.vsix 'https://open-vsx.org/api/vscode/json' | jq '.files.download'
+curl --compressed -L -o plugins/json-language-features.vsix 'https://open-vsx.org/api/vscode/json-language-features' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-proto3.vsix 'https://open-vsx.org/api/zxh404/vscode-proto3' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-graphql.vsix 'https://open-vsx.org/api/Prisma/vscode-graphql' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-graphql.vsix 'https://open-vsx.org/api/Prisma/vscode-graphql' | jq '.files.download'
+curl --compressed -L -o plugins/xml.vsix 'https://open-vsx.org/api/vscode/xml' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-xml.vsix 'https://open-vsx.org/api/redhat/vscode-xml' | jq '.files.download'
+curl --compressed -L -o plugins/image-preview.vsix 'https://open-vsx.org/api/vscode/image-preview' | jq '.files.download'
+curl --compressed -L -o plugins/shellscript.vsix 'https://open-vsx.org/api/vscode/shellscript' | jq '.files.download'
+curl --compressed -L -o plugins/shell-format.vsix 'https://open-vsx.org/api/foxundermoon/shell-format' | jq '.files.download'
+curl --compressed -L -o plugins/cpp.vsix 'https://open-vsx.org/api/vscode/cpp' | jq '.files.download'
+curl --compressed -L -o plugins/webfreak-debug.vsix 'https://open-vsx.org/api/webfreak/debug' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-clangd.vsix 'https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd' | jq '.files.download'
+curl --compressed -L -o plugins/cmake.vsix 'https://open-vsx.org/api/twxs/cmake' | jq '.files.download'
+curl --compressed -L -o plugins/make.vsix 'https://open-vsx.org/api/vscode/make' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-catch2-test-adapter.vsix 'https://open-vsx.org/api/matepek/vscode-catch2-test-adapter' | jq '.files.download'
+curl --compressed -L -o plugins/rust.vsix 'https://open-vsx.org/api/vscode/rust' | jq '.files.download'
+curl --compressed -L -o plugins/rust-analyzer.vsix 'https://open-vsx.org/api/matklad/rust-analyzer' | jq '.files.download'
+curl --compressed -L -o plugins/crates.vsix 'https://open-vsx.org/api/serayuzgur/crates' | jq '.files.download'
+curl --compressed -L -o plugins/go.vsix 'https://open-vsx.org/api/vscode/go' | jq '.files.download'
+curl --compressed -L -o plugins/golang-Go.vsix 'https://open-vsx.org/api/golang/Go' | jq '.files.download'
+curl --compressed -L -o plugins/java.vsix 'https://open-vsx.org/api/vscode/java' | jq '.files.download'
+curl --compressed -L -o plugins/redhat-java.vsix 'https://open-vsx.org/api/redhat/java' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-java-debug.vsix 'https://open-vsx.org/api/vscjava/vscode-java-debug' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-java-test.vsix 'https://open-vsx.org/api/vscjava/vscode-java-test' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-maven.vsix 'https://open-vsx.org/api/vscjava/vscode-maven' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-gradle.vsix 'https://open-vsx.org/api/richardwillis/vscode-gradle' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-java-dependency.vsix 'https://open-vsx.org/api/vscjava/vscode-java-dependency' | jq '.files.download'
+curl --compressed -L -o plugins/python.vsix 'https://open-vsx.org/api/vscode/python' | jq '.files.download'
+curl --compressed -L -o plugins/ms-python.vsix 'https://open-vsx.org/api/ms-python/python' | jq '.files.download'
+curl --compressed -L -o plugins/kite.vsix 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download'
+curl --compressed -L -o plugins/ruby.vsix 'https://open-vsx.org/api/vscode/ruby' | jq '.files.download'
+curl --compressed -L -o plugins/rebornix-ruby.vsix 'https://open-vsx.org/api/rebornix/ruby' | jq '.files.download'
+curl --compressed -L -o plugins/javascript.vsix 'https://open-vsx.org/api/vscode/javascript' | jq '.files.download'
+curl --compressed -L -o plugins/typescript.vsix 'https://open-vsx.org/api/vscode/typescript' | jq '.files.download'
+curl --compressed -L -o plugins/typescript-language-features.vsix 'https://open-vsx.org/api/vscode/typescript-language-features' | jq '.files.download'
+curl --compressed -L -o plugins/npm.vsix 'https://open-vsx.org/api/vscode/npm' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-jest.vsix 'https://open-vsx.org/api/Orta/vscode-jest' | jq '.files.download'
+curl --compressed -L -o plugins/node-debug.vsix 'https://open-vsx.org/api/ms-vscode/node-debug' | jq '.files.download'
+curl --compressed -L -o plugins/node-debug2.vsix 'https://open-vsx.org/api/ms-vscode/node-debug2' | jq '.files.download'
+curl --compressed -L -o plugins/js-debug.vsix 'https://open-vsx.org/api/ms-vscode/js-debug' | jq '.files.download'
+curl --compressed -L -o plugins/debugger-for-chrome.vsix 'https://open-vsx.org/api/msjsdiag/debugger-for-chrome' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-firefox-debug.vsix 'https://open-vsx.org/api/firefox-devtools/vscode-firefox-debug' | jq '.files.download'
+curl --compressed -L -o plugins/html.vsix 'https://open-vsx.org/api/vscode/html' | jq '.files.download'
+curl --compressed -L -o plugins/html-language-features.vsix 'https://open-vsx.org/api/vscode/html-language-features' | jq '.files.download'
+curl --compressed -L -o plugins/css.vsix 'https://open-vsx.org/api/vscode/css' | jq '.files.download'
+curl --compressed -L -o plugins/css-language-features.vsix 'https://open-vsx.org/api/vscode/css-language-features' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-styled-components.vsix 'https://open-vsx.org/api/jpoissonnier/vscode-styled-components' | jq '.files.download'
+curl --compressed -L -o plugins/vetur.vsix 'https://open-vsx.org/api/octref/vetur' | jq '.files.download'
+curl --compressed -L -o plugins/emmet.vsix 'https://open-vsx.org/api/vscode/emmet' | jq '.files.download'
+curl --compressed -L -o plugins/sql.vsix 'https://open-vsx.org/api/vscode/sql' | jq '.files.download'
+curl --compressed -L -o plugins/godot-tools.vsix 'https://open-vsx.org/api/geequlim/godot-tools' | jq '.files.download'
+curl --compressed -L -o plugins/docker.vsix 'https://open-vsx.org/api/vscode/docker' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-docker.vsix 'https://open-vsx.org/api/ms-azuretools/vscode-docker' | jq '.files.download'
+curl --compressed -L -o plugins/vscode-kubernetes-tools.vsix 'https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools' | jq '.files.download'
+
+if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
+    curl --compressed -L -o plugins/csharp.vsix 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download'
+    curl --compressed -L -o plugins/docomment.vsix 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download'
+fi
 
 cd plugins
 for z in *.vsix; do

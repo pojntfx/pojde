@@ -151,7 +151,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `k3d` (see [https://k3d.io/](https://k3d.io/))
 - `k3sup` (see [https://k3sup.dev/](https://k3sup.dev/))
 - `jq`
-- Docker language basics
+- Docker
 - Kubernetes
 
 ### SecOps
