@@ -19,23 +19,23 @@ if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-works
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
-	setup-timezone -z UTC
+  setup-timezone -z UTC
 
-	cat <<-EOF >/etc/network/interfaces
+  cat <<-EOF >/etc/network/interfaces
 		iface lo inet loopback
 		iface eth0 inet dhcp
 	EOF
 
-	cat <<EOF >/etc/motd
+  cat <<EOF >/etc/motd
 ${MOTD}
 EOF
 
-	ln -s networking /etc/init.d/net.lo
-	ln -s networking /etc/init.d/net.eth0
+  ln -s networking /etc/init.d/net.lo
+  ln -s networking /etc/init.d/net.eth0
 
-	rc-update add sshd default
-	rc-update add net.eth0 default
-	rc-update add net.lo boot
+  rc-update add sshd default
+  rc-update add net.eth0 default
+  rc-update add net.lo boot
 fi
 
 mkdir -m 700 -p /root/.ssh
@@ -89,21 +89,21 @@ rm -rf ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-	rm -rf ${INSTALL_DIR}/mono.git
-	mkdir -p ${INSTALL_DIR}/mono.git
-	git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
-	cd ${INSTALL_DIR}/mono.git
-	git checkout mono-6.10.0.105
-	apk add gettext gettext-dev libtool
-	./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
-	mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
-	sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
-	make get-monolite-latest
-	make -j$(nproc)
-	make install
+  rm -rf ${INSTALL_DIR}/mono.git
+  mkdir -p ${INSTALL_DIR}/mono.git
+  git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
+  cd ${INSTALL_DIR}/mono.git
+  git checkout mono-6.10.0.105
+  apk add gettext gettext-dev libtool
+  ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
+  mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
+  sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
+  make get-monolite-latest
+  make -j$(nproc)
+  make install
 
-	curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
-	ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+  curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+  ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 fi
 
 rm -rf ${INSTALL_DIR}/lldb-mi
@@ -114,14 +114,14 @@ cmake .
 cmake --build . --target install
 
 if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
-	rm -rf ${INSTALL_DIR}/neovim
-	mkdir -p ${INSTALL_DIR}/neovim
-	git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
-	cd ${INSTALL_DIR}/neovim
-	make
-	make install
+  rm -rf ${INSTALL_DIR}/neovim
+  mkdir -p ${INSTALL_DIR}/neovim
+  git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
+  cd ${INSTALL_DIR}/neovim
+  make
+  make install
 else
-	apk add neovim
+  apk add neovim
 fi
 
 ln -sf /usr/local/bin/nvim /usr/bin/nvim
@@ -174,9 +174,9 @@ xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-
 
 export SYSTEM_ARCHITECTURE=$(uname -m)
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-	curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+  curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 else
-	curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
+  curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
 fi
 install /tmp/skaffold /usr/local/bin
 
@@ -510,6 +510,7 @@ curl --compressed -L -o plugins/mono-debug-0.16.2.vsix.vsix https://github.com/m
 curl --compressed -L -o plugins/cmake-tools.vsix https://github.com/microsoft/vscode-cmake-tools/releases/download/1.4.2/cmake-tools.vsix
 
 curl 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download' | xargs curl --compressed -L -o plugins/gitlens.vsix
+curl 'https://open-vsx.org/api/mhutchie/git-graph' | jq '.files.download' | xargs curl --compressed -L -o plugins/git-graph.vsix
 curl 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download' | xargs curl --compressed -L -o plugins/prettier-vscode.vsix
 curl 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' | xargs curl --compressed -L -o plugins/vim.vsix # Locked to work with code-server
 curl 'https://open-vsx.org/api/vscode/markdown' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown.vsix
@@ -573,22 +574,22 @@ curl 'https://open-vsx.org/api/ms-azuretools/vscode-docker' | jq '.files.downloa
 curl 'https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-kubernetes-tools.vsix
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-	curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
-	curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
+  curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
+  curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
 fi
 
 cd plugins
 for z in *.vsix; do
-	code-server --install-extension $z
-	mkdir -p $z-extracted
-	unzip $z -d $z-extracted
-	rm $z
+  code-server --install-extension $z
+  mkdir -p $z-extracted
+  unzip $z -d $z-extracted
+  rm $z
 done
 cd ..
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-	rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-	ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+  rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+  ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 fi
 
 mkdir -p ${WORKSPACE_DIR}
@@ -604,8 +605,8 @@ x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 fc-cache -f
 
 openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-	-keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
-	-addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
+  -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
+  -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
 
 printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
 
