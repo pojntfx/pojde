@@ -13,29 +13,29 @@ if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi     
 if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
 if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
-if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="1"; fi             # Set to "0" if you want to have the repository version instead of the latest neovim version from Git
+if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="1"; fi     # Set to "0" if you want to have the repository version instead of the latest neovim version from Git
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
 if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
-    setup-timezone -z UTC
+	setup-timezone -z UTC
 
-    cat <<-EOF >/etc/network/interfaces
-iface lo inet loopback
-iface eth0 inet dhcp
-EOF
+	cat <<-EOF >/etc/network/interfaces
+		iface lo inet loopback
+		iface eth0 inet dhcp
+	EOF
 
-    cat <<EOF >/etc/motd
+	cat <<EOF >/etc/motd
 ${MOTD}
 EOF
 
-    ln -s networking /etc/init.d/net.lo
-    ln -s networking /etc/init.d/net.eth0
+	ln -s networking /etc/init.d/net.lo
+	ln -s networking /etc/init.d/net.eth0
 
-    rc-update add sshd default
-    rc-update add net.eth0 default
-    rc-update add net.lo boot
+	rc-update add sshd default
+	rc-update add net.eth0 default
+	rc-update add net.lo boot
 fi
 
 mkdir -m 700 -p /root/.ssh
@@ -86,21 +86,21 @@ EOT
 chmod +x /root/.bashrc
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-    rm -rf ${INSTALL_DIR}/mono.git
-    mkdir -p ${INSTALL_DIR}/mono.git
-    git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
-    cd ${INSTALL_DIR}/mono.git
-    git checkout mono-6.10.0.105
-    apk add gettext gettext-dev libtool
-    ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
-    mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
-    sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
-    make get-monolite-latest
-    make -j$(nproc)
-    make install
+	rm -rf ${INSTALL_DIR}/mono.git
+	mkdir -p ${INSTALL_DIR}/mono.git
+	git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
+	cd ${INSTALL_DIR}/mono.git
+	git checkout mono-6.10.0.105
+	apk add gettext gettext-dev libtool
+	./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
+	mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
+	sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
+	make get-monolite-latest
+	make -j$(nproc)
+	make install
 
-    curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
-    ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+	curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+	ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 fi
 
 rm -rf ${INSTALL_DIR}/lldb-mi
@@ -111,14 +111,14 @@ cmake .
 cmake --build . --target install
 
 if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
-    rm -rf ${INSTALL_DIR}/neovim
-    mkdir -p ${INSTALL_DIR}/neovim
-    git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
-    cd ${INSTALL_DIR}/neovim
-    make
-    make install
+	rm -rf ${INSTALL_DIR}/neovim
+	mkdir -p ${INSTALL_DIR}/neovim
+	git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
+	cd ${INSTALL_DIR}/neovim
+	make
+	make install
 else
-    apk add neovim
+	apk add neovim
 fi
 
 ln -sf /usr/local/bin/nvim /usr/bin/nvim
@@ -171,9 +171,9 @@ xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-
 
 export SYSTEM_ARCHITECTURE=$(uname -m)
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+	curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 else
-    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
+	curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
 fi
 install /tmp/skaffold /usr/local/bin
 
@@ -502,87 +502,86 @@ curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/r
 curl --compressed -L -o plugins/mono-debug-0.16.2.vsix.vsix https://github.com/microsoft/vscode-mono-debug/releases/download/v0.16.2/mono-debug-0.16.2.vsix
 curl --compressed -L -o plugins/cmake-tools.vsix https://github.com/microsoft/vscode-cmake-tools/releases/download/1.4.2/cmake-tools.vsix
 
-curl --compressed -L -o plugins/gitlens.vsix 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download'
-curl --compressed -L -o plugins/prettier-vscode.vsix 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download'
-curl --compressed -L -o plugins/vim.vsix 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' # Locked to work with code-server
-curl --compressed -L -o plugins/markdown.vsix 'https://open-vsx.org/api/vscode/markdown' | jq '.files.download'
-curl --compressed -L -o plugins/markdown-language-features.vsix 'https://open-vsx.org/api/vscode/markdown-language-features' | jq '.files.download'
-curl --compressed -L -o plugins/yaml.vsix 'https://open-vsx.org/api/vscode/yaml' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-yaml.vsix 'https://open-vsx.org/api/redhat/vscode-yaml' | jq '.files.download'
-curl --compressed -L -o plugins/better-toml.vsix 'https://open-vsx.org/api/bungcip/better-toml' | jq '.files.download'
-curl --compressed -L -o plugins/json.vsix 'https://open-vsx.org/api/vscode/json' | jq '.files.download'
-curl --compressed -L -o plugins/json-language-features.vsix 'https://open-vsx.org/api/vscode/json-language-features' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-proto3.vsix 'https://open-vsx.org/api/zxh404/vscode-proto3' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-graphql.vsix 'https://open-vsx.org/api/Prisma/vscode-graphql' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-graphql.vsix 'https://open-vsx.org/api/Prisma/vscode-graphql' | jq '.files.download'
-curl --compressed -L -o plugins/xml.vsix 'https://open-vsx.org/api/vscode/xml' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-xml.vsix 'https://open-vsx.org/api/redhat/vscode-xml' | jq '.files.download'
-curl --compressed -L -o plugins/image-preview.vsix 'https://open-vsx.org/api/vscode/image-preview' | jq '.files.download'
-curl --compressed -L -o plugins/shellscript.vsix 'https://open-vsx.org/api/vscode/shellscript' | jq '.files.download'
-curl --compressed -L -o plugins/shell-format.vsix 'https://open-vsx.org/api/foxundermoon/shell-format' | jq '.files.download'
-curl --compressed -L -o plugins/cpp.vsix 'https://open-vsx.org/api/vscode/cpp' | jq '.files.download'
-curl --compressed -L -o plugins/webfreak-debug.vsix 'https://open-vsx.org/api/webfreak/debug' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-clangd.vsix 'https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd' | jq '.files.download'
-curl --compressed -L -o plugins/cmake.vsix 'https://open-vsx.org/api/twxs/cmake' | jq '.files.download'
-curl --compressed -L -o plugins/make.vsix 'https://open-vsx.org/api/vscode/make' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-catch2-test-adapter.vsix 'https://open-vsx.org/api/matepek/vscode-catch2-test-adapter' | jq '.files.download'
-curl --compressed -L -o plugins/rust.vsix 'https://open-vsx.org/api/vscode/rust' | jq '.files.download'
-curl --compressed -L -o plugins/rust-analyzer.vsix 'https://open-vsx.org/api/matklad/rust-analyzer' | jq '.files.download'
-curl --compressed -L -o plugins/crates.vsix 'https://open-vsx.org/api/serayuzgur/crates' | jq '.files.download'
-curl --compressed -L -o plugins/go.vsix 'https://open-vsx.org/api/vscode/go' | jq '.files.download'
-curl --compressed -L -o plugins/golang-Go.vsix 'https://open-vsx.org/api/golang/Go' | jq '.files.download'
-curl --compressed -L -o plugins/java.vsix 'https://open-vsx.org/api/vscode/java' | jq '.files.download'
-curl --compressed -L -o plugins/redhat-java.vsix 'https://open-vsx.org/api/redhat/java' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-java-debug.vsix 'https://open-vsx.org/api/vscjava/vscode-java-debug' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-java-test.vsix 'https://open-vsx.org/api/vscjava/vscode-java-test' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-maven.vsix 'https://open-vsx.org/api/vscjava/vscode-maven' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-gradle.vsix 'https://open-vsx.org/api/richardwillis/vscode-gradle' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-java-dependency.vsix 'https://open-vsx.org/api/vscjava/vscode-java-dependency' | jq '.files.download'
-curl --compressed -L -o plugins/python.vsix 'https://open-vsx.org/api/vscode/python' | jq '.files.download'
-curl --compressed -L -o plugins/ms-python.vsix 'https://open-vsx.org/api/ms-python/python' | jq '.files.download'
-curl --compressed -L -o plugins/kite.vsix 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download'
-curl --compressed -L -o plugins/ruby.vsix 'https://open-vsx.org/api/vscode/ruby' | jq '.files.download'
-curl --compressed -L -o plugins/rebornix-ruby.vsix 'https://open-vsx.org/api/rebornix/ruby' | jq '.files.download'
-curl --compressed -L -o plugins/javascript.vsix 'https://open-vsx.org/api/vscode/javascript' | jq '.files.download'
-curl --compressed -L -o plugins/typescript.vsix 'https://open-vsx.org/api/vscode/typescript' | jq '.files.download'
-curl --compressed -L -o plugins/typescript-language-features.vsix 'https://open-vsx.org/api/vscode/typescript-language-features' | jq '.files.download'
-curl --compressed -L -o plugins/npm.vsix 'https://open-vsx.org/api/vscode/npm' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-jest.vsix 'https://open-vsx.org/api/Orta/vscode-jest' | jq '.files.download'
-curl --compressed -L -o plugins/node-debug.vsix 'https://open-vsx.org/api/ms-vscode/node-debug' | jq '.files.download'
-curl --compressed -L -o plugins/node-debug2.vsix 'https://open-vsx.org/api/ms-vscode/node-debug2' | jq '.files.download'
-curl --compressed -L -o plugins/js-debug.vsix 'https://open-vsx.org/api/ms-vscode/js-debug' | jq '.files.download'
-curl --compressed -L -o plugins/debugger-for-chrome.vsix 'https://open-vsx.org/api/msjsdiag/debugger-for-chrome' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-firefox-debug.vsix 'https://open-vsx.org/api/firefox-devtools/vscode-firefox-debug' | jq '.files.download'
-curl --compressed -L -o plugins/html.vsix 'https://open-vsx.org/api/vscode/html' | jq '.files.download'
-curl --compressed -L -o plugins/html-language-features.vsix 'https://open-vsx.org/api/vscode/html-language-features' | jq '.files.download'
-curl --compressed -L -o plugins/css.vsix 'https://open-vsx.org/api/vscode/css' | jq '.files.download'
-curl --compressed -L -o plugins/css-language-features.vsix 'https://open-vsx.org/api/vscode/css-language-features' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-styled-components.vsix 'https://open-vsx.org/api/jpoissonnier/vscode-styled-components' | jq '.files.download'
-curl --compressed -L -o plugins/vetur.vsix 'https://open-vsx.org/api/octref/vetur' | jq '.files.download'
-curl --compressed -L -o plugins/emmet.vsix 'https://open-vsx.org/api/vscode/emmet' | jq '.files.download'
-curl --compressed -L -o plugins/sql.vsix 'https://open-vsx.org/api/vscode/sql' | jq '.files.download'
-curl --compressed -L -o plugins/godot-tools.vsix 'https://open-vsx.org/api/geequlim/godot-tools' | jq '.files.download'
-curl --compressed -L -o plugins/docker.vsix 'https://open-vsx.org/api/vscode/docker' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-docker.vsix 'https://open-vsx.org/api/ms-azuretools/vscode-docker' | jq '.files.download'
-curl --compressed -L -o plugins/vscode-kubernetes-tools.vsix 'https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools' | jq '.files.download'
+curl 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download' | xargs curl --compressed -L -o plugins/gitlens.vsix
+curl 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download' | xargs curl --compressed -L -o plugins/prettier-vscode.vsix
+curl 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' | xargs curl --compressed -L -o plugins/vim.vsix # Locked to work with code-server
+curl 'https://open-vsx.org/api/vscode/markdown' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown.vsix
+curl 'https://open-vsx.org/api/vscode/markdown-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-language-features.vsix
+curl 'https://open-vsx.org/api/vscode/yaml' | jq '.files.download' | xargs curl --compressed -L -o plugins/yaml.vsix
+curl 'https://open-vsx.org/api/redhat/vscode-yaml' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-yaml.vsix
+curl 'https://open-vsx.org/api/bungcip/better-toml' | jq '.files.download' | xargs curl --compressed -L -o plugins/better-toml.vsix
+curl 'https://open-vsx.org/api/vscode/json' | jq '.files.download' | xargs curl --compressed -L -o plugins/json.vsix
+curl 'https://open-vsx.org/api/vscode/json-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/json-language-features.vsix
+curl 'https://open-vsx.org/api/zxh404/vscode-proto3' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-proto3.vsix
+curl 'https://open-vsx.org/api/Prisma/vscode-graphql' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-graphql.vsix
+curl 'https://open-vsx.org/api/vscode/xml' | jq '.files.download' | xargs curl --compressed -L -o plugins/xml.vsix
+curl 'https://open-vsx.org/api/redhat/vscode-xml' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-xml.vsix
+curl 'https://open-vsx.org/api/vscode/image-preview' | jq '.files.download' | xargs curl --compressed -L -o plugins/image-preview.vsix
+curl 'https://open-vsx.org/api/vscode/shellscript' | jq '.files.download' | xargs curl --compressed -L -o plugins/shellscript.vsix
+curl 'https://open-vsx.org/api/foxundermoon/shell-format' | jq '.files.download' | xargs curl --compressed -L -o plugins/shell-format.vsix
+curl 'https://open-vsx.org/api/vscode/cpp' | jq '.files.download' | xargs curl --compressed -L -o plugins/cpp.vsix
+curl 'https://open-vsx.org/api/webfreak/debug' | jq '.files.download' | xargs curl --compressed -L -o plugins/webfreak-debug.vsix
+curl 'https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-clangd.vsix
+curl 'https://open-vsx.org/api/twxs/cmake' | jq '.files.download' | xargs curl --compressed -L -o plugins/cmake.vsix
+curl 'https://open-vsx.org/api/vscode/make' | jq '.files.download' | xargs curl --compressed -L -o plugins/make.vsix
+curl 'https://open-vsx.org/api/matepek/vscode-catch2-test-adapter' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-catch2-test-adapter.vsix
+curl 'https://open-vsx.org/api/vscode/rust' | jq '.files.download' | xargs curl --compressed -L -o plugins/rust.vsix
+curl 'https://open-vsx.org/api/matklad/rust-analyzer' | jq '.files.download' | xargs curl --compressed -L -o plugins/rust-analyzer.vsix
+curl 'https://open-vsx.org/api/serayuzgur/crates' | jq '.files.download' | xargs curl --compressed -L -o plugins/crates.vsix
+curl 'https://open-vsx.org/api/vscode/go' | jq '.files.download' | xargs curl --compressed -L -o plugins/go.vsix
+curl 'https://open-vsx.org/api/golang/Go' | jq '.files.download' | xargs curl --compressed -L -o plugins/golang-Go.vsix
+curl 'https://open-vsx.org/api/vscode/java' | jq '.files.download' | xargs curl --compressed -L -o plugins/java.vsix
+curl 'https://open-vsx.org/api/redhat/java' | jq '.files.download' | xargs curl --compressed -L -o plugins/redhat-java.vsix
+curl 'https://open-vsx.org/api/vscjava/vscode-java-debug' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-java-debug.vsix
+curl 'https://open-vsx.org/api/vscjava/vscode-java-test' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-java-test.vsix
+curl 'https://open-vsx.org/api/vscjava/vscode-maven' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-maven.vsix
+curl 'https://open-vsx.org/api/richardwillis/vscode-gradle' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-gradle.vsix
+curl 'https://open-vsx.org/api/vscjava/vscode-java-dependency' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-java-dependency.vsix
+curl 'https://open-vsx.org/api/vscode/python' | jq '.files.download' | xargs curl --compressed -L -o plugins/python.vsix
+curl 'https://open-vsx.org/api/ms-python/python' | jq '.files.download' | xargs curl --compressed -L -o plugins/ms-python.vsix
+curl 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download' | xargs curl --compressed -L -o plugins/kite.vsix
+curl 'https://open-vsx.org/api/vscode/ruby' | jq '.files.download' | xargs curl --compressed -L -o plugins/ruby.vsix
+curl 'https://open-vsx.org/api/rebornix/ruby' | jq '.files.download' | xargs curl --compressed -L -o plugins/rebornix-ruby.vsix
+curl 'https://open-vsx.org/api/vscode/javascript' | jq '.files.download' | xargs curl --compressed -L -o plugins/javascript.vsix
+curl 'https://open-vsx.org/api/vscode/typescript' | jq '.files.download' | xargs curl --compressed -L -o plugins/typescript.vsix
+curl 'https://open-vsx.org/api/vscode/typescript-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/typescript-language-features.vsix
+curl 'https://open-vsx.org/api/vscode/npm' | jq '.files.download' | xargs curl --compressed -L -o plugins/npm.vsix
+curl 'https://open-vsx.org/api/Orta/vscode-jest' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-jest.vsix
+curl 'https://open-vsx.org/api/ms-vscode/node-debug' | jq '.files.download' | xargs curl --compressed -L -o plugins/node-debug.vsix
+curl 'https://open-vsx.org/api/ms-vscode/node-debug2' | jq '.files.download' | xargs curl --compressed -L -o plugins/node-debug2.vsix
+curl 'https://open-vsx.org/api/ms-vscode/js-debug' | jq '.files.download' | xargs curl --compressed -L -o plugins/js-debug.vsix
+curl 'https://open-vsx.org/api/msjsdiag/debugger-for-chrome' | jq '.files.download' | xargs curl --compressed -L -o plugins/debugger-for-chrome.vsix
+curl 'https://open-vsx.org/api/firefox-devtools/vscode-firefox-debug' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-firefox-debug.vsix
+curl 'https://open-vsx.org/api/vscode/html' | jq '.files.download' | xargs curl --compressed -L -o plugins/html.vsix
+curl 'https://open-vsx.org/api/vscode/html-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/html-language-features.vsix
+curl 'https://open-vsx.org/api/vscode/css' | jq '.files.download' | xargs curl --compressed -L -o plugins/css.vsix
+curl 'https://open-vsx.org/api/vscode/css-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/css-language-features.vsix
+curl 'https://open-vsx.org/api/jpoissonnier/vscode-styled-components' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-styled-components.vsix
+curl 'https://open-vsx.org/api/octref/vetur' | jq '.files.download' | xargs curl --compressed -L -o plugins/vetur.vsix
+curl 'https://open-vsx.org/api/vscode/emmet' | jq '.files.download' | xargs curl --compressed -L -o plugins/emmet.vsix
+curl 'https://open-vsx.org/api/vscode/sql' | jq '.files.download' | xargs curl --compressed -L -o plugins/sql.vsix
+curl 'https://open-vsx.org/api/geequlim/godot-tools' | jq '.files.download' | xargs curl --compressed -L -o plugins/godot-tools.vsix
+curl 'https://open-vsx.org/api/vscode/docker' | jq '.files.download' | xargs curl --compressed -L -o plugins/docker.vsix
+curl 'https://open-vsx.org/api/ms-azuretools/vscode-docker' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-docker.vsix
+curl 'https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-kubernetes-tools.vsix
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-    curl --compressed -L -o plugins/csharp.vsix 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download'
-    curl --compressed -L -o plugins/docomment.vsix 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download'
+	curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
+	curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
 fi
 
 cd plugins
 for z in *.vsix; do
-    code-server --install-extension $z
-    mkdir -p $z-extracted
-    unzip $z -d $z-extracted
-    rm $z
+	code-server --install-extension $z
+	mkdir -p $z-extracted
+	unzip $z -d $z-extracted
+	rm $z
 done
 cd ..
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-    rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-    ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+	rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+	ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 fi
 
 mkdir -p ${WORKSPACE_DIR}
@@ -598,8 +597,8 @@ x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 fc-cache -f
 
 openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-    -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
-    -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
+	-keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
+	-addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
 
 printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
 
