@@ -209,8 +209,9 @@ yarn global add jest
 yarn global add @vue/cli
 yarn global add code-server
 
+rm -rf ~/.config/code-server
 mkdir -p ~/.config/code-server
-cat <<EOT >~/.config/code-server
+cat <<EOT >~/.config/code-server/config.yaml
 bind-addr: 0.0.0.0:8002
 auth: password
 password: ${PASSWORD}
@@ -450,6 +451,8 @@ cat <<EOT >package.json
 EOT
 
 rm -rf plugins
+rm -rf ~/.local/share/code-server/extensions/
+
 mkdir -p plugins
 
 curl --compressed -L -o plugins/eamodio.gitlens.vsix https://open-vsx.org/api/eamodio/gitlens/10.2.1/file/eamodio.gitlens-10.2.1.vsix
@@ -548,6 +551,7 @@ curl --compressed -L -o plugins/vsc-material-theme-icons.vsix https://marketplac
 
 cd plugins
 for z in *.vsix; do
+    code-server --install-extension $z
     mkdir -p $z-extracted
     unzip $z -d $z-extracted
     rm $z

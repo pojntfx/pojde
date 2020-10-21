@@ -91,3 +91,8 @@ docker
 unzip
 gource
 zig
+tmux
+nmap
+tshark
+jq
+iproute2
