@@ -7,7 +7,8 @@ My personal Theia distribution, optimized for full stack development.
 ### Services
 
 - [wetty](https://github.com/butlerx/wetty), a web terminal
-- My distribution of [Theia](https://theia-ide.org/), a web IDE
+- My distribution of [Theia](https://theia-ide.org/), a modular web IDE based on VSCode
+- My distribution of [code-server](https://github.com/cdr/code-server), a fork of VSCode that turns it into a web IDE
 - [noVNC](https://novnc.com/info.html), a web VNC client with a full desktop environment (see [Desktop](#desktop))
 
 ### Collaboration and Comfort
@@ -224,7 +225,8 @@ To access the services, use the passwords you've specified in `setup.sh` and the
 
 - wetty: [https://localhost:8000](https://localhost:8000)
 - Theia: [https://localhost:8001](https://localhost:8001)
-- noVNC: [https://localhost:8002](https://localhost:8002)
+- code-server: [https://localhost:8002](https://localhost:8002)
+- noVNC: [https://localhost:8003](https://localhost:8003)
 
 If you are using a domain, make sure to set the A records correcty:
 

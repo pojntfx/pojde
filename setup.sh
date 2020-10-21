@@ -182,7 +182,6 @@ curl -sLS https://dl.get-arkade.dev | sh
 arkade get kubectl
 arkade get k9s
 arkade get helm
-arkade get skaffold
 arkade get k3d
 arkade get k3sup
 
@@ -203,10 +202,21 @@ chmod +x /etc/init.d/kited
 pip install -U pylint --user
 pip install -U autopep8 --user
 
-rc-update add kited default
-rc-service kited restart
-
 curl https://wasmtime.dev/install.sh -sSf | bash
+
+yarn global add wetty@1.4.1
+yarn global add jest
+yarn global add @vue/cli
+yarn global add code-server
+
+mkdir -p ~/.config/code-server
+cat <<EOT >~/.config/code-server
+bind-addr: 0.0.0.0:8002
+auth: password
+password: ${PASSWORD}
+cert: /etc/nginx/server.crt
+cert-key: /etc/nginx/server.key
+EOT
 
 rm -rf ~/.theia
 mkdir -p ~/.theia
@@ -557,10 +567,6 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 yarn
 yarn theia build
 
-yarn global add wetty@1.4.1
-yarn global add jest
-yarn global add @vue/cli
-
 x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 
 fc-cache -f
@@ -618,13 +624,13 @@ server {
 }
 
 server {
-    listen 8002 ssl;
+    listen 8003 ssl;
     ssl_certificate      server.crt;
     ssl_certificate_key  server.key;
     server_name ${DOMAIN};
 
     location / {
-        proxy_pass http://localhost:3002;
+        proxy_pass http://localhost:3003;
         proxy_set_header Host \$host;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
@@ -674,7 +680,7 @@ environment=DISPLAY=":1",HOME="/root",USER="root"
 
 [program:novnc]
 priority=600
-command=/usr/bin/novnc_server --vnc localhost:5900 --listen 3002
+command=/usr/bin/novnc_server --vnc localhost:5900 --listen 3003
 user=root
 autorestart=true
 
@@ -683,16 +689,24 @@ priority=700
 command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
 user=root
 autorestart=true
+
+[program:code-server]
+priority=800
+command=/usr/local/bin/code-server
+user=root
+autorestart=true
 EOT
 
-rc-update add supervisord default
 rc-update add dbus default
 rc-update add udev default
 rc-update add fuse default
 rc-update add docker default
+rc-update add kited default
+rc-update add supervisord default
 
 rc-service dbus restart
 rc-service udev restart
 rc-service fuse restart
 rc-service docker restart
+rc-service kited restart
 rc-service supervisord restart
