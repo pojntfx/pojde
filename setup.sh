@@ -85,6 +85,9 @@ source /etc/profile
 EOT
 chmod +x /root/.bashrc
 
+rm -rf ${INSTALL_DIR}
+mkdir -p ${INSTALL_DIR}
+
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
 	rm -rf ${INSTALL_DIR}/mono.git
 	mkdir -p ${INSTALL_DIR}/mono.git
