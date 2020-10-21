@@ -13,6 +13,7 @@ if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi     
 if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
 if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
+if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="1"; fi             # Set to "0" if you want to have the repository version instead of to have the latest neovim version from Git
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
 if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
 ## You shouldn't have to change anything below
@@ -109,12 +110,16 @@ cd ${INSTALL_DIR}/lldb-mi
 cmake .
 cmake --build . --target install
 
-rm -rf ${INSTALL_DIR}/neovim
-mkdir -p ${INSTALL_DIR}/neovim
-git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
-cd ${INSTALL_DIR}/neovim
-make
-make install
+if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
+    rm -rf ${INSTALL_DIR}/neovim
+    mkdir -p ${INSTALL_DIR}/neovim
+    git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
+    cd ${INSTALL_DIR}/neovim
+    make
+    make install
+else
+    apk add neovim
+fi
 
 ln -sf /usr/local/bin/nvim /usr/bin/nvim
 ln -sf /usr/local/bin/nvim /usr/bin/vi
@@ -163,16 +168,6 @@ chmod +x ~/Desktop/Onboard.desktop
 
 curl -L -o /usr/share/backgrounds/xfce/spacex.jpg 'https://images.unsplash.com/photo-1541185934-01b600ea069c?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=spacex-6SbFGnQTE8s-unsplash.jpg'
 xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-query -c xfce4-desktop -p $path -s /usr/share/backgrounds/xfce/spacex.jpg; done
-
-rc-update add dbus default
-rc-update add udev default
-rc-update add fuse default
-rc-update add docker default
-
-rc-service dbus restart
-rc-service udev restart
-rc-service fuse restart
-rc-service docker restart
 
 export SYSTEM_ARCHITECTURE=$(uname -m)
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
@@ -397,50 +392,49 @@ cat <<EOT >package.json
             "editor.cursorSmoothCaretAnimation": true,
             "editor.smoothScrolling": true,
             "kite.showWelcomeNotificationOnStartup": false,
-            "clangd.path": "/usr/bin/clangd",
-            "rust-client.rustupPath": "/root/.cargo/bin/rustup"
+            "clangd.path": "/usr/bin/clangd"
         }
       }
     }
   },
   "dependencies": {
-    "@theia/callhierarchy": "next",
-    "@theia/console": "next",
-    "@theia/core": "next",
-    "@theia/debug": "next",
-    "@theia/editor": "next",
-    "@theia/editor-preview": "next",
-    "@theia/file-search": "next",
-    "@theia/filesystem": "next",
-    "@theia/getting-started": "next",
-    "@theia/git": "next",
-    "@theia/keymaps": "next",
-    "@theia/markers": "next",
-    "@theia/messages": "next",
-    "@theia/metrics": "next",
-    "@theia/mini-browser": "next",
-    "@theia/monaco": "next",
-    "@theia/navigator": "next",
-    "@theia/outline-view": "next",
-    "@theia/output": "next",
-    "@theia/plugin": "next",
-    "@theia/plugin-ext": "next",
-    "@theia/plugin-ext-vscode": "next",
-    "@theia/preferences": "next",
-    "@theia/preview": "next",
-    "@theia/process": "next",
-    "@theia/scm": "next",
-    "@theia/search-in-workspace": "next",
-    "@theia/task": "next",
-    "@theia/terminal": "next",
-    "@theia/typehierarchy": "next",
-    "@theia/userstorage": "next",
-    "@theia/variable-resolver": "next",
-    "@theia/vsx-registry": "next",
-    "@theia/workspace": "next"
+    "@theia/callhierarchy": "1.7.0-next.aeb85a46",
+    "@theia/console": "1.7.0-next.aeb85a46",
+    "@theia/core": "1.7.0-next.aeb85a46",
+    "@theia/debug": "1.7.0-next.aeb85a46",
+    "@theia/editor": "1.7.0-next.aeb85a46",
+    "@theia/editor-preview": "1.7.0-next.aeb85a46",
+    "@theia/file-search": "1.7.0-next.aeb85a46",
+    "@theia/filesystem": "1.7.0-next.aeb85a46",
+    "@theia/getting-started": "1.7.0-next.aeb85a46",
+    "@theia/git": "1.7.0-next.aeb85a46",
+    "@theia/keymaps": "1.7.0-next.aeb85a46",
+    "@theia/markers": "1.7.0-next.aeb85a46",
+    "@theia/messages": "1.7.0-next.aeb85a46",
+    "@theia/metrics": "1.7.0-next.aeb85a46",
+    "@theia/mini-browser": "1.7.0-next.aeb85a46",
+    "@theia/monaco": "1.7.0-next.aeb85a46",
+    "@theia/navigator": "1.7.0-next.aeb85a46",
+    "@theia/outline-view": "1.7.0-next.aeb85a46",
+    "@theia/output": "1.7.0-next.aeb85a46",
+    "@theia/plugin": "1.7.0-next.aeb85a46",
+    "@theia/plugin-ext": "1.7.0-next.aeb85a46",
+    "@theia/plugin-ext-vscode": "1.7.0-next.aeb85a46",
+    "@theia/preferences": "1.7.0-next.aeb85a46",
+    "@theia/preview": "1.7.0-next.aeb85a46",
+    "@theia/process": "1.7.0-next.aeb85a46",
+    "@theia/scm": "1.7.0-next.aeb85a46",
+    "@theia/search-in-workspace": "1.7.0-next.aeb85a46",
+    "@theia/task": "1.7.0-next.aeb85a46",
+    "@theia/terminal": "1.7.0-next.aeb85a46",
+    "@theia/typehierarchy": "1.7.0-next.aeb85a46",
+    "@theia/userstorage": "1.7.0-next.aeb85a46",
+    "@theia/variable-resolver": "1.7.0-next.aeb85a46",
+    "@theia/vsx-registry": "1.7.0-next.aeb85a46",
+    "@theia/workspace": "1.7.0-next.aeb85a46"
   },
   "devDependencies": {
-    "@theia/cli": "next"
+    "@theia/cli": "1.7.0-next.aeb85a46"
   }
 }
 EOT
@@ -469,13 +463,14 @@ curl --compressed -L -o plugins/vscode.shellscript.vsix https://open-vsx.org/api
 curl --compressed -L -o plugins/shell-format.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/foxundermoon/vsextensions/shell-format/7.0.1/vspackage
 curl --compressed -L -o plugins/vscode.cpp.vsix https://open-vsx.org/api/vscode/cpp/1.50.0/file/vscode.cpp-1.50.0.vsix
 curl --compressed -L -o plugins/webfreak.debug.vsix https://open-vsx.org/api/webfreak/debug/0.25.0/file/webfreak.debug-0.25.0.vsix
-curl --compressed -L -o plugins/llvm-vs-code-extensions.vscode-clangd.vsix https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.6/file/llvm-vs-code-extensions.vscode-clangd-0.1.6.vsix
+curl --compressed -L -o plugins/llvm-vs-code-extensions.vscode-clangd.vsix https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.7/file/llvm-vs-code-extensions.vscode-clangd-0.1.7.vsix
 curl --compressed -L -o plugins/twxs.cmake.vsix https://open-vsx.org/api/twxs/cmake/0.0.17/file/twxs.cmake-0.0.17.vsix
 curl --compressed -L -o plugins/cmake-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/cmake-tools/1.4.2/vspackage
 curl --compressed -L -o plugins/vscode.make.vsix https://open-vsx.org/api/vscode/make/1.50.0/file/vscode.make-1.50.0.vsix
 curl --compressed -L -o plugins/matepek.vscode-catch2-test-adapter.vsix https://open-vsx.org/api/matepek/vscode-catch2-test-adapter/3.4.2/file/matepek.vscode-catch2-test-adapter-3.4.2.vsix
 curl --compressed -L -o plugins/vscode.rust.vsix https://open-vsx.org/api/vscode/rust/1.50.0/file/vscode.rust-1.50.0.vsix
-curl --compressed -L -o plugins/rust-lang.rust.vsix https://open-vsx.org/api/rust-lang/rust/0.7.8/file/rust-lang.rust-0.7.8.vsix
+curl --compressed -L -o plugins/matklad.rust-analyzer.vsix https://open-vsx.org/api/matklad/rust-analyzer/0.2.352/file/matklad.rust-analyzer-0.2.352.vsix
+curl --compressed -L -o plugins/serayuzgur.crates.vsix https://open-vsx.org/api/serayuzgur/crates/0.5.3/file/serayuzgur.crates-0.5.3.vsix
 curl --compressed -L -o plugins/vscode.go.vsix https://open-vsx.org/api/vscode/go/1.50.0/file/vscode.go-1.50.0.vsix
 curl --compressed -L -o plugins/golang.Go.vsix https://open-vsx.org/api/golang/Go/0.17.2/file/golang.Go-0.17.2.vsix
 curl --compressed -L -o plugins/vscode.java.vsix https://open-vsx.org/api/vscode/java/1.50.0/file/vscode.java-1.50.0.vsix
@@ -654,7 +649,7 @@ autorestart=true
 [program:theia]
 priority=200
 directory=${INSTALL_DIR}/theia
-command=/usr/bin/yarn theia start ${WORKSPACE_DIR} --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins
+command=/usr/bin/yarn theia start ${WORKSPACE_DIR} --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins --vscode-api-version=1.50.1
 user=root
 autorestart=true
 
@@ -691,4 +686,13 @@ autorestart=true
 EOT
 
 rc-update add supervisord default
+rc-update add dbus default
+rc-update add udev default
+rc-update add fuse default
+rc-update add docker default
+
+rc-service dbus restart
+rc-service udev restart
+rc-service fuse restart
+rc-service docker restart
 rc-service supervisord restart

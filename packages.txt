@@ -78,15 +78,10 @@ tumbler
 consolekit2
 adwaita-icon-theme
 udev
-gvfs-fuse
-gvfs-smb
 fuse-openrc
 thunar-volman
 udisks2
 ntfs-3g
-gvfs-mtp
-gvfs-gphoto2
-gvfs-afc
 flatpak
 pulseaudio
 pulseaudio-alsa
