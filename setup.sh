@@ -3,12 +3,12 @@
 ## Configure your IDE here
 if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felix Pojtinger"; fi
 if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
-if [ -z ${IDE_DESCRIPTION+x} ]; then export IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
+if [ -z ${THEIA_IDE_DESCRIPTION+x} ]; then export THEIA_IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
 if [ -z ${EMAIL+x} ]; then export EMAIL="felix@pojtinger.com"; fi
 if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For your public SSH keys
 if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the IDE
 if [ -z ${PASSWORD+x} ]; then export PASSWORD="mysvcpassword"; fi         # For accessing the IDE
-if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="felix-pojtingers-theia"; fi
+if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
 if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi     # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
 if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
@@ -408,7 +408,7 @@ cat <<EOT >package.json
 {
   "name": "@${USERNAME}/${IDE_NAME}",
   "version": "0.0.1-alpha1",
-  "description": "${IDE_DESCRIPTION}",
+  "description": "${THEIA_IDE_DESCRIPTION}",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -418,49 +418,49 @@ cat <<EOT >package.json
   "theia": {
     "frontend": {
       "config": {
-        "applicationName": "${IDE_DESCRIPTION}",
+        "applicationName": "${THEIA_IDE_DESCRIPTION}",
         "preferences": $(cat ~/.local/share/code-server/User/settings.json)
       }
     }
   },
   "dependencies": {
-    "@theia/callhierarchy": "1.7.0-next.aeb85a46",
-    "@theia/console": "1.7.0-next.aeb85a46",
-    "@theia/core": "1.7.0-next.aeb85a46",
-    "@theia/debug": "1.7.0-next.aeb85a46",
-    "@theia/editor": "1.7.0-next.aeb85a46",
-    "@theia/editor-preview": "1.7.0-next.aeb85a46",
-    "@theia/file-search": "1.7.0-next.aeb85a46",
-    "@theia/filesystem": "1.7.0-next.aeb85a46",
-    "@theia/getting-started": "1.7.0-next.aeb85a46",
-    "@theia/git": "1.7.0-next.aeb85a46",
-    "@theia/keymaps": "1.7.0-next.aeb85a46",
-    "@theia/markers": "1.7.0-next.aeb85a46",
-    "@theia/messages": "1.7.0-next.aeb85a46",
-    "@theia/metrics": "1.7.0-next.aeb85a46",
-    "@theia/mini-browser": "1.7.0-next.aeb85a46",
-    "@theia/monaco": "1.7.0-next.aeb85a46",
-    "@theia/navigator": "1.7.0-next.aeb85a46",
-    "@theia/outline-view": "1.7.0-next.aeb85a46",
-    "@theia/output": "1.7.0-next.aeb85a46",
-    "@theia/plugin": "1.7.0-next.aeb85a46",
-    "@theia/plugin-ext": "1.7.0-next.aeb85a46",
-    "@theia/plugin-ext-vscode": "1.7.0-next.aeb85a46",
-    "@theia/preferences": "1.7.0-next.aeb85a46",
-    "@theia/preview": "1.7.0-next.aeb85a46",
-    "@theia/process": "1.7.0-next.aeb85a46",
-    "@theia/scm": "1.7.0-next.aeb85a46",
-    "@theia/search-in-workspace": "1.7.0-next.aeb85a46",
-    "@theia/task": "1.7.0-next.aeb85a46",
-    "@theia/terminal": "1.7.0-next.aeb85a46",
-    "@theia/typehierarchy": "1.7.0-next.aeb85a46",
-    "@theia/userstorage": "1.7.0-next.aeb85a46",
-    "@theia/variable-resolver": "1.7.0-next.aeb85a46",
-    "@theia/vsx-registry": "1.7.0-next.aeb85a46",
-    "@theia/workspace": "1.7.0-next.aeb85a46"
+    "@theia/callhierarchy": "next",
+    "@theia/console": "next",
+    "@theia/core": "next",
+    "@theia/debug": "next",
+    "@theia/editor": "next",
+    "@theia/editor-preview": "next",
+    "@theia/file-search": "next",
+    "@theia/filesystem": "next",
+    "@theia/getting-started": "next",
+    "@theia/git": "next",
+    "@theia/keymaps": "next",
+    "@theia/markers": "next",
+    "@theia/messages": "next",
+    "@theia/metrics": "next",
+    "@theia/mini-browser": "next",
+    "@theia/monaco": "next",
+    "@theia/navigator": "next",
+    "@theia/outline-view": "next",
+    "@theia/output": "next",
+    "@theia/plugin": "next",
+    "@theia/plugin-ext": "next",
+    "@theia/plugin-ext-vscode": "next",
+    "@theia/preferences": "next",
+    "@theia/preview": "next",
+    "@theia/process": "next",
+    "@theia/scm": "next",
+    "@theia/search-in-workspace": "next",
+    "@theia/task": "next",
+    "@theia/terminal": "next",
+    "@theia/typehierarchy": "next",
+    "@theia/userstorage": "next",
+    "@theia/variable-resolver": "next",
+    "@theia/vsx-registry": "next",
+    "@theia/workspace": "next"
   },
   "devDependencies": {
-    "@theia/cli": "1.7.0-next.aeb85a46"
+    "@theia/cli": "next"
   }
 }
 EOT
