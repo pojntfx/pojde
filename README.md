@@ -218,11 +218,11 @@ While using the virtualized system is the preferred method due to it creating re
 6. Adjust the other settings (especially the password) in `/etc/theia/setup.sh` to your liking
 7. Setup the repositories by running `cp /etc/theia/repositories.txt /etc/apk/repositories`
 8. Upgrade your system by running `apk update && apk upgrade`
-9. On an AMD64 system (your average server), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
+9. On an AMD64 system (your average server or desktop), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
 
    On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/theia/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
 
-10. Start the installation by running `sh /etc/theia/setup.sh`. You can also set the internal variables by overwriting them here (i.e. with `IP="100.64.154.241" sh /etc/theia/setup.sh`)
+10. Start the installation by running `sh /etc/theia/setup.sh`. You can also set the internal variables by overwriting them here (i.e. with `IP="100.64.154.241" sh /etc/theia/setup.sh`). If you're on a Raspberry Pi and connected via Wifi, you'll loose the connection after installation; simply restart your Pi afterwards.
 11. Continue to [Usage](#usage)
 
 To update the IDE, re-run the steps above (don't forget to adjust your settings).
