@@ -150,8 +150,16 @@ My personal Theia distribution, optimized for full stack development.
 - `skaffold` (see [https://skaffold.dev/](https://skaffold.dev/))
 - `k3d` (see [https://k3d.io/](https://k3d.io/))
 - `k3sup` (see [https://k3sup.dev/](https://k3sup.dev/))
+- `jq`
 - Docker language basics
 - Kubernetes
+
+### SecOps
+
+- `tmux`
+- `iproute2`
+- `tshark`
+- `nmap`
 
 ### Themes
 
