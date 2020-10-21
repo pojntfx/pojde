@@ -211,6 +211,8 @@ yarn global add code-server
 
 rm -rf ~/.config/code-server
 mkdir -p ~/.config/code-server
+rm -rf ~/.local/share/code-server
+mkdir -p ~/.local/share/code-server/User
 cat <<EOT >~/.config/code-server/config.yaml
 bind-addr: 0.0.0.0:8002
 auth: password
@@ -241,7 +243,8 @@ cat <<EOT >~/.theia/keymaps.json
         "meta": false
       }
     ],
-    "scope": 1
+    "scope": 1,
+    "key": "f8"
   },
   {
     "command": "editor.action.marker.nextInFiles",
@@ -260,7 +263,8 @@ cat <<EOT >~/.theia/keymaps.json
         "meta": false
       }
     ],
-    "scope": 1
+    "scope": 1,
+    "key": "alt+p"
   },
   {
     "command": "-file.rename",
@@ -279,7 +283,8 @@ cat <<EOT >~/.theia/keymaps.json
         "meta": false
       }
     ],
-    "scope": 1
+    "scope": 1,
+    "key": "f2"
   },
   {
     "command": "file.rename",
@@ -298,7 +303,8 @@ cat <<EOT >~/.theia/keymaps.json
         "meta": false
       }
     ],
-    "scope": 1
+    "scope": 1,
+    "key": "alt+r"
   },
   {
     "command": "editor.action.rename",
@@ -317,7 +323,8 @@ cat <<EOT >~/.theia/keymaps.json
         "meta": false
       }
     ],
-    "scope": 1
+    "scope": 1,
+    "key": "alt+r"
   },
   {
     "command": "-editor.action.rename",
@@ -336,19 +343,62 @@ cat <<EOT >~/.theia/keymaps.json
         "meta": false
       }
     ],
-    "scope": 1
+    "scope": 1,
+    "key": "f2"
   },
   {
     "command": "editor.action.goToReferences",
     "keybinding": "alt+i",
-    "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor",
+    "key": "alt+i"
   },
   {
     "command": "-editor.action.goToReferences",
     "keybinding": "shift+f12",
-    "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor",
+    "key": "shift+f12"
   }
 ]
+EOT
+cp ~/.theia/keymaps.json ~/.local/share/code-server/User/keybindings.json
+
+cat <<EOT >~/.local/share/code-server/User/settings.json
+{
+  "workbench.iconTheme": "eq-material-theme-icons",
+  "workbench.colorTheme": "GitHub Dark",
+  "go.autocompleteUnimportedPackages": true,
+  "go.useLanguageServer": true,
+  "vim.debug.silent": true,
+  "sqltools.useNodeRuntime": true,
+  "files.enableTrash": false,
+  "cmake.configureOnOpen": true,
+  "cmake.debugConfig": {
+  "type": "lldb-mi",
+    "request": "launch",
+    "target": "\${command:cmake.launchTargetPath}",
+    "args": [],
+    "cwd": "\${workspaceFolder}"
+  },
+  "java.home": "/usr/lib/jvm/java-14-openjdk",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "omnisharp.useGlobalMono": "always",
+  "godot_tools.editor_path": "/usr/bin/godot",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "terminal.integrated.shell.linux": "/bin/bash",
+  "testMate.cpp.log.logSentry": "disable_3",
+  "npm.packageManager": "yarn",
+  "firefox.executable": "/usr/bin/firefox",
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.smoothScrolling": true,
+  "kite.showWelcomeNotificationOnStartup": false,
+  "clangd.path": "/usr/bin/clangd"
+}
 EOT
 
 mkdir -p ${INSTALL_DIR}/theia
@@ -369,42 +419,7 @@ cat <<EOT >package.json
     "frontend": {
       "config": {
         "applicationName": "${IDE_DESCRIPTION}",
-        "preferences": {
-            "workbench.iconTheme": "eq-material-theme-icons",
-            "workbench.colorTheme": "GitHub Dark",
-            "go.autocompleteUnimportedPackages": true,
-            "go.useLanguageServer": true,
-            "vim.debug.silent": true,
-            "sqltools.useNodeRuntime": true,
-            "files.enableTrash": false,
-            "cmake.configureOnOpen": true,
-            "cmake.debugConfig": {
-              "type": "lldb-mi",
-              "request": "launch",
-              "target": "${command:cmake.launchTargetPath}",
-              "args": [],
-              "cwd": "${workspaceFolder}"
-            },
-            "java.home": "/usr/lib/jvm/java-14-openjdk",
-            "files.exclude": {
-              "**/.git": true,
-              "**/.classpath": true,
-              "**/.project": true,
-              "**/.settings": true,
-              "**/.factorypath": true
-            },
-            "omnisharp.useGlobalMono": "always",
-            "godot_tools.editor_path": "/usr/bin/godot",
-            "typescript.updateImportsOnFileMove.enabled": "always",
-            "terminal.integrated.shell.linux": "/bin/bash",
-            "testMate.cpp.log.logSentry": "disable_3",
-            "npm.packageManager": "yarn",
-            "firefox.executable": "/usr/bin/firefox",
-            "editor.cursorSmoothCaretAnimation": true,
-            "editor.smoothScrolling": true,
-            "kite.showWelcomeNotificationOnStartup": false,
-            "clangd.path": "/usr/bin/clangd"
-        }
+        "preferences": $(cat ~/.local/share/code-server/User/settings.json)
       }
     }
   },
