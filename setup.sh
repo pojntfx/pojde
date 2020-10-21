@@ -360,6 +360,10 @@ cat <<EOT >~/.theia/keymaps.json
     "keybinding": "shift+f12",
     "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor",
     "key": "shift+f12"
+  },
+  {
+    "key": "alt+w",
+    "command": "workbench.action.closeActiveEditor"
   }
 ]
 EOT
