@@ -25,15 +25,18 @@ if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felicitas Pojtinger"; fi
 if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
 if [ -z ${THEIA_IDE_DESCRIPTION+x} ]; then export THEIA_IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
 if [ -z ${EMAIL+x} ]; then export EMAIL="felicitas@pojtinger.com"; fi
-if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For your public SSH keys
-if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the services
-if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi         # For accessing the services
+if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi
+
+if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi
+if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi
+if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi
+if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi
+
+if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="0"; fi
+if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi
+if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi
+
 if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
-if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi     # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
-if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
-if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
-if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
-if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi     # Set to "1" if you want to have the latest neovim version from Git instead of the repository version
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
 if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
 
@@ -54,8 +57,33 @@ read -e -i "$HIDDEN_PASSWORD" -p "Please enter your new IDE's password (you'll b
 if [ "$HIDDEN_PASSWORD" != "$input" ]; then
     PASSWORD="$input"
 fi
+read -e -i "$DOMAIN" -p "Please enter your new IDE's domain (used for TLS SAN extensions; localhost is always included. Keep as is if you don't have a domain): " input
+DOMAIN="${input:-$DOMAIN}"
+read -e -i "$IP" -p "Please enter your new IDE's IP (used for TLS SAN extensions; keep as is if you don't know the IP): " input
+IP="${input:-$IP}"
+read -e -i "$ENABLE_OS_SETUP" -p "Please enter 1 if you want to also setup the OS or 0 if you don't: " input
+ENABLE_OS_SETUP="${input:-$ENABLE_OS_SETUP}"
+read -e -i "$ENABLE_CSHARP_SUPPORT" -p "Please enter 1 if you want to also setup C# support or 0 if you don't: " input
+ENABLE_CSHARP_SUPPORT="${input:-$ENABLE_CSHARP_SUPPORT}"
+read -e -i "$ENABLE_NEOVIM_BUILD" -p "Please enter 1 if you want to build Neovim from source or 0 if you don't: " input
+ENABLE_NEOVIM_BUILD="${input:-$ENABLE_NEOVIM_BUILD}"
 
-echo $PASSWORD
+mkdir -p /etc/pojde
+echo "export FULL_NAME=\"${FULL_NAME}\"" >/etc/pojde/config.sh
+echo "export MOTD=\"${MOTD}\"" >>/etc/pojde/config.sh
+echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>/etc/pojde/config.sh
+echo "export EMAIL=\"${EMAIL}\"" >>/etc/pojde/config.sh
+echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>/etc/pojde/config.sh
+echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
+echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
+echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
+echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
+echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
+echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
+echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
 
 # mkdir -p /etc/pojde
 # curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
