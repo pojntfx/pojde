@@ -758,16 +758,9 @@ EOT
 /usr/local/bin/update-pojde https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde
 chmod +x /usr/local/bin/update-pojde
 
-rc-update add dbus default
-rc-update add udev default
-rc-update add fuse default
-rc-update add docker default
-rc-update add kited default
-rc-update add supervisord default
+echo "Setup completed successfully; you might loose your connection if you're connected via SSH. In that case, please reconnect."
 
-rc-service dbus restart
-rc-service udev restart
-rc-service fuse restart
-rc-service docker restart
-rc-service kited restart
-rc-service supervisord restart
+services="dbus udev fuse docker kited supervisord"
+for service in $services; do
+  nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &
+done
