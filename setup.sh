@@ -50,6 +50,7 @@ apk update
 apk upgrade
 
 apk add go
+go get -u github.com/pojntfx/alpimager
 
 mkdir -p /usr/lib/go/misc/wasm/
 curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
@@ -425,6 +426,9 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
