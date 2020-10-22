@@ -97,3 +97,4 @@ tshark
 jq
 iproute2
 shfmt
+figlet
