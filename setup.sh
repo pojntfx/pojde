@@ -85,6 +85,8 @@ source /etc/profile
 EOT
 chmod +x /root/.bashrc
 
+source /root/.bashrc
+
 rm -rf ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
 
