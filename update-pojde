@@ -53,7 +53,7 @@ GITHUB_USERNAME="${input:-$GITHUB_USERNAME}"
 read -e -i "$USERNAME" -p "Please enter your new IDE's username (you'll be accessing the services using this later): " input
 USERNAME="${input:-$USERNAME}"
 HIDDEN_PASSWORD="$(echo $PASSWORD | sed 's/./\x/g')"
-printf "Please enter your new IDE's password (you'll be accessing the services using this later). Your input is hidden; press ENTER to keep your current password ($HIDDEN_PASSWORD): "
+printf "Please enter your new IDE's password (you'll be accessing the services using this later). Don't use dollar signs. Your input is hidden; press ENTER to keep your current password ($HIDDEN_PASSWORD): "
 read -s input
 echo
 if [ "$input" != "" ]; then
