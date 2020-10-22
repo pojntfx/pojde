@@ -168,7 +168,6 @@ Headless Linux distribution for full-stack software development with web access 
 - Panda
 - Eva
 - Min
-- macOS Modern
 - One Light
 - One Dark
 - Monokai Pro
