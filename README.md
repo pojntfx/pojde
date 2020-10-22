@@ -228,7 +228,7 @@ To update the IDE, re-run the steps above (don't forget to adjust your settings)
 
 ## Usage
 
-To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. You'll also have to trust the SSL certificate (see [a video I made on the subject for macOS](https://www.youtube.com/watch?v=_PJc7RcMnw8) and [another one I made for Linux](https://www.youtube.com/watch?v=byFN8vH2SaM)). If you don't use SSH forwarding or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
+To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. If you don't use SSH forwarding or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
 
 - wetty: [https://localhost:8000](https://localhost:8000)
 - Theia: [https://localhost:8001](https://localhost:8001)
@@ -241,6 +241,12 @@ If you are using a domain, make sure to set the A records correcty:
 A pojntfx.dev.alphahorizon.io 141.72.248.134
 A *.pojntfx.dev.alphahorizon.io 141.72.248.134
 ```
+
+You'll have to trust the self-signed SSL certificate. I created some videos on how to do that:
+
+- [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
+- [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
+- [Trusting self signed SSL certificates (Chrome on Windows)](https://www.youtube.com/watch?v=gyQ9IIxE3vc)
 
 Note that Safari is not supported in Theia due to an [issue with WebSockets and HTTP basic auth](https://bugs.webkit.org/show_bug.cgi?id=80362). To use Theia on Safari, open noVNC, add it to the homescreen and use Chromium in noVNC to browse to Theia.
 
