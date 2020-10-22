@@ -380,7 +380,7 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "files.enableTrash": false,
   "cmake.configureOnOpen": true,
   "cmake.debugConfig": {
-  "type": "lldb-mi",
+    "type": "lldb-mi",
     "request": "launch",
     "target": "\${command:cmake.launchTargetPath}",
     "args": [],
@@ -404,7 +404,11 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "editor.cursorSmoothCaretAnimation": true,
   "editor.smoothScrolling": true,
   "kite.showWelcomeNotificationOnStartup": false,
-  "clangd.path": "/usr/bin/clangd"
+  "clangd.path": "/usr/bin/clangd",
+  "git.autofetch": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
 EOT
 
@@ -492,7 +496,6 @@ curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.v
 curl --compressed -L -o plugins/theme-panda.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tinkertrain/vsextensions/theme-panda/1.3.0/vspackage
 curl --compressed -L -o plugins/min-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/miguelsolorio/vsextensions/min-theme/1.4.6/vspackage
 sleep 1 # MS Rate limit
-curl --compressed -L -o plugins/native-macos.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsoloha/vsextensions/native-macos/0.5.1/vspackage
 curl --compressed -L -o plugins/vscode-theme-onelight.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onelight/2.2.2/vspackage
 curl --compressed -L -o plugins/vscode-theme-onedark.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onedark/2.2.2/vspackage
 curl --compressed -L -o plugins/theme-monokai-pro-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/monokai/vsextensions/theme-monokai-pro-vscode/1.1.17/vspackage
