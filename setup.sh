@@ -755,7 +755,7 @@ user=root
 autorestart=true
 EOT
 
-/usr/local/bin/update-pojde https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde
+curl -o /usr/local/bin/update-pojde https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde
 chmod +x /usr/local/bin/update-pojde
 
 echo "Setup completed successfully; you might loose your connection if you're connected via SSH. In that case, please reconnect."
