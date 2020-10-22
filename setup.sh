@@ -623,9 +623,12 @@ x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 
 fc-cache -f
 
-openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-  -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
-  -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
+printf "${DOMAIN}-${IP}" >/etc/nginx/domain-ip
+if [ "$(cat /etc/nginx/domain-ip)" != "${DOMAIN}-${IP}" ]; then
+  openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+    -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=localhost" \
+    -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
+fi
 
 printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
 
