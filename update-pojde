@@ -53,8 +53,10 @@ GITHUB_USERNAME="${input:-$GITHUB_USERNAME}"
 read -e -i "$USERNAME" -p "Please enter your new IDE's username (you'll be accessing the services using this later): " input
 USERNAME="${input:-$USERNAME}"
 HIDDEN_PASSWORD="$(echo $PASSWORD | sed 's/./\x/g')"
-read -e -i "$HIDDEN_PASSWORD" -p "Please enter your new IDE's password (you'll be accessing the services using this later; input is hidden): " input
-if [ "$HIDDEN_PASSWORD" != "$input" ]; then
+printf "Please enter your new IDE's password (you'll be accessing the services using this later). Your input is hidden; press ENTER to keep your current password ($HIDDEN_PASSWORD): "
+read -s input
+echo
+if [ "$input" != "" ]; then
     PASSWORD="$input"
 fi
 read -e -i "$DOMAIN" -p "Please enter your new IDE's domain (used for TLS SAN extensions; localhost is always included. Keep as is if you don't have a domain): " input
@@ -63,41 +65,48 @@ read -e -i "$IP" -p "Please enter your new IDE's IP (used for TLS SAN extensions
 IP="${input:-$IP}"
 read -e -i "$ENABLE_OS_SETUP" -p "Please enter 1 if you want to also setup the OS or 0 if you don't: " input
 ENABLE_OS_SETUP="${input:-$ENABLE_OS_SETUP}"
-read -e -i "$ENABLE_CSHARP_SUPPORT" -p "Please enter 1 if you want to also setup C# support or 0 if you don't: " input
+read -e -i "$ENABLE_CSHARP_SUPPORT" -p "Please enter 1 if you want C# support or 0 if you don't: " input
 ENABLE_CSHARP_SUPPORT="${input:-$ENABLE_CSHARP_SUPPORT}"
-read -e -i "$ENABLE_NEOVIM_BUILD" -p "Please enter 1 if you want to build Neovim from source or 0 if you don't: " input
+read -e -i "$ENABLE_NEOVIM_BUILD" -p "Please enter 1 if you want to build Neovim from source or 0 if you want the repository version: " input
 ENABLE_NEOVIM_BUILD="${input:-$ENABLE_NEOVIM_BUILD}"
+echo
 
-mkdir -p /etc/pojde
-echo "export FULL_NAME=\"${FULL_NAME}\"" >/etc/pojde/config.sh
-echo "export MOTD=\"${MOTD}\"" >>/etc/pojde/config.sh
-echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>/etc/pojde/config.sh
-echo "export EMAIL=\"${EMAIL}\"" >>/etc/pojde/config.sh
-echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>/etc/pojde/config.sh
-echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
-echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
-echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
-echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
-echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
-echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
-echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
+read -e -p "All set! Are you sure that you want to start the installation (please enter y/n): " START_INSTALLATION
 
-mkdir -p /etc/pojde
-curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
-curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
-curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
+if [ "$START_INSTALLATION" = "y" ]; then
+    mkdir -p /etc/pojde
+    echo "export FULL_NAME=\"${FULL_NAME}\"" >/etc/pojde/config.sh
+    echo "export MOTD=\"${MOTD}\"" >>/etc/pojde/config.sh
+    echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>/etc/pojde/config.sh
+    echo "export EMAIL=\"${EMAIL}\"" >>/etc/pojde/config.sh
+    echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>/etc/pojde/config.sh
+    echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
+    echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
+    echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
+    echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
+    echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
+    echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
+    echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
+    echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
+    echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
+    echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
 
-cp /etc/pojde/repositories.txt /etc/apk/repositories
-apk update && apk upgrade
+    mkdir -p /etc/pojde
+    curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
+    curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
+    curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
 
-export SYSTEM_ARCHITECTURE=$(uname -m)
-if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-    apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')
+    cp /etc/pojde/repositories.txt /etc/apk/repositories
+    apk update && apk upgrade
+
+    export SYSTEM_ARCHITECTURE=$(uname -m)
+    if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+        apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')
+    else
+        apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
+    fi
+
+    sh /etc/pojde/setup.sh
 else
-    apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
+    echo "Aborted installation."
 fi
-
-sh /etc/pojde/setup.sh
