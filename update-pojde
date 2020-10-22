@@ -1,0 +1,76 @@
+#!/bin/bash
+
+printf "
+                   _     __   
+    ____  ____    (_)___/ /__ 
+   / __ \/ __ \  / / __  / _ \\
+  / /_/ / /_/ / / / /_/ /  __/
+ / .___/\____/_/ /\__,_/\___/ 
+/_/         /___/
+
+
+Welcome to the pojde updater!
+
+> pojde is free/libre and open source software. For more information, see: https://pojntfx.github.io/pojde/\n\n"
+
+if [ -f /etc/pojde/config.sh ]; then
+    printf "Found /etc/pojde/config.sh, doing upgrade. If you want to keep your current configuration, just press ENTER at the following promps.\n\n"
+
+    source /etc/pojde/config.sh
+else
+    printf "Doing clean installation; please configure pojde using the following prompts.\n\n"
+fi
+
+if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felix Pojtinger"; fi
+if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
+if [ -z ${THEIA_IDE_DESCRIPTION+x} ]; then export THEIA_IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
+if [ -z ${EMAIL+x} ]; then export EMAIL="felix@pojtinger.com"; fi
+if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For your public SSH keys
+if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the services
+if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi         # For accessing the services
+if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
+if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi     # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
+if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                          # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
+if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
+if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi     # Set to "1" if you want to have the latest neovim version from Git instead of the repository version
+if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
+if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
+
+read -e -i "$FULL_NAME" -p "Please enter your full name: " input
+FULL_NAME="${input:-$FULL_NAME}"
+read -e -i "$MOTD" -p "Please enter your system's new message of the day: " input
+MOTD="${input:-$MOTD}"
+read -e -i "$THEIA_IDE_DESCRIPTION" -p "Please enter your new IDE's description: " input
+THEIA_IDE_DESCRIPTION="${input:-$THEIA_IDE_DESCRIPTION}"
+read -e -i "$EMAIL" -p "Please enter your email: " input
+EMAIL="${input:-$EMAIL}"
+read -e -i "$GITHUB_USERNAME" -p "Please enter your GitHub username (for your public SSH keys): " input
+GITHUB_USERNAME="${input:-$GITHUB_USERNAME}"
+read -e -i "$USERNAME" -p "Please enter your new IDE's username (you'll be accessing the services using this later): " input
+USERNAME="${input:-$USERNAME}"
+HIDDEN_PASSWORD="$(echo $PASSWORD | sed 's/./\x/g')"
+read -e -i "$HIDDEN_PASSWORD" -p "Please enter your new IDE's password (you'll be accessing the services using this later; input is hidden): " input
+if [ "$HIDDEN_PASSWORD" != "$input" ]; then
+    PASSWORD="$input"
+fi
+
+echo $PASSWORD
+
+# mkdir -p /etc/pojde
+# curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
+# curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
+# curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
+#
+# cp /etc/pojde/repositories.txt /etc/apk/repositories
+# apk update && apk upgrade
+#
+# export SYSTEM_ARCHITECTURE=$(uname -m)
+# if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+# apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')
+# else
+# apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
+# fi
+#
+# sh /etc/pojde/setup.sh
+#

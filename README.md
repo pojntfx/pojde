@@ -1,5 +1,15 @@
 # pojde
 
+```plaintext
+                   _     __
+    ____  ____    (_)___/ /__
+   / __ \/ __ \  / / __  / _ \
+  / /_/ / /_/ / / / /_/ /  __/
+ / .___/\____/_/ /\__,_/\___/
+/_/         /___/
+
+```
+
 Headless Linux distribution for full-stack software development with web access for all components. Develop from anywhere using any device with a browser!
 
 ## Overview

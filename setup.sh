@@ -88,6 +88,9 @@ chmod +x /root/.bashrc
 
 source /root/.bashrc
 
+git config --global user.name "${FULL_NAME}"
+git config --global user.email "${EMAIL}"
+
 rm -rf ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
 
@@ -751,6 +754,9 @@ command=/usr/local/bin/code-server
 user=root
 autorestart=true
 EOT
+
+/usr/local/bin/update-pojde https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde
+chmod +x /usr/local/bin/update-pojde
 
 rc-update add dbus default
 rc-update add udev default
