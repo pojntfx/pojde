@@ -49,8 +49,14 @@ ln -sf /bin/bash /bin/sh
 apk update
 apk upgrade
 
+export SYSTEM_ARCHITECTURE=$(uname -m)
+
 apk add go
-go get -u github.com/pojntfx/alpimager
+
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
+  install /tmp/alpimager /usr/local/bin
+fi
 
 mkdir -p /usr/lib/go/misc/wasm/
 curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
@@ -179,7 +185,6 @@ chmod +x ~/Desktop/Onboard.desktop
 curl -L -o /usr/share/backgrounds/xfce/spacex.jpg 'https://images.unsplash.com/photo-1541185934-01b600ea069c?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&dl=spacex-6SbFGnQTE8s-unsplash.jpg'
 xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-query -c xfce4-desktop -p $path -s /usr/share/backgrounds/xfce/spacex.jpg; done
 
-export SYSTEM_ARCHITECTURE=$(uname -m)
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 else
@@ -187,20 +192,25 @@ else
 fi
 install /tmp/skaffold /usr/local/bin
 
-curl -sLS https://dl.get-arkade.dev | sh
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  curl -sLS https://dl.get-arkade.dev | sh
 
-arkade get kubectl
-arkade get k9s
-arkade get helm
-arkade get k3d
-arkade get k3sup
+  arkade get kubectl
+  arkade get k9s
+  arkade get helm
+  arkade get k3d
+  arkade get k3sup
 
-ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
-ln -s ~/.arkade/bin/helm /usr/local/bin/helm
+  ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
+  ln -s ~/.arkade/bin/helm /usr/local/bin/helm
+else
+  apk add curl k9s helm
+fi
 
-echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
-cat <<EOT >/etc/init.d/kited
+  cat <<EOT >/etc/init.d/kited
 #!/sbin/openrc-run                                                                                                                                                                                                    
 
 name=\$RC_SVCNAME
@@ -208,7 +218,9 @@ command="/root/.local/share/kite/kited"
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
-chmod +x /etc/init.d/kited
+  chmod +x /etc/init.d/kited
+fi
+
 pip install -U pylint --user
 pip install -U autopep8 --user
 
@@ -573,7 +585,9 @@ curl 'https://open-vsx.org/api/richardwillis/vscode-gradle' | jq '.files.downloa
 curl 'https://open-vsx.org/api/vscjava/vscode-java-dependency' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-java-dependency.vsix
 curl 'https://open-vsx.org/api/vscode/python' | jq '.files.download' | xargs curl --compressed -L -o plugins/python.vsix
 curl 'https://open-vsx.org/api/ms-python/python' | jq '.files.download' | xargs curl --compressed -L -o plugins/ms-python.vsix
-curl 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download' | xargs curl --compressed -L -o plugins/kite.vsix
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  curl 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download' | xargs curl --compressed -L -o plugins/kite.vsix
+fi
 curl 'https://open-vsx.org/api/vscode/ruby' | jq '.files.download' | xargs curl --compressed -L -o plugins/ruby.vsix
 curl 'https://open-vsx.org/api/rebornix/ruby' | jq '.files.download' | xargs curl --compressed -L -o plugins/rebornix-ruby.vsix
 curl 'https://open-vsx.org/api/vscode/javascript' | jq '.files.download' | xargs curl --compressed -L -o plugins/javascript.vsix
@@ -762,9 +776,12 @@ EOT
 curl -o /usr/local/bin/update-pojde https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde
 chmod +x /usr/local/bin/update-pojde
 
-echo "Setup completed successfully; you might loose your connection if you're connected via SSH. In that case, please reconnect."
+echo "Setup completed successfully; you might loose your connection if you're connected via SSH or are using one of the services. In that case, please reconnect/reload."
 
-services="dbus udev fuse docker kited supervisord"
+services="dbus udev fuse docker supervisord"
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  services="dbus udev fuse docker kited supervisord"
+fi
 for service in $services; do
   nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &
 done
