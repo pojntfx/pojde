@@ -86,8 +86,6 @@ Headless Linux distribution for full-stack software development with web access 
 
 ### C#
 
-> To enable C#, set `ENABLE_CSHARP_SUPPORT` to `"1"` in `setup.sh`
-
 - C# language basics
 - C# language support
 - C# debugging with Mono (see https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) for a launch configuration
@@ -95,7 +93,7 @@ Headless Linux distribution for full-stack software development with web access 
 
 ### Godot
 
-> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state. Use the included Godot editor instead (see [Desktop](#desktop)).
+> GDScript language support in Theia is not yet working; trying to connect to the GDScript language server hangs in the "Connecting" state. Use the included Godot editor (see [Desktop](#desktop)) or code-server instead.
 
 - Godot editor support
 - GDScript language basics (in Theia and Godot Editor)
@@ -161,6 +159,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `skaffold` (see [https://skaffold.dev/](https://skaffold.dev/))
 - `k3d` (see [https://k3d.io/](https://k3d.io/))
 - `k3sup` (see [https://k3sup.dev/](https://k3sup.dev/))
+- `alpimager` (see [https://github.com/pojntfx/alpimager](https://github.com/pojntfx/alpimager))
 - `jq`
 - Docker
 - Kubernetes
@@ -203,43 +202,44 @@ Headless Linux distribution for full-stack software development with web access 
 
 ## Installation
 
-### Virtualized Installation With `alpimager`
+### Option 1: Native Installation On An Existing Alpine Linux Installation
 
-1. Copy [packages.txt](https://github.com/pojntfx/pojde/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/pojde/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/pojde/blob/master/setup.sh) to a local directory. Do not delete these files after running the commands below; you'll need them again once you want to update the IDE.
+To install, run the following as root and follow the instructions:
+
+```bash
+. <(curl https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)
+```
+
+For the next steps, continue to [Usage](#usage).
+
+> Tested on:
+>
+> - Alpine Linux Edge (x86_64) (Intel Server)
+> - Alpine Linux Edge (aarch64) (Raspberry Pi 4)
+> - WSL2 with [Alpine WSL](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395); if there are errors in the installation script, you can safely ignore them. Because of the way that WSL works, there is no support for the init system, so you'll have to start the IDE manually by running `supervisord -c /etc/supervisord.conf` as root. SSH forwarding is supported if OpenSSH server is enabled on Windows (see [Installation of OpenSSH For Windows Server 2019 and Windows 10](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse)), but you'll have to specify the IP of the WSL virtual machine (i.e. by substituting `-L localhost:8000:localhost:8000` etc. with `-L localhost:8000:172.19.201.219:8000`). You can find the IP of the WSL virtual machine by running `ip addr` in Alpine WSL's shell.
+
+### Option 2: Virtualized Installation With `alpimager`
+
+1. Copy [packages.txt](https://github.com/pojntfx/pojde/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/pojde/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/pojde/blob/master/setup.sh) to a local directory.
 2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
-3. First, get [alpimager](https://pojntfx.github.io/alpimager/), install it and create the disk image by running `alpimager -output pojde.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
+3. Get [alpimager](https://pojntfx.github.io/alpimager/), install it and create the disk image by running `alpimager -output pojde.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
 4. Increase the disk image size by running `qemu-img resize pojde.qcow2 +20G`
 5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::40022-:22 -boot d -drive format=qcow2,file=pojde.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=pojde.qcow2`. If you do so, there is no need to use `-p 40022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
 6. Log into the machine and resize the file system by running `ssh -p 40022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
 7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -L localhost:8003:localhost:8003 -p 40022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
 8. Continue to [Usage](#usage)
 
-To update to a newer version of Theia, simply re-run the steps above. Make sure to persist your data somewhere that is not the VM beforehand; an update resets the VM. If you prefer to update without resetting the VM, see [Native Installation On An Existing Alpine Linux Installation](#native-installation-on-an-existing-alpine-linux-installation).
+> Tested on:
+>
+> - Alpine Linux Edge (x86_64) (Intel Server)
+> - Fedora Linux 32 (Intel Workstation)
+> - macOS Big Sur (MacBook Pro 2016 13")
 
-### Native Installation On An Existing Alpine Linux Installation
-
-While using the virtualized system is the preferred method due to it creating reproducable and easily distributable installations, it is also possible to set up a native installation. Run the commands below as root.
-
-1. Run `mkdir -p /etc/pojde` to create the configuration directory
-2. Run `curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt` to download the list of the required packages
-3. Run `curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt` to download the recommended repositories
-4. Run `curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh` to download the installation script
-5. Run `sed -i /etc/pojde/setup.sh -e 's/ENABLE_OS_SETUP="1"/ENABLE_OS_SETUP="0"/g'` to disable the OS setup steps
-6. Adjust the other settings (especially the password) in `/etc/pojde/setup.sh` to your liking
-7. Setup the repositories by running `cp /etc/pojde/repositories.txt /etc/apk/repositories`
-8. Upgrade your system by running `apk update && apk upgrade`
-9. On an AMD64 system (your average server or desktop), install the packages by running `apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')`
-
-   On an ARM64 system (i.e. a Raspberry Pi), install the packages by running `apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')`
-
-10. Start the installation by running `sh /etc/pojde/setup.sh`. You can also set the internal variables by overwriting them here (i.e. with `IP="100.64.154.241" sh /etc/pojde/setup.sh`). If you're on a Raspberry Pi and connected via Wifi, you'll loose the connection after installation; simply restart your Pi afterwards.
-11. Continue to [Usage](#usage)
-
-To update the IDE, re-run the steps above (don't forget to adjust your settings).
-
-WSL2 with [Alpine WSL](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395) is also supported; if there are errors in the installation script, you can safely ignore them. Because of the way that WSL works, there is no support for the init system, so you'll have to start the IDE manually by running `supervisord -c /etc/supervisord.conf` as root. SSH forwarding is supported if OpenSSH server is enabled on Windows (see [Installation of OpenSSH For Windows Server 2019 and Windows 10](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse)), but you'll have to specify the IP of the WSL virtual machine (i.e. by substituting `-L localhost:8000:localhost:8000` etc. with `-L localhost:8000:172.19.201.219:8000`). You can find the IP of the WSL virtual machine by running `ip addr` in the WSL virtual machine's shell.
+For Windows, please use the native installation on WSL2.
 
 ## Usage
+
+### Access
 
 To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. If you don't use SSH forwarding or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
 
@@ -248,12 +248,16 @@ To access the services, use the passwords you've specified in `setup.sh` and the
 - code-server: [https://localhost:8002](https://localhost:8002)
 - noVNC: [https://localhost:8003](https://localhost:8003)
 
+### Using a Domain
+
 If you are using a domain, make sure to set the A records correcty:
 
 ```zone
 A pojntfx.dev.alphahorizon.io 141.72.248.134
 A *.pojntfx.dev.alphahorizon.io 141.72.248.134
 ```
+
+### Trusting the Certificates
 
 You'll have to trust the self-signed SSL certificate. I created some videos on how to do that:
 
@@ -264,6 +268,10 @@ You'll have to trust the self-signed SSL certificate. I created some videos on h
 If you are using a iOS device, read the following article: [Adding Trusted Root Certificates to iOS14](https://www.theictguy.co.uk/adding-trusted-root-certificates-to-ios14/). [code-server/issues/979](https://github.com/cdr/code-server/issues/979#issuecomment-557902494) might also be of use.
 
 Note that Safari is not supported in Theia due to an [issue with WebSockets and HTTP basic auth](https://bugs.webkit.org/show_bug.cgi?id=80362). To use Theia on Safari, open noVNC, add it to the homescreen and use Chromium in noVNC to browse to Theia; alternatively, you can use code-server.
+
+### Updating
+
+To update the IDE, run `update-pojde` in the terminal and follow the instructions.
 
 ## License
 
