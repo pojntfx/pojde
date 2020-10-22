@@ -85,20 +85,19 @@ echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
 echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
 echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
 
-# mkdir -p /etc/pojde
-# curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
-# curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
-# curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
-#
-# cp /etc/pojde/repositories.txt /etc/apk/repositories
-# apk update && apk upgrade
-#
-# export SYSTEM_ARCHITECTURE=$(uname -m)
-# if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-# apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')
-# else
-# apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
-# fi
-#
-# sh /etc/pojde/setup.sh
-#
+mkdir -p /etc/pojde
+curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
+curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
+curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
+
+cp /etc/pojde/repositories.txt /etc/apk/repositories
+apk update && apk upgrade
+
+export SYSTEM_ARCHITECTURE=$(uname -m)
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+    apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')
+else
+    apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
+fi
+
+sh /etc/pojde/setup.sh
