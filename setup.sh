@@ -45,6 +45,7 @@ chmod 600 /root/.ssh/authorized_keys
 sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 
 ln -sf /bin/bash /bin/sh
+bash
 
 apk update
 apk upgrade
@@ -72,6 +73,7 @@ export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
 export PATH="\$PATH:/root/.arkade/bin/"
 export WASMTIME_HOME="\$HOME/.wasmtime"
 export PATH="\$WASMTIME_HOME/bin:\$PATH"
+export PATH="/usr/local/bin/:\$PATH"
 
 ulimit -n 65000
 EOT
