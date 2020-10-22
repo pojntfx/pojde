@@ -542,6 +542,7 @@ curl 'https://open-vsx.org/api/zxh404/vscode-proto3' | jq '.files.download' | xa
 curl 'https://open-vsx.org/api/Prisma/vscode-graphql' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-graphql.vsix
 curl 'https://open-vsx.org/api/vscode/xml' | jq '.files.download' | xargs curl --compressed -L -o plugins/xml.vsix
 curl 'https://open-vsx.org/api/redhat/vscode-xml' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-xml.vsix
+curl 'https://open-vsx.org/api/hediet/vscode-drawio' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-drawio.vsix
 curl 'https://open-vsx.org/api/vscode/image-preview' | jq '.files.download' | xargs curl --compressed -L -o plugins/image-preview.vsix
 curl 'https://open-vsx.org/api/vscode/shellscript' | jq '.files.download' | xargs curl --compressed -L -o plugins/shellscript.vsix
 curl 'https://open-vsx.org/api/foxundermoon/shell-format' | jq '.files.download' | xargs curl --compressed -L -o plugins/shell-format.vsix
