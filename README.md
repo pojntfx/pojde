@@ -33,6 +33,7 @@ Headless Linux distribution for full-stack software development with web access 
 - OpenAPI/Swagger language support
 - XML language basics
 - XML language support
+- Draw.io integration
 - Image Preview
 
 ### Shell
