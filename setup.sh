@@ -45,7 +45,6 @@ chmod 600 /root/.ssh/authorized_keys
 sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 
 ln -sf /bin/bash /bin/sh
-bash
 
 apk update
 apk upgrade
