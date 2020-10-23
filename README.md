@@ -168,8 +168,17 @@ Headless Linux distribution for full-stack software development with web access 
 
 - `tmux`
 - `iproute2`
+- `wireshark`
 - `tshark`
+- `iftop`
 - `nmap`
+- Burp Suite
+- `gobuster`
+- `ffuf`
+- John the Ripper
+- Nikto
+- `sqlmap`
+- Metasploit
 
 ### Themes
 

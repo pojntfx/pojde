@@ -81,6 +81,8 @@ export WASMTIME_HOME="\$HOME/.wasmtime"
 export PATH="\$WASMTIME_HOME/bin:\$PATH"
 export PATH="/usr/local/bin/:\$PATH"
 
+alias burp="java -jar /opt/burp/burp.jar"
+
 ulimit -n 65000
 EOT
 chmod +x /etc/profile.d/main.sh
@@ -225,6 +227,19 @@ pip install -U pylint --user
 pip install -U autopep8 --user
 
 curl https://wasmtime.dev/install.sh -sSf | bash
+
+rm -rf /opt/burp
+mkdir -p /opt/burp
+curl -o /opt/burp/burp.jar 'https://portswigger.net/burp/releases/download?product=community&version=2020.9.2&type=Jar'
+go get -u github.com/ffuf/ffuf
+
+pip install sqlmap
+
+rm -rf /usr/share/metasploit-framework
+git clone https://github.com/rapid7/metasploit-framework.git /usr/share/metasploit-framework
+cd /usr/share/metasploit-framework
+bundle update --bundler
+bundle install
 
 yarn global add wetty@1.4.1
 yarn global add jest
