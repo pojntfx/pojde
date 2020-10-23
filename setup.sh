@@ -241,6 +241,15 @@ cd /usr/share/metasploit-framework
 bundle update --bundler
 bundle install
 
+rm -rf /opt/hydra
+git clone https://github.com/vanhauser-thc/thc-hydra.git /opt/hydra
+cd /opt/hydra
+./configure
+make
+make install
+
+gem install wpscan
+
 yarn global add wetty@1.4.1
 yarn global add jest
 yarn global add @vue/cli
