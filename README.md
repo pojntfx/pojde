@@ -179,6 +179,8 @@ Headless Linux distribution for full-stack software development with web access 
 - Nikto
 - `sqlmap`
 - Metasploit
+- `hydra`
+- WPScan
 
 ### Themes
 
