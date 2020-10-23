@@ -515,37 +515,39 @@ rm -rf ~/.local/share/code-server/extensions/
 
 mkdir -p plugins
 
-curl --compressed -L -o plugins/vscode-openapi.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/42Crunch/vsextensions/vscode-openapi/3.7.0/vspackage
-curl --compressed -L -o plugins/gradle-language.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/naco-siren/vsextensions/gradle-language/0.2.3/vspackage
+# Extensions from code-server marketplace
+code-server --force --install-extension '42crunch.vscode-openapi'
+code-server --force --install-extension 'naco-siren.gradle-language'
+code-server --force --install-extension 'dsznajder.es7-react-js-snippets'
+code-server --force --install-extension 'mtxr.sqltools'
+code-server --force --install-extension 'tinkertrain.theme-panda'
+code-server --force --install-extension 'miguelsolorio.min-theme'
+code-server --force --install-extension 'akamud.vscode-theme-onelight'
+code-server --force --install-extension 'akamud.vscode-theme-onedark'
+code-server --force --install-extension 'ahmadawais.shades-of-purple'
+code-server --force --install-extension 'dracula-theme.theme-dracula'
+code-server --force --install-extension 'jolaleye.horizon-theme-vscode'
+code-server --force --install-extension 'taniarascia.new-moon-vscode'
+code-server --force --install-extension 'github.github-vscode-theme'
+code-server --force --install-extension 'equinusocio.vsc-material-theme'
+code-server --force --install-extension 'equinusocio.vsc-material-theme-icons'
+code-server --force --install-extension 'ms-vscode.mono-debug'
+code-server --force --install-extension 'ms-vscode.cmake-tools'
+
+# Extensions from MS marketplace
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
-curl --compressed -L -o plugins/es7-react-js-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsznajder/vsextensions/es7-react-js-snippets/3.0.0/vspackage
-curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.2.2/vspackage
 curl --compressed -L -o plugins/zig-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/lorenzopirro/vsextensions/zig-snippets/1.3.0/vspackage
 curl --compressed -L -o plugins/zig.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tiehuis/vsextensions/zig/0.2.5/vspackage
-sleep 1 # MS Rate limit
-curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/0.23.0/vspackage
-curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
-curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
-curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
-curl --compressed -L -o plugins/theme-panda.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tinkertrain/vsextensions/theme-panda/1.3.0/vspackage
-curl --compressed -L -o plugins/min-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/miguelsolorio/vsextensions/min-theme/1.4.6/vspackage
-sleep 1 # MS Rate limit
-curl --compressed -L -o plugins/vscode-theme-onelight.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onelight/2.2.2/vspackage
-curl --compressed -L -o plugins/vscode-theme-onedark.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/akamud/vsextensions/vscode-theme-onedark/2.2.2/vspackage
+curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.2.2/vspackage
 curl --compressed -L -o plugins/theme-monokai-pro-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/monokai/vsextensions/theme-monokai-pro-vscode/1.1.17/vspackage
-curl --compressed -L -o plugins/shades-of-purple.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ahmadawais/vsextensions/shades-of-purple/6.12.0/vspackage
-curl --compressed -L -o plugins/theme-dracula.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dracula-theme/vsextensions/theme-dracula/2.22.1/vspackage
-sleep 1 # MS Rate limit
-curl --compressed -L -o plugins/horizon-theme-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/jolaleye/vsextensions/horizon-theme-vscode/2.0.2/vspackage
-curl --compressed -L -o plugins/new-moon-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/taniarascia/vsextensions/new-moon-vscode/1.8.8/vspackage
-curl --compressed -L -o plugins/github-vscode-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/github-vscode-theme/1.1.5/vspackage
-curl --compressed -L -o plugins/vsc-material-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Equinusocio/vsextensions/vsc-material-theme/33.0.0/vspackage
-curl --compressed -L -o plugins/vsc-material-theme-icons.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Equinusocio/vsextensions/vsc-material-theme-icons/1.2.0/vspackage
+curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
+curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
+curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
 
+# Extensions from GitHub
 curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
-curl --compressed -L -o plugins/mono-debug-0.16.2.vsix.vsix https://github.com/microsoft/vscode-mono-debug/releases/download/v0.16.2/mono-debug-0.16.2.vsix
-curl --compressed -L -o plugins/cmake-tools.vsix https://github.com/microsoft/vscode-cmake-tools/releases/download/1.4.2/cmake-tools.vsix
 
+# Extensions from Open-VSX
 curl 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download' | xargs curl --compressed -L -o plugins/gitlens.vsix
 curl 'https://open-vsx.org/api/mhutchie/git-graph' | jq '.files.download' | xargs curl --compressed -L -o plugins/git-graph.vsix
 curl 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download' | xargs curl --compressed -L -o plugins/prettier-vscode.vsix
@@ -626,6 +628,10 @@ for z in *.vsix; do
   rm $z
 done
 cd ..
+
+for extension in ~/.local/share/code-server/extensions/*; do
+  cp -r $extension ${INSTALL_DIR}/theia/plugins
+done
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
   rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
