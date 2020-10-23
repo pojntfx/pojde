@@ -82,6 +82,7 @@ export PATH="\$WASMTIME_HOME/bin:\$PATH"
 export PATH="/usr/local/bin/:\$PATH"
 
 alias burp="java -jar /opt/burp/burp.jar"
+alias zap="java -jar /opt/zap/ZAP_2.9.0/zap-2.9.0.jar"
 
 ulimit -n 65000
 EOT
@@ -249,6 +250,11 @@ make
 make install
 
 gem install wpscan
+
+rm -rf /opt/zap
+mkdir -p /opt/zap
+curl -L -o /tmp/zap.tar.gz https://github.com/zaproxy/zaproxy/releases/download/v2.9.0/ZAP_2.9.0_Linux.tar.gz
+tar xvzf /tmp/zap.tar.gz -C /opt/zap
 
 yarn global add wetty@1.4.1
 yarn global add jest

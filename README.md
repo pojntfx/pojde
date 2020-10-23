@@ -181,6 +181,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Metasploit
 - `hydra`
 - WPScan
+- OWASP ZAP
 
 ### Themes
 
