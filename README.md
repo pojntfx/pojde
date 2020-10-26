@@ -133,6 +133,7 @@ Headless Linux distribution for full-stack software development with web access 
 - ZipFS
 - Kite Autocomplete for JavaScript
 - `wasmtime`
+- localtunnel
 
 ### Zig
 
