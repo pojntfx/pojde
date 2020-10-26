@@ -260,6 +260,7 @@ tar xvzf /tmp/zap.tar.gz -C /opt/zap
 yarn global add wetty@1.4.1
 yarn global add jest
 yarn global add @vue/cli
+yarn global add localtunnel
 yarn global add code-server
 
 rm -rf ~/.config/code-server
