@@ -100,6 +100,7 @@ source /root/.bashrc
 
 git config --global user.name "${FULL_NAME}"
 git config --global user.email "${EMAIL}"
+git config --global pull.rebase false
 
 rm -rf ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
