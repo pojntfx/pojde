@@ -58,6 +58,7 @@ Headless Linux distribution for full-stack software development with web access 
 - C/C++ debugging with GDB and LLDB
 - CMake language basics
 - CMake tools
+- CMake formatter
 - Make language basics
 - C++ test explorer
 
