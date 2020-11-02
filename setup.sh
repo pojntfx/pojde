@@ -646,6 +646,7 @@ code-server --force --install-extension 'equinusocio.vsc-material-theme-icons'
 code-server --force --install-extension 'ms-vscode.mono-debug'
 code-server --force --install-extension 'ms-vscode.cmake-tools'
 code-server --force --install-extension 'tyriar.lorem-ipsum'
+code-server --force --install-extension 'tomoki1207.pdf'
 
 # Extensions from MS marketplace (worst option; rate limited)
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
