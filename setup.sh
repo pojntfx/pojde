@@ -823,9 +823,9 @@ chmod +x /usr/local/bin/update-pojde
 
 echo "Setup completed successfully; you might loose your connection if you're connected via SSH or are using one of the services. In that case, please reconnect/reload."
 
-services="dbus udev fuse docker supervisord"
+services="dbus udev fuse docker libvirtd supervisord"
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  services="dbus udev fuse docker kited supervisord"
+  services="kited dbus udev fuse docker libvirtd supervisord"
 fi
 for service in $services; do
   nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &

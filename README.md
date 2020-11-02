@@ -169,6 +169,9 @@ Headless Linux distribution for full-stack software development with web access 
 - `jq`
 - Docker
 - Kubernetes
+- `libvirt`
+- Virtual Machine Manager
+- Remmina
 
 ### SecOps
 
