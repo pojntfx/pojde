@@ -47,6 +47,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Image Preview
 - LTeX (grammar/spell checker)
 - LaTeX Workshop (with a full `texlive` installation)
+- PDF viewer
 
 ### Shell
 
