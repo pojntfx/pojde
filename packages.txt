@@ -127,3 +127,10 @@ postgresql
 ncurses
 texlive-full
 pandoc
+libvirt-daemon
+qemu
+qemu-img
+qemu-system-x86_64
+qemu-system-aarch64
+virt-manager
+remmina
