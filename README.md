@@ -46,6 +46,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Draw.io integration
 - Image Preview
 - LTeX (grammar/spell checker)
+- LaTeX Workshop (with a full `texlive` installation)
 
 ### Shell
 
