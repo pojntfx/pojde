@@ -31,6 +31,7 @@ if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi
 if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi
 if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi
 if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi
+if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
 
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="0"; fi
 if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi
@@ -63,6 +64,8 @@ read -e -i "$DOMAIN" -p "Please enter your new IDE's domain (used for TLS SAN ex
 DOMAIN="${input:-$DOMAIN}"
 read -e -i "$IP" -p "Please enter your new IDE's IP (used for TLS SAN extensions; keep as is if you don't know the IP): " input
 IP="${input:-$IP}"
+read -e -i "$SCREEN_RESOLUTION" -p "Please enter your virtual screen's resolution: " input
+SCREEN_RESOLUTION="${input:-$SCREEN_RESOLUTION}"
 read -e -i "$ENABLE_OS_SETUP" -p "Please enter 1 if you want to also setup the OS or 0 if you don't: " input
 ENABLE_OS_SETUP="${input:-$ENABLE_OS_SETUP}"
 read -e -i "$ENABLE_CSHARP_SUPPORT" -p "Please enter 1 if you want C# support or 0 if you don't: " input
