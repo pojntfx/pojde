@@ -28,6 +28,8 @@ Headless Linux distribution for full-stack software development with web access 
 - Gource
 - Prettier
 - Vim
+- Project manager
+- Clipboard manager
 
 ### Data and Documentation
 
@@ -45,6 +47,7 @@ Headless Linux distribution for full-stack software development with web access 
 - XML language support
 - Draw.io integration
 - Image Preview
+- SVG language support and preview
 - LTeX (grammar/spell checker)
 - LaTeX Workshop (with a full `texlive` installation)
 - PDF viewer

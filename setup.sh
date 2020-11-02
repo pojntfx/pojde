@@ -20,23 +20,23 @@ if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-works
 ## You shouldn't have to change anything below
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
-  setup-timezone -z UTC
+    setup-timezone -z UTC
 
-  cat <<-EOF >/etc/network/interfaces
+    cat <<-EOF >/etc/network/interfaces
 		iface lo inet loopback
 		iface eth0 inet dhcp
 	EOF
 
-  cat <<EOF >/etc/motd
+    cat <<EOF >/etc/motd
 ${MOTD}
 EOF
 
-  ln -s networking /etc/init.d/net.lo
-  ln -s networking /etc/init.d/net.eth0
+    ln -s networking /etc/init.d/net.lo
+    ln -s networking /etc/init.d/net.eth0
 
-  rc-update add sshd default
-  rc-update add net.eth0 default
-  rc-update add net.lo boot
+    rc-update add sshd default
+    rc-update add net.eth0 default
+    rc-update add net.lo boot
 fi
 
 mkdir -m 700 -p /root/.ssh
@@ -55,8 +55,8 @@ export SYSTEM_ARCHITECTURE=$(uname -m)
 apk add go
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
-  install /tmp/alpimager /usr/local/bin
+    curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
+    install /tmp/alpimager /usr/local/bin
 fi
 
 mkdir -p /usr/lib/go/misc/wasm/
@@ -108,21 +108,21 @@ rm -rf ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-  rm -rf ${INSTALL_DIR}/mono.git
-  mkdir -p ${INSTALL_DIR}/mono.git
-  git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
-  cd ${INSTALL_DIR}/mono.git
-  git checkout mono-6.10.0.105
-  apk add gettext gettext-dev libtool
-  ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
-  mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
-  sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
-  make get-monolite-latest
-  make -j$(nproc)
-  make install
+    rm -rf ${INSTALL_DIR}/mono.git
+    mkdir -p ${INSTALL_DIR}/mono.git
+    git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
+    cd ${INSTALL_DIR}/mono.git
+    git checkout mono-6.10.0.105
+    apk add gettext gettext-dev libtool
+    ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
+    mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
+    sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
+    make get-monolite-latest
+    make -j$(nproc)
+    make install
 
-  curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
-  ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+    curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+    ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 fi
 
 rm -rf ${INSTALL_DIR}/lldb-mi
@@ -133,14 +133,14 @@ cmake .
 cmake --build . --target install
 
 if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
-  rm -rf ${INSTALL_DIR}/neovim
-  mkdir -p ${INSTALL_DIR}/neovim
-  git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
-  cd ${INSTALL_DIR}/neovim
-  make
-  make install
+    rm -rf ${INSTALL_DIR}/neovim
+    mkdir -p ${INSTALL_DIR}/neovim
+    git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
+    cd ${INSTALL_DIR}/neovim
+    make
+    make install
 else
-  apk add neovim
+    apk add neovim
 fi
 
 ln -sf /usr/local/bin/nvim /usr/bin/nvim
@@ -192,31 +192,31 @@ curl -L -o /usr/share/backgrounds/xfce/spacex.jpg 'https://images.unsplash.com/p
 xfconf-query -c xfce4-desktop -l | grep last-image | while read path; do xfconf-query -c xfce4-desktop -p $path -s /usr/share/backgrounds/xfce/spacex.jpg; done
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
 else
-  curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
+    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
 fi
 install /tmp/skaffold /usr/local/bin
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -sLS https://dl.get-arkade.dev | sh
+    curl -sLS https://dl.get-arkade.dev | sh
 
-  arkade get kubectl
-  arkade get k9s
-  arkade get helm
-  arkade get k3d
-  arkade get k3sup
+    arkade get kubectl
+    arkade get k9s
+    arkade get helm
+    arkade get k3d
+    arkade get k3sup
 
-  ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
-  ln -s ~/.arkade/bin/helm /usr/local/bin/helm
+    ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
+    ln -s ~/.arkade/bin/helm /usr/local/bin/helm
 else
-  apk add curl k9s helm
+    apk add curl k9s helm
 fi
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
+    echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
-  cat <<EOT >/etc/init.d/kited
+    cat <<EOT >/etc/init.d/kited
 #!/sbin/openrc-run                                                                                                                                                                                                    
 
 name=\$RC_SVCNAME
@@ -224,7 +224,7 @@ command="/root/.local/share/kite/kited"
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
-  chmod +x /etc/init.d/kited
+    chmod +x /etc/init.d/kited
 fi
 
 pip install -U pylint --user
@@ -590,7 +590,7 @@ curl 'https://open-vsx.org/api/vscjava/vscode-java-dependency' | jq '.files.down
 curl 'https://open-vsx.org/api/vscode/python' | jq '.files.download' | xargs curl --compressed -L -o plugins/python.vsix
 curl 'https://open-vsx.org/api/ms-python/python' | jq '.files.download' | xargs curl --compressed -L -o plugins/ms-python.vsix
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download' | xargs curl --compressed -L -o plugins/kite.vsix
+    curl 'https://open-vsx.org/api/kiteco/kite' | jq '.files.download' | xargs curl --compressed -L -o plugins/kite.vsix
 fi
 curl 'https://open-vsx.org/api/vscode/ruby' | jq '.files.download' | xargs curl --compressed -L -o plugins/ruby.vsix
 curl 'https://open-vsx.org/api/rebornix/ruby' | jq '.files.download' | xargs curl --compressed -L -o plugins/rebornix-ruby.vsix
@@ -618,10 +618,13 @@ curl 'https://open-vsx.org/api/ms-azuretools/vscode-docker' | jq '.files.downloa
 curl 'https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-kubernetes-tools.vsix
 curl 'https://open-vsx.org/api/valentjn/vscode-ltex' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-ltex.vsix
 curl 'https://open-vsx.org/api/James-Yu/latex-workshop' | jq '.files.download' | xargs curl --compressed -L -o plugins/latex-workshop.vsix
+curl 'https://open-vsx.org/api/alefragnani/project-manager' | jq '.files.download' | xargs curl --compressed -L -o plugins/project-manager.vsix
+curl 'https://open-vsx.org/api/EdgardMessias/clipboard-manager' | jq '.files.download' | xargs curl --compressed -L -o plugins/clipboard-manager.vsix
+curl 'https://open-vsx.org/api/jock/svg' | jq '.files.download' | xargs curl --compressed -L -o plugins/svg.vsix
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-  curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
-  curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
+    curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
+    curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
 fi
 
 # Extensions from GitHub (second best option)
@@ -661,20 +664,20 @@ curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visu
 
 cd plugins
 for z in *.vsix; do
-  code-server --install-extension $z
-  mkdir -p $z-extracted
-  unzip $z -d $z-extracted
-  rm $z
+    code-server --install-extension $z
+    mkdir -p $z-extracted
+    unzip $z -d $z-extracted
+    rm $z
 done
 cd ..
 
 for extension in ~/.local/share/code-server/extensions/*; do
-  cp -r $extension ${INSTALL_DIR}/theia/plugins
+    cp -r $extension ${INSTALL_DIR}/theia/plugins
 done
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-  rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-  ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+    rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+    ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 fi
 
 mkdir -p ${WORKSPACE_DIR}
@@ -691,9 +694,9 @@ fc-cache -f
 
 printf "${DOMAIN}-${IP}" >/etc/nginx/domain-ip
 if [ "$(cat /etc/nginx/domain-ip)" != "${DOMAIN}-${IP}" ]; then
-  openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-    -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=${DOMAIN}" \
-    -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:localhost.localdomain,DNS:*.webview.localhost.localdomain,DNS:local.local,DNS:*.webview.local.local,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
+    openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+        -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=${DOMAIN}" \
+        -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:localhost.localdomain,DNS:*.webview.localhost.localdomain,DNS:local.local,DNS:*.webview.local.local,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
 fi
 
 printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
@@ -825,8 +828,8 @@ echo "Setup completed successfully; you might loose your connection if you're co
 
 services="dbus udev fuse docker libvirtd supervisord"
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  services="kited dbus udev fuse docker libvirtd supervisord"
+    services="kited dbus udev fuse docker libvirtd supervisord"
 fi
 for service in $services; do
-  nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &
+    nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &
 done
