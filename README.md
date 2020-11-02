@@ -45,6 +45,7 @@ Headless Linux distribution for full-stack software development with web access 
 - XML language support
 - Draw.io integration
 - Image Preview
+- LTeX (grammar/spell checker)
 
 ### Shell
 
