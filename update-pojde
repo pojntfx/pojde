@@ -60,7 +60,7 @@ echo
 if [ "$input" != "" ]; then
     PASSWORD="$input"
 fi
-read -e -i "$DOMAIN" -p "Please enter your new IDE's domain (used for TLS SAN extensions; localhost is always included. Keep as is if you don't have a domain): " input
+read -e -i "$DOMAIN" -p "Please enter your new IDE's domain (used for TLS SAN extensions; localhost, localhost.localdomain and local.local are always included. Keep as is if you don't have a domain): " input
 DOMAIN="${input:-$DOMAIN}"
 read -e -i "$IP" -p "Please enter your new IDE's IP (used for TLS SAN extensions; keep as is if you don't know the IP): " input
 IP="${input:-$IP}"

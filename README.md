@@ -262,6 +262,8 @@ To access the services, use the passwords you've specified in `setup.sh` and the
 - code-server: [https://localhost:8002](https://localhost:8002)
 - noVNC: [https://localhost:8003](https://localhost:8003)
 
+If you are forwarding to localhost and trust the SSL certificate, please note that [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) will be enabled for localhost. To prevent having HSTS on localhost, you may want to access the services using `localhost.localdomain` or `local.local` instead.
+
 ### Using a Domain
 
 If you are using a domain, make sure to set the A records correcty:
