@@ -134,6 +134,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Kite Autocomplete for JavaScript
 - `wasmtime`
 - localtunnel
+- Lorem ipsum generator
 
 ### Zig
 
