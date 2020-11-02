@@ -171,6 +171,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Kubernetes
 - `libvirt`
 - Virtual Machine Manager
+- GNOME Boxes
 - Remmina
 
 ### SecOps
