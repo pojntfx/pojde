@@ -615,6 +615,7 @@ curl 'https://open-vsx.org/api/geequlim/godot-tools' | jq '.files.download' | xa
 curl 'https://open-vsx.org/api/vscode/docker' | jq '.files.download' | xargs curl --compressed -L -o plugins/docker.vsix
 curl 'https://open-vsx.org/api/ms-azuretools/vscode-docker' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-docker.vsix
 curl 'https://open-vsx.org/api/ms-kubernetes-tools/vscode-kubernetes-tools' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-kubernetes-tools.vsix
+curl 'https://open-vsx.org/api/valentjn/vscode-ltex' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-ltex.vsix
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
   curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
