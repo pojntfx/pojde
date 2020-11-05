@@ -30,6 +30,7 @@ echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
 echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
 echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
 echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
+echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
