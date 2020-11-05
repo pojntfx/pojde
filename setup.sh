@@ -19,6 +19,23 @@ if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
 if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
 ## You shouldn't have to change anything below
 
+mkdir -p /etc/pojde
+echo "export FULL_NAME=\"${FULL_NAME}\"" >/etc/pojde/config.sh
+echo "export MOTD=\"${MOTD}\"" >>/etc/pojde/config.sh
+echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>/etc/pojde/config.sh
+echo "export EMAIL=\"${EMAIL}\"" >>/etc/pojde/config.sh
+echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>/etc/pojde/config.sh
+echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
+echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
+echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
+echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
+echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
+echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
+echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
+
 if [ $ENABLE_OS_SETUP = "1" ]; then
   setup-timezone -z UTC
 

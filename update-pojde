@@ -78,23 +78,6 @@ read -e -p "All set! Are you sure that you want to start the installation (pleas
 
 if [ "$START_INSTALLATION" = "y" ]; then
     mkdir -p /etc/pojde
-    echo "export FULL_NAME=\"${FULL_NAME}\"" >/etc/pojde/config.sh
-    echo "export MOTD=\"${MOTD}\"" >>/etc/pojde/config.sh
-    echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>/etc/pojde/config.sh
-    echo "export EMAIL=\"${EMAIL}\"" >>/etc/pojde/config.sh
-    echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>/etc/pojde/config.sh
-    echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
-    echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
-    echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
-    echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
-    echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
-    echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
-    echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
-    echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
-    echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
-    echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
-
-    mkdir -p /etc/pojde
     curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
     curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
     curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
