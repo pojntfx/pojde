@@ -843,7 +843,7 @@ user=root
 autorestart=true
 EOT
 
-curl -o /usr/local/bin/update-pojde https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde
+echo "sh -c \"\$(curl -sSL https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)\"" >/usr/local/bin/update-pojde
 chmod +x /usr/local/bin/update-pojde
 
 echo "Setup completed successfully; you might loose your connection if you're connected via SSH or are using one of the services. In that case, please reconnect/reload."
