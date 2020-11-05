@@ -36,6 +36,7 @@ if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="0"; fi
 if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi
 if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi
+if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
 
 if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
@@ -72,6 +73,8 @@ read -e -i "$ENABLE_CSHARP_SUPPORT" -p "Please enter 1 if you want C# support or
 ENABLE_CSHARP_SUPPORT="${input:-$ENABLE_CSHARP_SUPPORT}"
 read -e -i "$ENABLE_NEOVIM_BUILD" -p "Please enter 1 if you want to build Neovim from source or 0 if you want the repository version: " input
 ENABLE_NEOVIM_BUILD="${input:-$ENABLE_NEOVIM_BUILD}"
+read -e -i "$ENABLE_SECOPS_TOOLS" -p "Please enter 1 if you want the SecOps tools to be installed or 0 if you don't: " input
+ENABLE_SECOPS_TOOLS="${input:-$ENABLE_SECOPS_TOOLS}"
 echo
 
 read -e -p "All set! Are you sure that you want to start the installation (please enter y/n): " START_INSTALLATION
