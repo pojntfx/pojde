@@ -33,6 +33,7 @@ echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_SECOPS_TOOLS=\"${ENABLE_SECOPS_TOOLS}\"" >>/etc/pojde/config.sh
 echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
 echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
 echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
