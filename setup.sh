@@ -12,6 +12,7 @@ if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
 if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
 if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                      # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
 if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
+if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
 if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
 if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi     # Set to "1" if you want to have the latest neovim version from Git instead of the repository version
@@ -249,32 +250,34 @@ pip install -U autopep8 --user
 
 curl https://wasmtime.dev/install.sh -sSf | bash
 
-rm -rf /opt/burp
-mkdir -p /opt/burp
-curl -o /opt/burp/burp.jar 'https://portswigger.net/burp/releases/download?product=community&version=2020.9.2&type=Jar'
-go get -u github.com/ffuf/ffuf
+if [ $ENABLE_SECOPS_TOOLS = "1" ]; then
+  rm -rf /opt/burp
+  mkdir -p /opt/burp
+  curl -o /opt/burp/burp.jar 'https://portswigger.net/burp/releases/download?product=community&version=2020.9.2&type=Jar'
+  go get -u github.com/ffuf/ffuf
 
-pip install sqlmap
+  pip install sqlmap
 
-rm -rf /usr/share/metasploit-framework
-git clone https://github.com/rapid7/metasploit-framework.git /usr/share/metasploit-framework
-cd /usr/share/metasploit-framework
-bundle update --bundler
-bundle install
+  rm -rf /usr/share/metasploit-framework
+  git clone https://github.com/rapid7/metasploit-framework.git /usr/share/metasploit-framework
+  cd /usr/share/metasploit-framework
+  bundle update --bundler
+  bundle install
 
-rm -rf /opt/hydra
-git clone https://github.com/vanhauser-thc/thc-hydra.git /opt/hydra
-cd /opt/hydra
-./configure
-make
-make install
+  rm -rf /opt/hydra
+  git clone https://github.com/vanhauser-thc/thc-hydra.git /opt/hydra
+  cd /opt/hydra
+  ./configure
+  make
+  make install
 
-gem install wpscan
+  gem install wpscan
 
-rm -rf /opt/zap
-mkdir -p /opt/zap
-curl -L -o /tmp/zap.tar.gz https://github.com/zaproxy/zaproxy/releases/download/v2.9.0/ZAP_2.9.0_Linux.tar.gz
-tar xvzf /tmp/zap.tar.gz -C /opt/zap
+  rm -rf /opt/zap
+  mkdir -p /opt/zap
+  curl -L -o /tmp/zap.tar.gz https://github.com/zaproxy/zaproxy/releases/download/v2.9.0/ZAP_2.9.0_Linux.tar.gz
+  tar xvzf /tmp/zap.tar.gz -C /opt/zap
+fi
 
 yarn global add wetty@1.4.1
 yarn global add jest
