@@ -93,6 +93,8 @@ gource
 zig
 tmux
 nmap
+nmap-scripts
+nmap-nselibs
 tshark
 jq
 iproute2
