@@ -814,7 +814,7 @@ autorestart=true
 
 [program:x11vnc]
 priority=400
-command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -noxdamage -wait 5 -shared
+command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -noxdamage -wait 5 -shared -repeat
 user=root
 autorestart=true
 
