@@ -257,7 +257,7 @@ To start the IDE, run:
 
 ```bash
 docker start pojde
-docker exec pojde supervisord -c /etc/supervisord.conf
+docker exec -d pojde supervisord -c /etc/supervisord.conf
 ```
 
 For the next steps, continue to [Usage](#usage).
