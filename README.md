@@ -247,10 +247,10 @@ For the next steps, continue to [Usage](#usage).
 
 ### Option 2: Docker
 
-To install, run the following and follow the instructions:
+To install, run the following in your terminal (ZSH, Bash or PowerShell) and follow the instructions:
 
 ```bash
-docker run --name pojde -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -it --privileged alpine:edge sh -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf && sh -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)" && exit'
+docker run --name pojde -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -it --privileged alpine:edge sh -c 'echo nameserver\ 8.8.8.8 > /etc/resolv.conf && wget -O /tmp/install.sh https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde && sh /tmp/install.sh && exit'
 ```
 
 To start the IDE, run:
