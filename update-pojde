@@ -91,7 +91,7 @@ if [ "$START_INSTALLATION" = "y" ]; then
     mkdir -p /etc/pojde
     wget -O /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
     wget -O /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
-    wget -0 /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
+    wget -O /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
 
     cp /etc/pojde/repositories.txt /etc/apk/repositories
     apk update && apk upgrade
