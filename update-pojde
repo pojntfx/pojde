@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -z ${BASH+x} ]; then
     apk add bash
 
-    bash -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)"
+    bash -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde | sed -e 's/\#!\/bin\/sh/\#!\/bin\/bash/g')"
 fi
 
 printf "
