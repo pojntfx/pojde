@@ -243,23 +243,47 @@ For the next steps, continue to [Usage](#usage).
 >
 > - Alpine Linux Edge (x86_64) (Intel Server)
 > - Alpine Linux Edge (aarch64) (Raspberry Pi 4)
-> - WSL2 with [Alpine WSL](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395); if there are errors in the installation script, you can safely ignore them. Because of the way that WSL works, there is no support for the init system, so you'll have to start the IDE manually by running `supervisord -c /etc/supervisord.conf` as root. SSH forwarding is supported if OpenSSH server is enabled on Windows (see [Installation of OpenSSH For Windows Server 2019 and Windows 10](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse)), but you'll have to specify the IP of the WSL virtual machine (i.e. by substituting `-L localhost:8000:localhost:8000` etc. with `-L localhost:8000:172.19.201.219:8000`). You can find the IP of the WSL virtual machine by running `ip addr` in Alpine WSL's shell.
+> - Windows 10 2004 using WSL2 with [Alpine WSL](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395); if there are errors in the installation script, you can safely ignore them. Because of the way that WSL works, there is no support for the init system, so you'll have to start the IDE manually by running `supervisord -c /etc/supervisord.conf` as root. SSH forwarding is supported if OpenSSH server is enabled on Windows (see [Installation of OpenSSH For Windows Server 2019 and Windows 10](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse)), but you'll have to specify the IP of the WSL virtual machine (i.e. by substituting `-L localhost:8000:localhost:8000` etc. with `-L localhost:8000:172.19.201.219:8000`). You can find the IP of the WSL virtual machine by running `ip addr` in Alpine WSL's shell.
 
-### Option 2: Virtualized Installation With `alpimager`
+### Option 2: Docker
+
+To install, run the following (on Linux: as root) and follow the instructions:
+
+```bash
+docker run --name pojde -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -it --privileged alpine:edge sh -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf && sh -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)" && exit'
+```
+
+To start the IDE, run:
+
+```bash
+docker start pojde
+docker exec pojde supervisord -c /etc/supervisord.conf
+```
+
+For the next steps, continue to [Usage](#usage).
+
+> Tested on:
+>
+> - Alpine Linux Edge with Docker 19.03.13 (x86_64) (Intel Server)
+> - Fedora Linux 33 with Docker 19.03.13 (Intel Workstation)
+> - macOS Big Sur with Docker 19.03.13 (MacBook Pro 2016 13")
+> - Windows 10 2004 with Docker 19.03.13 (Intel Workstation)
+
+### Option 3: Virtualized Installation With `alpimager`
 
 1. Copy [packages.txt](https://github.com/pojntfx/pojde/blob/master/packages.txt), [repositories.txt](https://github.com/pojntfx/pojde/blob/master/repositories.txt) and [setup.sh](https://github.com/pojntfx/pojde/blob/master/setup.sh) to a local directory.
 2. Change usernames, passwords, SSH public keys etc. in `setup.sh` to your liking
 3. Get [alpimager](https://pojntfx.github.io/alpimager/), install it and create the disk image by running `alpimager -output pojde.qcow2 -debug`. If there are issues with the `nbd` kernel module, run `modprobe nbd` on your Docker host.
 4. Increase the disk image size by running `qemu-img resize pojde.qcow2 +20G`
-5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::40022-:22 -boot d -drive format=qcow2,file=pojde.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=pojde.qcow2`. If you do so, there is no need to use `-p 40022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
-6. Log into the machine and resize the file system by running `ssh -p 40022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
-7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -L localhost:8003:localhost:8003 -p 40022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
+5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::8022-:22 -boot d -drive format=qcow2,file=pojde.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=pojde.qcow2`. If you do so, there is no need to use `-p 8022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
+6. Log into the machine and resize the file system by running `ssh -p 8022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
+7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -L localhost:8003:localhost:8003 -p 8022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
 8. Continue to [Usage](#usage)
 
 > Tested on:
 >
 > - Alpine Linux Edge (x86_64) (Intel Server)
-> - Fedora Linux 32 (Intel Workstation)
+> - Fedora Linux 33 (Intel Workstation)
 > - macOS Big Sur (MacBook Pro 2016 13")
 
 For Windows, please use the native installation on WSL2.
@@ -268,14 +292,14 @@ For Windows, please use the native installation on WSL2.
 
 ### Access
 
-To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. If you don't use SSH forwarding or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
+To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. If you don't use SSH forwarding, didn't install using Docker or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
 
 - wetty: [https://localhost:8000](https://localhost:8000)
 - Theia: [https://localhost:8001](https://localhost:8001)
 - code-server: [https://localhost:8002](https://localhost:8002)
 - noVNC: [https://localhost:8003](https://localhost:8003)
 
-If you are forwarding to localhost and trust the SSL certificate, please note that [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) will be enabled for localhost. To prevent having HSTS on localhost, you may want to access the services using `localhost.localdomain` or `local.local` instead.
+If you are accessing the serivces on localhost and trust the SSL certificate, please note that [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) will be enabled for localhost. To prevent having HSTS on localhost, you may want to access the services using `localhost.localdomain` or `local.local` instead.
 
 ### Using a Domain
 
