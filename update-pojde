@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ -z ${BASH+x} ]; then
+    apk add bash
+
+    bash -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)"
+fi
+
 printf "
                    _     __   
     ____  ____    (_)___/ /__ 
