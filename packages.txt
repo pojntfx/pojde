@@ -137,3 +137,4 @@ qemu-system-aarch64
 virt-manager
 remmina
 gnome-boxes
+htop
