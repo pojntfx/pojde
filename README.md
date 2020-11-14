@@ -232,7 +232,7 @@ Headless Linux distribution for full-stack software development with web access 
 To install, run the following as root and follow the instructions:
 
 ```bash
-sh -c "$(curl -sSL https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)"
+sh -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)"
 ```
 
 For the next steps, continue to [Usage](#usage).
