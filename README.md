@@ -12,6 +12,8 @@
 
 Headless Linux distribution for full-stack software development with web access for all components. Develop from anywhere using any device with a browser!
 
+[Get started](#installation)
+
 ## Overview
 
 ### Services
