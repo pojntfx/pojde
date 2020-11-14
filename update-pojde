@@ -4,6 +4,8 @@ if [ -z ${BASH+x} ]; then
     apk add bash
 
     bash -c "$(wget -O - https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde | sed -e 's/\#!\/bin\/sh/\#!\/bin\/bash/g')"
+
+    exit
 fi
 
 printf "
@@ -87,9 +89,9 @@ read -e -p "All set! Are you sure that you want to start the installation (pleas
 
 if [ "$START_INSTALLATION" = "y" ]; then
     mkdir -p /etc/pojde
-    curl -o /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
-    curl -o /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
-    curl -o /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
+    wget -O /etc/pojde/packages.txt https://raw.githubusercontent.com/pojntfx/pojde/master/packages.txt
+    wget -O /etc/pojde/repositories.txt https://raw.githubusercontent.com/pojntfx/pojde/master/repositories.txt
+    wget -0 /etc/pojde/setup.sh https://raw.githubusercontent.com/pojntfx/pojde/master/setup.sh
 
     cp /etc/pojde/repositories.txt /etc/apk/repositories
     apk update && apk upgrade
@@ -101,7 +103,7 @@ if [ "$START_INSTALLATION" = "y" ]; then
         apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
     fi
 
-    sh /etc/pojde/setup.sh
+    bash /etc/pojde/setup.sh
 else
     echo "Aborted installation."
 fi
