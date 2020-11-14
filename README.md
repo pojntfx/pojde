@@ -256,8 +256,7 @@ docker run --name pojde -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 800
 To start the IDE, run:
 
 ```bash
-docker start pojde
-docker exec -d pojde supervisord -c /etc/supervisord.conf
+docker start pojde && docker exec -d pojde supervisord -c /etc/supervisord.conf
 ```
 
 For the next steps, continue to [Usage](#usage).
