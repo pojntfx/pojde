@@ -159,11 +159,14 @@ if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
   cd ${INSTALL_DIR}/neovim
   make
   make install
+
+  ln -sf /usr/local/bin/nvim /usr/bin/nvim
 else
   apk add neovim
+
+  ln -sf /usr/bin/nvim /usr/local/bin/nvim
 fi
 
-ln -sf /usr/local/bin/nvim /usr/bin/nvim
 ln -sf /usr/local/bin/nvim /usr/bin/vi
 ln -sf /usr/local/bin/nvim /usr/bin/vim
 
