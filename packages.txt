@@ -68,7 +68,6 @@ xfce4-terminal
 xfce4-screensaver
 xfce4-statusnotifier-plugin
 xfce4-statusnotifier-plugin
-xfce4-power-manager
 xfce4-screenshooter
 dbus-x11
 thunar
