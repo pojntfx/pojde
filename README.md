@@ -10,7 +10,7 @@
 
 ```
 
-Headless Linux distribution for full-stack software development with web access for all components. Develop from anywhere using any device with a browser!
+Headless Linux distribution for full-stack software development with web access for all components. Runs as a Docker container, virtual machine or even on bare metal. Develop from anywhere using any device with a browser!
 
 [Get started](#installation)
 
@@ -229,7 +229,27 @@ Headless Linux distribution for full-stack software development with web access 
 
 ## Installation
 
-### Option 1: Native Installation On An Existing Alpine Linux Installation
+### Option 1: Docker
+
+To install, run the following in your terminal (ZSH, Bash or PowerShell) and follow the instructions:
+
+```bash
+docker run --name pojde -v $HOME/Documents/pojde:/root:Z -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -v /var/run/docker.sock:/var/run/docker.sock:Z -d --privileged --restart always dockage/alpine:3.11-openrc
+docker exec -it pojde sh -c 'echo nameserver\ 8.8.8.8 > /etc/resolv.conf && wget -O /tmp/install.sh https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde && sh /tmp/install.sh && sleep 10 && exit'
+```
+
+You can find the content of the container's home directory in the Documents folder of your Docker host for easy data transfer.
+
+For the next steps, continue to [Usage](#usage).
+
+> Tested on:
+>
+> - Alpine Linux Edge with Docker 19.03.13 (x86_64) (Intel Server)
+> - Fedora Linux 33 with Docker 19.03.13 (Intel Workstation)
+> - macOS Big Sur with Docker 19.03.13 (MacBook Pro 2016 13")
+> - Windows 10 2004 with Docker 19.03.13 (Intel Workstation)
+
+### Option 2: Native Installation On An Existing Alpine Linux Installation
 
 To install, run the following as root and follow the instructions:
 
@@ -244,29 +264,6 @@ For the next steps, continue to [Usage](#usage).
 > - Alpine Linux Edge (x86_64) (Intel Server)
 > - Alpine Linux Edge (aarch64) (Raspberry Pi 4)
 > - Windows 10 2004 using WSL2 with [Alpine WSL](https://www.microsoft.com/en-us/p/alpine-wsl/9p804crf0395); if there are errors in the installation script, you can safely ignore them. Because of the way that WSL works, there is no support for the init system, so you'll have to start the IDE manually by running `supervisord -c /etc/supervisord.conf` as root. SSH forwarding is supported if OpenSSH server is enabled on Windows (see [Installation of OpenSSH For Windows Server 2019 and Windows 10](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse)), but you'll have to specify the IP of the WSL virtual machine (i.e. by substituting `-L localhost:8000:localhost:8000` etc. with `-L localhost:8000:172.19.201.219:8000`). You can find the IP of the WSL virtual machine by running `ip addr` in Alpine WSL's shell.
-
-### Option 2: Docker
-
-To install, run the following in your terminal (ZSH, Bash or PowerShell) and follow the instructions:
-
-```bash
-docker run --name pojde -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -it --privileged alpine:edge sh -c 'echo nameserver\ 8.8.8.8 > /etc/resolv.conf && wget -O /tmp/install.sh https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde && sh /tmp/install.sh && exit'
-```
-
-To start the IDE, run:
-
-```bash
-docker start pojde && docker exec -d pojde supervisord -c /etc/supervisord.conf
-```
-
-For the next steps, continue to [Usage](#usage).
-
-> Tested on:
->
-> - Alpine Linux Edge with Docker 19.03.13 (x86_64) (Intel Server)
-> - Fedora Linux 33 with Docker 19.03.13 (Intel Workstation)
-> - macOS Big Sur with Docker 19.03.13 (MacBook Pro 2016 13")
-> - Windows 10 2004 with Docker 19.03.13 (Intel Workstation)
 
 ### Option 3: Virtualized Installation With `alpimager`
 
@@ -285,7 +282,7 @@ For the next steps, continue to [Usage](#usage).
 > - Fedora Linux 33 (Intel Workstation)
 > - macOS Big Sur (MacBook Pro 2016 13")
 
-For Windows, please use the native installation on WSL2.
+For Windows, please use the native installation on WSL2 (see [the alpimager docs](https://github.com/pojntfx/alpimager#installation) for why).
 
 ## Usage
 
