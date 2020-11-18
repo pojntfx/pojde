@@ -280,7 +280,7 @@ if [ $ENABLE_SECOPS_TOOLS = "1" ]; then
   tar xvzf /tmp/zap.tar.gz -C /opt/zap
 fi
 
-yarn global add wetty@1.4.1 jest @vue/cli localtunnel code-server
+npm i -g wetty@1.4.1 jest @vue/cli localtunnel code-server
 
 rm -rf ~/.config/code-server
 mkdir -p ~/.config/code-server
@@ -844,11 +844,11 @@ chmod +x /usr/local/bin/update-pojde
 
 echo "Setup completed successfully; you might loose your connection if you're connected via SSH or are using one of the services. In that case, please reconnect/reload."
 
-DOCKER_SERVICE_NAME="docker"
-if grep docker /proc/1/cgroup -qa; then DOCKER_SERVICE_NAME=""; fi # dind
-services="dbus udev fuse $DOCKER_SERVICE_NAME libvirtd sshd supervisord"
+DOCKER_SERVICES_NAMES="docker udev"
+if grep docker /proc/1/cgroup -qa; then DOCKER_SERVICES_NAMES=""; fi # dind
+services="dbus fuse $DOCKER_SERVICES_NAMES libvirtd sshd supervisord"
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  services="kited dbus udev fuse $DOCKER_SERVICE_NAME libvirtd sshd supervisord"
+  services="kited dbus fuse $DOCKER_SERVICES_NAMES libvirtd sshd supervisord"
 fi
 for service in $services; do
   nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &
