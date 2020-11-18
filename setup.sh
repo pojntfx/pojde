@@ -282,7 +282,7 @@ if [ $ENABLE_SECOPS_TOOLS = "1" ]; then
   tar xvzf /tmp/zap.tar.gz -C /opt/zap
 fi
 
-npm i -g --unsafe-perm wetty@1.4.1 jest @vue/cli localtunnel
+npm i -g --unsafe-perm wetty@1.4.1 jest @vue/cli localtunnel wscat
 
 curl -fsSL https://code-server.dev/install.sh | sh
 ln -sf /root/.local/bin/code-server /usr/bin/code-server
