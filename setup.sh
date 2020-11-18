@@ -790,7 +790,7 @@ nodaemon=true
 [program:wetty]
 priority=100
 directory=/root
-command=/usr/local/bin/wetty -p 3000 -c bash -b /
+command=/usr/bin/wetty -p 3000 -c bash -b /
 user=root
 autorestart=true
 
@@ -834,7 +834,7 @@ autorestart=true
 
 [program:code-server]
 priority=800
-command=/usr/local/bin/code-server
+command=/usr/bin/code-server
 user=root
 autorestart=true
 EOT
