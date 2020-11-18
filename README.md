@@ -32,6 +32,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Vim
 - Project manager
 - Clipboard manager
+- [Dendron](https://www.dendron.so/)
 
 ### Data and Documentation
 
