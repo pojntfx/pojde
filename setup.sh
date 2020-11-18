@@ -290,13 +290,6 @@ rm -rf ~/.config/code-server
 mkdir -p ~/.config/code-server
 rm -rf ~/.local/share/code-server
 mkdir -p ~/.local/share/code-server/User
-cat <<EOT >~/.config/code-server/config.yaml
-bind-addr: 0.0.0.0:8002
-auth: password
-password: ${PASSWORD}
-cert: /etc/nginx/server.crt
-cert-key: /etc/nginx/server.key
-EOT
 
 rm -rf ~/.theia
 mkdir -p ~/.theia
@@ -711,6 +704,13 @@ yarn
 yarn theia build
 
 x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
+cat <<EOT >~/.config/code-server/config.yaml
+bind-addr: 0.0.0.0:8002
+auth: password
+password: ${PASSWORD}
+cert: /etc/nginx/server.crt
+cert-key: /etc/nginx/server.key
+EOT
 
 fc-cache -f
 
