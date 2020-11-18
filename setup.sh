@@ -54,7 +54,6 @@ EOF
   ln -s networking /etc/init.d/net.lo
   ln -s networking /etc/init.d/net.eth0
 
-  rc-update add sshd default
   rc-update add net.eth0 default
   rc-update add net.lo boot
 fi
@@ -847,9 +846,9 @@ echo "Setup completed successfully; you might loose your connection if you're co
 
 DOCKER_SERVICE_NAME="docker"
 if grep docker /proc/1/cgroup -qa; then DOCKER_SERVICE_NAME=""; fi # dind
-services="dbus udev fuse $DOCKER_SERVICE_NAME libvirtd supervisord"
+services="dbus udev fuse $DOCKER_SERVICE_NAME libvirtd sshd supervisord"
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  services="kited dbus udev fuse $DOCKER_SERVICE_NAME libvirtd supervisord"
+  services="kited dbus udev fuse $DOCKER_SERVICE_NAME libvirtd sshd supervisord"
 fi
 for service in $services; do
   nohup /bin/sh -c "rc-update add $service default; rc-service $service restart" >/dev/null 2>&1 &

@@ -234,11 +234,11 @@ Headless Linux distribution for full-stack software development with web access 
 To install, run the following in your terminal (ZSH, Bash or PowerShell) and follow the instructions:
 
 ```bash
-docker run --name pojde -v $HOME/Documents/pojde:/root:Z -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -v /var/run/docker.sock:/var/run/docker.sock:Z -d --privileged --restart always dockage/alpine:3.11-openrc
+docker run --name pojde -v $HOME/Documents/pojde:/root/Documents:Z -p 8022:22 -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8003:8003 -v /var/run/docker.sock:/var/run/docker.sock:Z -d --privileged --restart always dockage/alpine:3.11-openrc
 docker exec -it pojde sh -c 'echo nameserver\ 8.8.8.8 > /etc/resolv.conf && wget -O /tmp/install.sh https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde && sh /tmp/install.sh && sleep 10 && exit'
 ```
 
-You can find the content of the container's home directory in the Documents folder of your Docker host for easy data transfer.
+You can find the content of the container's `Documents` folder in the `Documents/pojde` folder of your Docker host for easy data transfer.
 
 For the next steps, continue to [Usage](#usage).
 
