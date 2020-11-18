@@ -99,8 +99,6 @@ export LIBRARY_PATH="/lib:/usr/lib"
 export PATH="/root/.cargo/bin:\$PATH"
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
 export PATH="\$PATH:/root/.arkade/bin/"
-export WASMTIME_HOME="\$HOME/.wasmtime"
-export PATH="\$WASMTIME_HOME/bin:\$PATH"
 export PATH="/usr/local/bin/:\$PATH"
 
 alias burp="java -jar /opt/burp/burp.jar"
@@ -251,7 +249,15 @@ fi
 pip install -U pylint --user
 pip install -U autopep8 --user
 
-curl https://wasmtime.dev/install.sh -sSf | bash
+rm -rf /opt/wasmtime
+mkdir -p /opt/wasmtime
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  curl -L -o /tmp/wasmtime.tar.xz https://github.com/bytecodealliance/wasmtime/releases/download/v0.21.0/wasmtime-v0.21.0-x86_64-linux.tar.xz
+else
+  curl -L -o /tmp/wasmtime.tar.xz https://github.com/bytecodealliance/wasmtime/releases/download/v0.21.0/wasmtime-v0.21.0-aarch64-linux.tar.xz
+fi
+tar xf /tmp/wasmtime.tar.xz -C /opt/wasmtime
+ln -sf /opt/wasmtime/*/wasmtime /usr/bin/wasmtime
 
 if [ $ENABLE_SECOPS_TOOLS = "1" ]; then
   rm -rf /opt/burp
