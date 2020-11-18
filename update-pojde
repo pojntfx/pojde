@@ -100,7 +100,7 @@ if [ "$START_INSTALLATION" = "y" ]; then
     if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
         apk add $(cat /etc/pojde/packages.txt | sed -e ':a;N;$!ba;s/\n/ /g')
     else
-        apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e ':a;N;$!ba;s/\n/ /g')
+        apk add $(cat /etc/pojde/packages.txt | sed -e 's/godot//g' | sed -e 's/xf86-video-intel//g' | sed -e 's/pandoc//g' | sed -e ':a;N;$!ba;s/\n/ /g')
     fi
 
     bash /etc/pojde/setup.sh
