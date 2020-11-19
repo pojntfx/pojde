@@ -715,7 +715,7 @@ mkdir -p ${WORKSPACE_DIR}
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 export NODE_OPTIONS="--max-old-space-size=8192"
 
-yarn
+yarn --network-timeout 1000000
 yarn theia build
 
 x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
