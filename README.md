@@ -246,6 +246,7 @@ For the next steps, continue to [Usage](#usage).
 > Tested on:
 >
 > - Alpine Linux Edge with Docker 19.03.13 (x86_64) (Intel Server)
+> - Alpine Linux Edge with Docker 19.03.13 (aarch64) (Raspberry Pi 4)
 > - Fedora Linux 33 with Docker 19.03.13 (Intel Workstation)
 > - macOS Big Sur with Docker 19.03.13 (MacBook Pro 2016 13")
 > - Windows 10 2004 with Docker 19.03.13 (Intel Workstation)
