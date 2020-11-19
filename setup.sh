@@ -719,7 +719,10 @@ yarn --network-timeout 1000000
 yarn theia build
 
 x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
-cat <<EOT >~/.config/code-server/config.yaml
+
+rm -rf /opt/pojde/code-server
+mkdir -p /opt/pojde/code-server
+cat <<EOT >/opt/pojde/code-server/config.yaml
 bind-addr: 0.0.0.0:8002
 auth: password
 password: ${PASSWORD}
@@ -853,7 +856,7 @@ autorestart=true
 
 [program:code-server]
 priority=800
-command=/usr/bin/code-server
+command=/usr/bin/code-server --config /opt/pojde/code-server/config.yaml
 user=root
 autorestart=true
 EOT
