@@ -288,7 +288,11 @@ if [ $ENABLE_SECOPS_TOOLS = "1" ]; then
   tar xvzf /tmp/zap.tar.gz -C /opt/zap
 fi
 
-npm i -g --unsafe-perm wetty@1.4.1 jest @vue/cli localtunnel wscat
+npm i -g --unsafe-perm jest @vue/cli localtunnel wscat
+
+go get github.com/yudai/gotty
+
+sed -i /etc/passwd -e 's/\/bin\/ash/\/bin\/bash/g'
 
 curl -fsSL https://code-server.dev/install.sh | sh
 ln -sf /root/.local/bin/code-server /usr/bin/code-server
@@ -806,10 +810,10 @@ cat <<EOT >/etc/supervisord.conf
 [supervisord]
 nodaemon=true
 
-[program:wetty]
+[program:gotty]
 priority=100
 directory=/root
-command=/usr/bin/wetty -p 3000 -c bash -b /
+command=/root/go/bin/gotty -w --port 3000 --address 127.0.0.1 /bin/bash
 user=root
 autorestart=true
 
