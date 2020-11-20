@@ -86,7 +86,6 @@ pulseaudio
 pulseaudio-alsa
 alsa-plugins-pulse
 onboard
-docker
 unzip
 gource
 zig

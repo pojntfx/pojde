@@ -294,6 +294,12 @@ go get github.com/yudai/gotty
 
 sed -i /etc/passwd -e 's/\/bin\/ash/\/bin\/bash/g'
 
+if grep docker /proc/1/cgroup -qa; then
+  apk add docker-cli
+else
+  apk add docker
+fi # dind
+
 curl -fsSL https://code-server.dev/install.sh | sh
 ln -sf /root/.local/bin/code-server /usr/bin/code-server
 ln -sf /usr/bin/node /root/.local/lib/code-server-*/lib/node
