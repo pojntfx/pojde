@@ -86,8 +86,11 @@ curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/
 curl https://sh.rustup.rs | bash -s -- -y
 
 wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-wget -O /tmp/glibc-2.32-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
-apk add /tmp/glibc-2.32-r0.apk
+wget -O /tmp/glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
+wget -O /tmp/glibc-bin.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-bin-2.32-r0.apk
+wget -O /tmp/glibc-dev.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-dev-2.32-r0.apk
+wget -O /tmp/glibc-i18n.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-i18n-2.32-r0.apk
+apk add /tmp/glibc.apk /tmp/glibc-bin.apk /tmp/glibc-dev.apk /tmp/glibc-i18n.apk
 
 cat <<EOT >/etc/profile.d/main.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
@@ -233,7 +236,9 @@ else
 fi
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  echo -ne '\ny\n\n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
+  curl -L -o /tmp/kite-installer https://linux.kite.com/linux/current/kite-installer
+  chmod +x /tmp/kite-installer
+  /tmp/kite-installer install
 
   cat <<EOT >/etc/init.d/kited
 #!/sbin/openrc-run                                                                                                                                                                                                    
