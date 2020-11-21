@@ -224,6 +224,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Firefox
 - GNOME Web (Epiphany/WebKit)
 - Lynx
+- Links
 - Godot Editor
 - Flatpak
 - On-Screen Keyboard
