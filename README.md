@@ -33,6 +33,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Project manager
 - Clipboard manager
 - [Dendron](https://www.dendron.so/)
+- speedtest-cli
 
 ### Data and Documentation
 
