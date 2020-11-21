@@ -42,6 +42,7 @@ chromium
 firefox
 epiphany
 lynx
+links
 font-noto
 nginx
 openssl
