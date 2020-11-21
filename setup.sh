@@ -248,6 +248,7 @@ fi
 
 pip install -U pylint --user
 pip install -U autopep8 --user
+pip install -U speedtest-cli --user
 
 rm -rf /opt/wasmtime
 mkdir -p /opt/wasmtime
