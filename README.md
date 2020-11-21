@@ -18,7 +18,7 @@ Headless Linux distribution for full-stack software development with web access 
 
 ### Services
 
-- [GoTTY](https://github.com/yudai/gotty), a web terminal
+- [ttyd](https://github.com/tsl0922/ttyd), a web terminal
 - My distribution of [Theia](https://theia-ide.org/), a modular web IDE based on VSCode
 - My distribution of [code-server](https://github.com/cdr/code-server), a fork of VSCode that turns it into a web IDE
 - [noVNC](https://novnc.com/info.html), a web VNC client with a full desktop environment (see [Desktop](#desktop))
@@ -293,7 +293,7 @@ For Windows, please use the native installation on WSL2 (see [the alpimager docs
 
 To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. If you don't use SSH forwarding, didn't install using Docker or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
 
-- GoTTY: [https://localhost:8000](https://localhost:8000)
+- ttyd: [https://localhost:8000](https://localhost:8000)
 - Theia: [https://localhost:8001](https://localhost:8001)
 - code-server: [https://localhost:8002](https://localhost:8002)
 - noVNC: [https://localhost:8003](https://localhost:8003)
