@@ -243,6 +243,8 @@ if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   cat <<EOT >/etc/init.d/kited
 #!/sbin/openrc-run                                                                                                                                                                                                    
 
+DOCKER_HOST=""
+
 name=\$RC_SVCNAME
 command="/root/.local/share/kite/kited"
 pidfile="/run/\$RC_SVCNAME.pid"
