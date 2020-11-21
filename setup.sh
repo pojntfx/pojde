@@ -815,58 +815,66 @@ server {
 }
 EOT
 
+SUPERVISORD_ENV_VARIABLES='environment=HOME=/root,USER=root,DOCKER_HOST="unix:///opt/pojde/docker.sock",DISPLAY=":1"'
+
 cat <<EOT >/etc/supervisord.conf
 [supervisord]
 nodaemon=true
 
 [program:gotty]
 priority=100
-directory=/root
-command=/root/go/bin/gotty -w --port 3000 --address 127.0.0.1 /bin/bash
+${SUPERVISORD_ENV_VARIABLES}
+command=/root/go/bin/gotty -w --port 3000 --address 127.0.0.1 /bin/bash -l
 user=root
 autorestart=true
 
 [program:theia]
 priority=200
 directory=${INSTALL_DIR}/theia
+${SUPERVISORD_ENV_VARIABLES}
 command=/usr/bin/yarn theia start ${WORKSPACE_DIR} --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins --vscode-api-version=1.50.1
 user=root
 autorestart=true
 
-[program:xvfb]
+[program:code-server]
 priority=300
+${SUPERVISORD_ENV_VARIABLES}
+command=/usr/bin/code-server --config /opt/pojde/code-server/config.yaml
+user=root
+autorestart=true
+
+[program:xvfb]
+priority=400
+${SUPERVISORD_ENV_VARIABLES}
 command=/usr/bin/Xvfb :1 -screen 0 ${SCREEN_RESOLUTION}x24 +iglx
 user=root
 autorestart=true
 
 [program:x11vnc]
-priority=400
+priority=500
+${SUPERVISORD_ENV_VARIABLES}
 command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -noxdamage -wait 5 -shared -repeat
 user=root
 autorestart=true
 
 [program:startxfce4]
-priority=500
+priority=600
+${SUPERVISORD_ENV_VARIABLES}
 command=/usr/bin/startxfce4
 user=root
 autorestart=true
-environment=DISPLAY=":1",HOME="/root",USER="root"
 
 [program:novnc]
-priority=600
+priority=700
+${SUPERVISORD_ENV_VARIABLES}
 command=/usr/bin/novnc_server --vnc localhost:5900 --listen 3003
 user=root
 autorestart=true
 
 [program:nginx]
-priority=700
-command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
-user=root
-autorestart=true
-
-[program:code-server]
 priority=800
-command=/usr/bin/code-server --config /opt/pojde/code-server/config.yaml
+${SUPERVISORD_ENV_VARIABLES}
+command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
 user=root
 autorestart=true
 EOT
