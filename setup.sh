@@ -815,7 +815,9 @@ server {
 }
 EOT
 
-SUPERVISORD_ENV_VARIABLES='environment=HOME=/root,USER=root,DOCKER_HOST="unix:///opt/pojde/docker.sock",DISPLAY=":1"'
+DOCKER_HOST_OVERWRITE=""
+if grep docker /proc/1/cgroup -qa; then DOCKER_HOST_OVERWRITE="DOCKER_HOST=\"unix:///opt/pojde/docker.sock\","; fi # dind
+SUPERVISORD_ENV_VARIABLES="environment=HOME=/root,USER=root,${DOCKER_HOST_OVERWRITE}DISPLAY=\":1\""
 
 cat <<EOT >/etc/supervisord.conf
 [supervisord]
