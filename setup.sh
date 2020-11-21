@@ -290,8 +290,6 @@ fi
 
 npm i -g --unsafe-perm jest @vue/cli localtunnel wscat
 
-go get github.com/yudai/gotty
-
 sed -i /etc/passwd -e 's/\/bin\/ash/\/bin\/bash/g'
 
 if grep docker /proc/1/cgroup -qa; then
@@ -302,7 +300,8 @@ fi # dind
 
 curl -fsSL https://code-server.dev/install.sh | sh
 ln -sf /root/.local/bin/code-server /usr/bin/code-server
-ln -sf /usr/bin/node /root/.local/lib/code-server-*/lib/node
+
+for file in /root/.local/lib/code-server-*; do ln -sf /usr/bin/node $file/lib/node; done
 
 rm -rf ~/.config/code-server
 mkdir -p ~/.config/code-server
@@ -758,26 +757,6 @@ map \$http_upgrade \$connection_upgrade {
 }
 
 server {
-    listen 8000 ssl;
-    ssl_certificate      server.crt;
-    ssl_certificate_key  server.key;
-    server_name ${DOMAIN};
-
-    location / {
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$remote_addr;
-        proxy_set_header Host \$http_host;
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-
-        auth_basic "Protected Area";
-        auth_basic_user_file /etc/nginx/.htpasswd;
-    }
-}
-
-server {
     listen 8001 ssl;
     ssl_certificate      server.crt;
     ssl_certificate_key  server.key;
@@ -823,10 +802,10 @@ cat <<EOT >/etc/supervisord.conf
 [supervisord]
 nodaemon=true
 
-[program:gotty]
+[program:ttyd]
 priority=100
 ${SUPERVISORD_ENV_VARIABLES}
-command=/root/go/bin/gotty -w --port 3000 --address 127.0.0.1 /bin/bash -l
+command=/usr/bin/ttyd --port 8000 -c ${USERNAME}:${PASSWORD} -S --ssl-cert /etc/nginx/server.crt --ssl-key /etc/nginx/server.key -a /bin/bash -l
 user=root
 autorestart=true
 
