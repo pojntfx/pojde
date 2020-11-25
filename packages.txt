@@ -140,3 +140,4 @@ htop
 tree
 shadow
 ttyd
+xz
