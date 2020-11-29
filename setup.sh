@@ -499,6 +499,7 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "kite.showWelcomeNotificationOnStartup": false,
   "clangd.path": "/usr/bin/clangd",
   "git.autofetch": true,
+  "emmet.triggerExpansionOnTab": true,
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -515,6 +516,9 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
