@@ -681,6 +681,8 @@ fi
 # Extensions from GitHub (second best option)
 curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
 curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
+curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
+curl --compressed -L -o plugins/vscode-tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
 
 # Extensions from code-server marketplace (third best open)
 code-server --force --install-extension '42crunch.vscode-openapi'
