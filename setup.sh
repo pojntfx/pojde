@@ -710,7 +710,6 @@ curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.vi
 curl --compressed -L -o plugins/zig-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/lorenzopirro/vsextensions/zig-snippets/1.3.0/vspackage
 curl --compressed -L -o plugins/zig.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tiehuis/vsextensions/zig/0.2.5/vspackage
 curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.2.2/vspackage
-curl --compressed -L -o plugins/theme-monokai-pro-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/monokai/vsextensions/theme-monokai-pro-vscode/1.1.17/vspackage
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage

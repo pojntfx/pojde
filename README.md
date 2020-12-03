@@ -210,7 +210,6 @@ Headless Linux distribution for full-stack software development with web access 
 - Min
 - One Light
 - One Dark
-- Monokai Pro
 - Shades of Purple
 - Dracula
 - Horizon
