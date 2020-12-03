@@ -31,9 +31,9 @@ ruby
 ruby-bundler
 ruby-irb
 ruby-dev
-nodejs
-npm
-yarn
+nodejs@retromain
+npm@retromain
+yarn@retromain
 supervisor
 xvfb
 x11vnc
