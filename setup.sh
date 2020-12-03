@@ -737,8 +737,8 @@ mkdir -p ${WORKSPACE_DIR}
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 export NODE_OPTIONS="--max-old-space-size=8192"
 
-# yarn --network-timeout 1000000
-# yarn theia build
+yarn --network-timeout 1000000
+yarn theia build
 
 x11vnc -storepasswd ${PASSWORD} /etc/vncsecret
 
@@ -819,6 +819,14 @@ nodaemon=true
 priority=100
 ${SUPERVISORD_ENV_VARIABLES}
 command=/usr/bin/ttyd --port 8000 -c ${USERNAME}:${PASSWORD} -S --ssl-cert /etc/nginx/server.crt --ssl-key /etc/nginx/server.key -a /bin/bash -l
+user=root
+autorestart=true
+
+[program:theia]
+priority=200
+directory=${INSTALL_DIR}/theia
+${SUPERVISORD_ENV_VARIABLES}
+command=/usr/bin/yarn theia start ${WORKSPACE_DIR} --hostname 127.0.0.1 --port 3001 --plugins=local-dir:plugins --vscode-api-version=1.50.1
 user=root
 autorestart=true
 
