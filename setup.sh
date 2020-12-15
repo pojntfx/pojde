@@ -456,6 +456,14 @@ cat <<EOT >~/.theia/keymaps.json
   {
     "key": "alt+w",
     "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "shift+alt+p",
+    "command": "workbench.action.showCommands"
+  },
+  {
+    "key": "f1",
+    "command": "-workbench.action.showCommands"
   }
 ]
 EOT
