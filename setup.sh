@@ -593,7 +593,8 @@ cat <<EOT >package.json
     "@theia/userstorage": "latest",
     "@theia/variable-resolver": "latest",
     "@theia/vsx-registry": "latest",
-    "@theia/workspace": "latest"
+    "@theia/workspace": "latest",
+    "vscode-jsonrpc": "5.0.1"
   },
   "devDependencies": {
     "@theia/cli": "latest"
