@@ -11,6 +11,7 @@ if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi         # For 
 if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
 if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
 if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                      # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+if [ -z ${NAMESERVER+x} ]; then export NAMESERVER="8.8.8.8"; fi
 if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
 if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
@@ -30,6 +31,7 @@ echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
 echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
 echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
 echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
+echo "export NAMESERVER=\"${NAMESERVER}\"" >>/etc/pojde/config.sh
 echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
@@ -57,6 +59,8 @@ EOF
   rc-update add net.eth0 default
   rc-update add net.lo boot
 fi
+
+echo "nameserver $NAMESERVER" >/etc/resolv.conf
 
 mkdir -m 700 -p /root/.ssh
 wget -O - https://github.com/${GITHUB_USERNAME}.keys | tee /root/.ssh/authorized_keys
