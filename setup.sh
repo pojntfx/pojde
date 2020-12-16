@@ -706,7 +706,7 @@ curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow
 curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
 curl --compressed -L -o plugins/vscode-tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
 
-# Extensions from code-server marketplace (third best open)
+# Extensions from code-server marketplace (third best option)
 code-server --force --install-extension 'naco-siren.gradle-language'
 code-server --force --install-extension 'dsznajder.es7-react-js-snippets'
 code-server --force --install-extension 'mtxr.sqltools'
@@ -734,6 +734,7 @@ curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstud
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
+curl --compressed -L -o plugins/web-accessibility.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/MaxvanderSchee/vsextensions/web-accessibility/0.2.83/vspackage
 
 cd plugins
 for z in *.vsix; do
