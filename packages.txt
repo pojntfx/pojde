@@ -141,3 +141,6 @@ tree
 shadow
 ttyd
 xz
+ffmpeg
+youtube-dl
+handbrake-gtk
