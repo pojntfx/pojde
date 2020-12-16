@@ -34,6 +34,8 @@ Headless Linux distribution for full-stack software development with web access 
 - Clipboard manager
 - [Dendron](https://www.dendron.so/)
 - speedtest-cli
+- webtorrent-hybrid
+- WebWormhole CLI
 
 ### Data and Documentation
 
@@ -55,6 +57,8 @@ Headless Linux distribution for full-stack software development with web access 
 - LTeX (grammar/spell checker)
 - LaTeX Workshop (with a full `texlive` installation)
 - PDF viewer
+- PlantUML
+- node-plantuml
 
 ### Shell
 
@@ -146,6 +150,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `wasmtime`
 - localtunnel
 - Lorem ipsum generator
+- Tailwind CSS IntelliSense
 
 ### Zig
 
@@ -181,6 +186,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Virtual Machine Manager
 - GNOME Boxes
 - Remmina
+- Heroku CLI
 
 ### SecOps
 
@@ -229,6 +235,9 @@ Headless Linux distribution for full-stack software development with web access 
 - Godot Editor
 - Flatpak
 - On-Screen Keyboard
+- youtube-dl
+- ffmpeg
+- Handbrake
 
 ## Installation
 
