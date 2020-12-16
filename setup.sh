@@ -476,7 +476,7 @@ cp ~/.theia/keymaps.json ~/.local/share/code-server/keybindings.json
 
 cat <<EOT >~/.local/share/code-server/User/settings.json
 {
-  "workbench.iconTheme": "eq-material-theme-icons",
+  "workbench.iconTheme": "vs-seti",
   "workbench.colorTheme": "GitHub Dark",
   "go.autocompleteUnimportedPackages": true,
   "go.useLanguageServer": true,
