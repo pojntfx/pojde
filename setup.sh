@@ -518,6 +518,7 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "clangd.path": "/usr/bin/clangd",
   "git.autofetch": true,
   "emmet.triggerExpansionOnTab": true,
+  "clipboard-manager.snippet.enabled": false,
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
