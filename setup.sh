@@ -107,6 +107,7 @@ export PATH="/root/.cargo/bin:\$PATH"
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
 export PATH="\$PATH:/root/.arkade/bin/"
 export PATH="/usr/local/bin/:\$PATH"
+export PATH="/root/.local/bin/:\$PATH"
 
 alias burp="java -jar /opt/burp/burp.jar"
 alias zap="java -jar /opt/zap/ZAP_2.9.0/zap-2.9.0.jar"

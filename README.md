@@ -59,6 +59,7 @@ Headless Linux distribution for full-stack software development with web access 
 - PDF viewer
 - PlantUML
 - node-plantuml
+- mdBook
 
 ### Shell
 
@@ -182,6 +183,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `alpimager` (see [https://github.com/pojntfx/alpimager](https://github.com/pojntfx/alpimager))
 - `jq`
 - Docker
+- Podman
 - Kubernetes
 - `libvirt`
 - Virtual Machine Manager
@@ -196,6 +198,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `wireshark`
 - `tshark`
 - `iftop`
+- `iotop`
 - `nmap`
 - Burp Suite
 - `gobuster`
@@ -239,6 +242,7 @@ Headless Linux distribution for full-stack software development with web access 
 - youtube-dl
 - ffmpeg
 - Handbrake
+- ImageMagick
 
 ## Installation
 
