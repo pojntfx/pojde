@@ -797,6 +797,23 @@ map \$http_upgrade \$connection_upgrade {
 }
 
 server {
+    listen 8000 ssl;
+    ssl_certificate      server.crt;
+    ssl_certificate_key  server.key;
+    server_name ${DOMAIN};
+
+    location / {
+        proxy_pass http://localhost:2999;
+        proxy_set_header Host \$host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection \$connection_upgrade;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+
+server {
     listen 8001 ssl;
     ssl_certificate      server.crt;
     ssl_certificate_key  server.key;
@@ -845,7 +862,7 @@ nodaemon=true
 [program:ttyd]
 priority=100
 ${SUPERVISORD_ENV_VARIABLES}
-command=/usr/bin/ttyd --port 8000 -c ${USERNAME}:${PASSWORD} -S --ssl-cert /etc/nginx/server.crt --ssl-key /etc/nginx/server.key -a /bin/bash -l
+command=/usr/bin/ttyd -i lo --port 2999 -c ${USERNAME}:${PASSWORD} -a /bin/bash -l
 user=root
 autorestart=true
 
