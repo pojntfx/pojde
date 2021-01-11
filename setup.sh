@@ -244,9 +244,7 @@ curl https://cli-assets.heroku.com/install.sh | sh
 go get webwormhole.io/cmd/ww
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -L -o /tmp/kite-installer https://linux.kite.com/linux/current/kite-installer
-  chmod +x /tmp/kite-installer
-  /tmp/kite-installer install
+  bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
   cat <<EOT >/etc/init.d/kited
 #!/sbin/openrc-run                                                                                                                                                                                                    
