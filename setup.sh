@@ -518,6 +518,7 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "git.autofetch": true,
   "emmet.triggerExpansionOnTab": true,
   "clipboard-manager.snippet.enabled": false,
+  "jest.autoEnable": false,
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -538,6 +539,9 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }
 EOT
