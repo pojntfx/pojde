@@ -101,6 +101,7 @@ shfmt
 figlet
 wireshark
 iftop
+iotop
 gobuster
 john
 nikto
@@ -144,3 +145,7 @@ xz
 ffmpeg
 youtube-dl
 handbrake-gtk
+podman
+units
+mdbook
+imagemagick
