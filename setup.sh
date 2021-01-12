@@ -519,6 +519,7 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "emmet.triggerExpansionOnTab": true,
   "clipboard-manager.snippet.enabled": false,
   "jest.autoEnable": false,
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/vi",
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -620,7 +621,8 @@ mkdir -p plugins
 curl 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download' | xargs curl --compressed -L -o plugins/gitlens.vsix
 curl 'https://open-vsx.org/api/mhutchie/git-graph' | jq '.files.download' | xargs curl --compressed -L -o plugins/git-graph.vsix
 curl 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download' | xargs curl --compressed -L -o plugins/prettier-vscode.vsix
-curl 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' | xargs curl --compressed -L -o plugins/vim.vsix # Locked to work with code-server
+# curl 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' | xargs curl --compressed -L -o plugins/vim.vsix # Locked to work with code-server # Currently disabled & replace with vscode-neovim until code-server rebases to VSCode 1.52
+curl 'https://open-vsx.org/api/asvetliakov/vscode-neovim' | jq '.files.download' | xargs curl --compressed -L -o plugins/nvim.vsix
 curl 'https://open-vsx.org/api/vscode/markdown' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown.vsix
 curl 'https://open-vsx.org/api/vscode/markdown-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-language-features.vsix
 curl 'https://open-vsx.org/api/vscode/yaml' | jq '.files.download' | xargs curl --compressed -L -o plugins/yaml.vsix
