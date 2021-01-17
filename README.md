@@ -32,10 +32,10 @@ Headless Linux distribution for full-stack software development with web access 
 - Vim
 - Project manager
 - Clipboard manager
-- [Dendron](https://www.dendron.so/)
 - speedtest-cli
 - webtorrent-hybrid
 - WebWormhole CLI
+- [Foam](https://foambubble.github.io/foam/) and it's recommended extensions
 
 ### Data and Documentation
 

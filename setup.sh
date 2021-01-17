@@ -692,16 +692,13 @@ curl 'https://open-vsx.org/api/James-Yu/latex-workshop' | jq '.files.download' |
 curl 'https://open-vsx.org/api/alefragnani/project-manager' | jq '.files.download' | xargs curl --compressed -L -o plugins/project-manager.vsix
 curl 'https://open-vsx.org/api/EdgardMessias/clipboard-manager' | jq '.files.download' | xargs curl --compressed -L -o plugins/clipboard-manager.vsix
 curl 'https://open-vsx.org/api/jock/svg' | jq '.files.download' | xargs curl --compressed -L -o plugins/svg.vsix
-curl 'https://open-vsx.org/api/dendron/dendron-paste-image' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron-paste-image.vsix
-curl 'https://open-vsx.org/api/dendron/dendron-markdown-shortcuts' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron-markdown-shortcuts.vsix
-curl 'https://open-vsx.org/api/dendron/dendron-markdown-notes' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron-markdown-notes.vsix
-curl 'https://open-vsx.org/api/dendron/dendron-snippet-maker' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron-snippet-maker.vsix
-curl 'https://open-vsx.org/api/dendron/dendron-markdown-preview-enhanced' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron-markdown-preview-enhanced.vsix
-curl 'https://open-vsx.org/api/dendron/dendron-markdown-links' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron-markdown-links.vsix
-curl 'https://open-vsx.org/api/dendron/dendron' | jq '.files.download' | xargs curl --compressed -L -o plugins/dendron.vsix
 curl 'https://open-vsx.org/api/jebbs/plantuml' | jq '.files.download' | xargs curl --compressed -L -o plugins/plantuml.vsix
 curl 'https://open-vsx.org/api/bradlc/vscode-tailwindcss' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-tailwindcss.vsix
 curl 'https://open-vsx.org/api/42Crunch/vscode-openapi' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-openapi.vsix
+curl 'https://open-vsx.org/api/foam/foam-vscode' | jq '.files.download' | xargs curl --compressed -L -o plugins/foam-vscode.vsix
+curl 'https://open-vsx.org/api/kortina/vscode-markdown-notes' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-markdown-notes.vsix
+curl 'https://open-vsx.org/api/tchayen/markdown-links' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-links.vsix
+curl 'https://open-vsx.org/api/yzhang/markdown-all-in-one' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-all-in-one.vsix
 
 if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
   curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
