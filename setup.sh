@@ -547,6 +547,9 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   },
   "[dockerfile]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
 EOT
