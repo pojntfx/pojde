@@ -305,7 +305,7 @@ if [ $ENABLE_SECOPS_TOOLS = "1" ]; then
   tar xvzf /tmp/zap.tar.gz -C /opt/zap
 fi
 
-npm i -g --unsafe-perm jest @vue/cli localtunnel wscat node-plantuml webtorrent-hybrid
+npm i -g --unsafe-perm jest @vue/cli localtunnel wscat node-plantuml webtorrent-hybrid serve
 
 sed -i /etc/passwd -e 's/\/bin\/ash/\/bin\/bash/g'
 

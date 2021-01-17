@@ -190,6 +190,8 @@ Headless Linux distribution for full-stack software development with web access 
 - GNOME Boxes
 - Remmina
 - Heroku CLI
+- `serve`
+- `iperf3`
 
 ### SecOps
 
