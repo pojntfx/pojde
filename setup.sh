@@ -189,13 +189,15 @@ apk del ttf-google-opensans
 
 mkdir -p ~/Desktop
 
+echo CHROMIUM_FLAGS='--no-sandbox --test-type' >/etc/chromium/chromium.conf
+
 cat <<EOT >~/Desktop/Chromium.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
 Name=Chromium
 Comment=Access the Internet
-Exec=chromium-browser --no-sandbox %U
+Exec=chromium-browser %U
 Icon=chromium
 Path=
 Terminal=false
