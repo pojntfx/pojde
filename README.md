@@ -242,6 +242,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Flatpak
 - On-Screen Keyboard
 - youtube-dl
+- spotify-dl
 - ffmpeg
 - Handbrake
 - ImageMagick
