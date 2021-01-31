@@ -239,6 +239,8 @@ Headless Linux distribution for full-stack software development with web access 
 - GNOME Web (Epiphany/WebKit)
 - Lynx
 - Links
+- w3m
+- aerc
 - Godot Editor
 - Flatpak
 - On-Screen Keyboard

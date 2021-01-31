@@ -334,6 +334,8 @@ npm i -g --unsafe-perm jest @vue/cli localtunnel wscat node-plantuml webtorrent-
 
 sed -i /etc/passwd -e 's/\/bin\/ash/\/bin\/bash/g'
 
+sed -i 's/\#text\/html/text\/html/g' /root/.config/aerc/aerc.conf
+
 if grep docker /proc/1/cgroup -qa; then
   apk add docker-cli
 else
