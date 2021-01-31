@@ -812,12 +812,12 @@ fc-cache -f
 
 if [ "$(cat /etc/nginx/domain-ip)" != "${DOMAIN}-${IP}" ]; then
   openssl genrsa -out /etc/nginx/ca.key 2048
-  openssl req -x509 -new -nodes -key /etc/nginx/ca.key -sha256 -days 3650 -out /etc/nginx/ca.pem -subj "/CN=${DOMAIN}"
+  openssl req -x509 -new -nodes -key /etc/nginx/ca.key -sha256 -days 365 -out /etc/nginx/ca.pem -subj "/CN=${DOMAIN}"
 
   openssl genrsa -out /etc/nginx/server.key 2048
   openssl req -new -key /etc/nginx/server.key -out /etc/nginx/server.csr -subj "/CN=${DOMAIN}"
 
-  openssl x509 -req -in /etc/nginx/server.csr -CA /etc/nginx/ca.pem -CAkey /etc/nginx/ca.key -CAcreateserial -out /etc/nginx/server.crt -days 3650 -sha256 -extfile <(echo "authorityKeyIdentifier=keyid,issuer
+  openssl x509 -req -in /etc/nginx/server.csr -CA /etc/nginx/ca.pem -CAkey /etc/nginx/ca.key -CAcreateserial -out /etc/nginx/server.crt -days 365 -sha256 -extfile <(echo "authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 subjectAltName = @alt_names
