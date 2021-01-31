@@ -307,6 +307,18 @@ For Windows, please use the native installation on WSL2 (see [the alpimager docs
 
 ## Usage
 
+### Trusting the Certificates
+
+At the end of the installation script, the script asked you to click a link, which downloaded the root certificate to your device. You'll now have to trust that SSL certificate. I created some videos on how to do that; please note that you don't have to download the certificate as described in the videos, but instead have to use the root certificate you've downloaded earlier:
+
+- [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
+- [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
+- [Trusting self signed SSL certificates (Chrome on Windows)](https://www.youtube.com/watch?v=gyQ9IIxE3vc)
+
+If you are using a iOS device, read the following article: [Adding Trusted Root Certificates to iOS14](https://www.theictguy.co.uk/adding-trusted-root-certificates-to-ios14/). [code-server/issues/979](https://github.com/cdr/code-server/issues/979#issuecomment-557902494) might also be of use.
+
+Note that Safari is not supported in Theia due to an [issue with WebSockets and HTTP basic auth](https://bugs.webkit.org/show_bug.cgi?id=80362). To use Theia on Safari, open noVNC, add it to the homescreen and use Chromium in noVNC to browse to Theia; alternatively, you can use code-server.
+
 ### Access
 
 To access the services, use the passwords you've specified in `setup.sh` and the addresses below. The default username is `pojntfx`, the default password is `mysvcpassword`. If you don't use SSH forwarding, didn't install using Docker or are on the machine that runs the IDE, you'll most likely want to replace `localhost` with the IP or domain of the machine that is running the IDE, i.e. `myide.example.com` or `192.168.178.23`.
@@ -320,26 +332,24 @@ If you chose the Docker or virtualized installation options, you can also SSH in
 
 If you are accessing the services on localhost and trust the SSL certificate, please note that [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) will be enabled for localhost. To prevent having HSTS on localhost, you may want to access the services using `localhost.localdomain` or `local.local` instead.
 
+> Tested on:
+>
+> - Chrome 88
+> - Firefox 85
+> - Safari 14
+> - Edge 88
+> - Brave 1.19.88
+
 ### Using a Domain
 
-If you are using a domain, make sure to set the A records correcty:
+If you are using a domain, make sure to set the `A` and `AAAA` records correctly:
 
 ```zone
 A pojntfx.dev.alphahorizon.io 141.72.248.134
+AAAA pojntfx.dev.alphahorizon.io 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
 A *.pojntfx.dev.alphahorizon.io 141.72.248.134
+AAAA *.pojntfx.dev.alphahorizon.io 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
 ```
-
-### Trusting the Certificates
-
-You'll have to trust the self-signed SSL certificate. I created some videos on how to do that:
-
-- [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
-- [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
-- [Trusting self signed SSL certificates (Chrome on Windows)](https://www.youtube.com/watch?v=gyQ9IIxE3vc)
-
-If you are using a iOS device, read the following article: [Adding Trusted Root Certificates to iOS14](https://www.theictguy.co.uk/adding-trusted-root-certificates-to-ios14/). [code-server/issues/979](https://github.com/cdr/code-server/issues/979#issuecomment-557902494) might also be of use.
-
-Note that Safari is not supported in Theia due to an [issue with WebSockets and HTTP basic auth](https://bugs.webkit.org/show_bug.cgi?id=80362). To use Theia on Safari, open noVNC, add it to the homescreen and use Chromium in noVNC to browse to Theia; alternatively, you can use code-server.
 
 ### Updating
 
@@ -347,6 +357,6 @@ To update the IDE, run `update-pojde` in the terminal and follow the instruction
 
 ## License
 
-pojde (c) 2020 Felicitas Pojtinger
+pojde (c) 2021 Felicitas Pojtinger
 
 SPDX-License-Identifier: AGPL-3.0
