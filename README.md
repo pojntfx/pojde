@@ -332,6 +332,11 @@ If you chose the Docker or virtualized installation options, you can also SSH in
 
 If you are accessing the services on localhost and trust the SSL certificate, please note that [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) will be enabled for localhost. To prevent having HSTS on localhost, you may want to access the services using `localhost.localdomain` or `local.local` instead.
 
+Additionally, some additional shortcuts for better cross-browser support have been added:
+
+- `alt + w`/`opt + w` is an alias of `ctrl + w`/`cmd + c + w`, which closes the active editor.
+- `alt + shift + p`/`opt + shift + p` is an alias of `ctrl + shift + p`/`cmd + shift + p`, which opens the command palette.
+
 > Tested on:
 >
 > - Chrome 88
