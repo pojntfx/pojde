@@ -788,10 +788,28 @@ EOT
 fc-cache -f
 
 if [ "$(cat /etc/nginx/domain-ip)" != "${DOMAIN}-${IP}" ]; then
-  openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-    -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -subj "/CN=${DOMAIN}" \
-    -addext "subjectAltName=DNS:localhost,DNS:*.webview.localhost,DNS:localhost.localdomain,DNS:*.webview.localhost.localdomain,DNS:local.local,DNS:*.webview.local.local,DNS:${DOMAIN},DNS:*.webview.${DOMAIN},IP:${IP}"
+  openssl genrsa -out /etc/nginx/ca.key 2048
+  openssl req -x509 -new -nodes -key /etc/nginx/ca.key -sha256 -days 3650 -out /etc/nginx/ca.pem -subj "/CN=${DOMAIN}"
+
+  openssl genrsa -out /etc/nginx/server.key 2048
+  openssl req -new -key /etc/nginx/server.key -out /etc/nginx/server.csr -subj "/CN=${DOMAIN}"
+
+  openssl x509 -req -in /etc/nginx/server.csr -CA /etc/nginx/ca.pem -CAkey /etc/nginx/ca.key -CAcreateserial -out /etc/nginx/server.crt -days 3650 -sha256 -extfile <(echo "authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+IP.1 = ${IP}
+DNS.1 = localhost
+DNS.2 = *.webview.localhost
+DNS.3 = localhost.localdomain
+DNS.4 = *.webview.localhost.localdomain
+DNS.5 = local.local
+DNS.6 = *.webview.local.local
+DNS.7 = ${DOMAIN}
+DNS.8 = *.webview.${DOMAIN}")
 fi
+
 printf "${DOMAIN}-${IP}" >/etc/nginx/domain-ip
 
 printf "${USERNAME}:$(openssl passwd -apr1 ${PASSWORD})\n" >/etc/nginx/.htpasswd
@@ -926,7 +944,11 @@ EOT
 echo "sh -c \"\$(curl -sSL https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)\"" >/usr/local/bin/update-pojde
 chmod +x /usr/local/bin/update-pojde
 
-echo "Setup completed successfully; you might loose your connection if you're connected via SSH or are using one of the services. In that case, please reconnect/reload."
+echo "Almost done! In order to continue, please click the following link:"
+
+ww send /etc/nginx/ca.pem
+
+echo "Setup completed! Please continue at https://github.com/pojntfx/pojde#usage. You might loose your connection if you're connected via SSH or are using one of the services. In that case, please reconnect/reload."
 
 DOCKER_SERVICES_NAMES="docker udev"
 if grep docker /proc/1/cgroup -qa; then DOCKER_SERVICES_NAMES=""; fi # dind
