@@ -967,7 +967,7 @@ EOT
 echo "sh -c \"\$(curl -sSL https://raw.githubusercontent.com/pojntfx/pojde/master/update-pojde)\"" >/usr/local/bin/update-pojde
 chmod +x /usr/local/bin/update-pojde
 
-echo "Almost done! In order to continue, please click the following link:"
+echo "Almost done! In order to continue, please open the following link:"
 
 ww send /etc/nginx/ca.pem
 
