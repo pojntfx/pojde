@@ -151,3 +151,8 @@ mdbook
 imagemagick
 iperf3
 upx
+mandoc
+aerc
+aerc-doc
+w3m
+dante
