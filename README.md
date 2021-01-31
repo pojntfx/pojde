@@ -192,6 +192,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Heroku CLI
 - `serve`
 - `iperf3`
+- `upx`
 
 ### SecOps
 

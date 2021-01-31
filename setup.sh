@@ -189,7 +189,7 @@ apk del ttf-google-opensans
 
 mkdir -p ~/Desktop
 
-echo CHROMIUM_FLAGS='--no-sandbox --test-type' >/etc/chromium/chromium.conf
+echo "CHROMIUM_FLAGS='--no-sandbox --test-type'" >/etc/chromium/chromium.conf
 
 cat <<EOT >~/Desktop/Chromium.desktop
 [Desktop Entry]
@@ -199,6 +199,30 @@ Name=Chromium
 Comment=Access the Internet
 Exec=chromium-browser %U
 Icon=chromium
+Path=
+Terminal=false
+StartupNotify=false
+EOT
+
+cat <<EOT >~/Desktop/Firefox.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Firefox
+Exec=firefox %U
+Icon=firefox
+Path=
+Terminal=false
+StartupNotify=false
+EOT
+
+cat <<EOT >~/Desktop/Web.desktop
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Web
+Exec=epiphany %U
+Icon=org.gnome.Epiphany
 Path=
 Terminal=false
 StartupNotify=false
@@ -217,8 +241,7 @@ Terminal=false
 StartupNotify=false
 EOT
 
-chmod +x ~/Desktop/Chromium.desktop
-chmod +x ~/Desktop/Onboard.desktop
+chmod +x ~/Desktop/*.desktop
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
