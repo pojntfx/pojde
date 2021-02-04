@@ -320,6 +320,8 @@ At the end of the installation script, the script asked you to click a link, whi
 
 If you are using a iOS device, read the following article: [Adding Trusted Root Certificates to iOS14](https://www.theictguy.co.uk/adding-trusted-root-certificates-to-ios14/). [code-server/issues/979](https://github.com/cdr/code-server/issues/979#issuecomment-557902494) might also be of use.
 
+If you prefer to use another browser on Linux or require the certificate to be installed system-wide, check out [How to add trusted CA certificate on CentOS/Fedora](https://www.devdungeon.com/content/how-add-trusted-ca-certificate-centosfedora).
+
 Note that Safari is not supported in Theia due to an [issue with WebSockets and HTTP basic auth](https://bugs.webkit.org/show_bug.cgi?id=80362). To use Theia on Safari, open noVNC, add it to the homescreen and use Chromium in noVNC to browse to Theia; alternatively, you can use code-server.
 
 ### Access
@@ -345,6 +347,7 @@ Additionally, some additional shortcuts for better cross-browser support have be
 > - Chrome 88
 > - Firefox 85
 > - Safari 14
+> - Web 3.38.2
 > - Edge 88
 > - Brave 1.19.88
 
