@@ -575,7 +575,8 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "keyboard.dispatch": "keyCode"
 }
 EOT
 
