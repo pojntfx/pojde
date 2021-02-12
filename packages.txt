@@ -156,3 +156,6 @@ aerc
 aerc-doc
 w3m
 dante
+util-linux
+vips-dev
+fftw-dev
