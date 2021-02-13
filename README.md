@@ -359,10 +359,10 @@ If you use Chrome, Edge or Brave, installing `code-server` as a PWA allows you t
 If you are using a domain, make sure to set the `A` and `AAAA` records correctly:
 
 ```zone
-A pojntfx.dev.alphahorizon.io 141.72.248.134
-AAAA pojntfx.dev.alphahorizon.io 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
-A *.pojntfx.dev.alphahorizon.io 141.72.248.134
-AAAA *.pojntfx.dev.alphahorizon.io 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
+A dev.felix.pojtinger.com 141.72.248.134
+AAAA dev.felix.pojtinger.com 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
+A *.webview.dev.felix.pojtinger.com 141.72.248.134
+AAAA *.webview.dev.felix.pojtinger.com 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
 ```
 
 ### Updating
