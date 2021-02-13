@@ -14,9 +14,9 @@ if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                      # Us
 if [ -z ${NAMESERVER+x} ]; then export NAMESERVER="8.8.8.8"; fi
 if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
 if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
-if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system
-if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi # Set to "1" if you want C# support; compiling Mono can take some time.
-if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi     # Set to "1" if you want to have the latest neovim version from Git instead of the repository version
+if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi             # Set to "0" if you're not running this on a fresh system.
+if [ -z ${ENABLE_MONO_BUILD+x} ]; then export ENABLE_MONO_BUILD="0"; fi # Set to "1" if you want to build Mono from source.
+if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi     # Set to "1" if you want to build Neovim from source.
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
 if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
 ## You shouldn't have to change anything below
@@ -34,7 +34,7 @@ echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
 echo "export NAMESERVER=\"${NAMESERVER}\"" >>/etc/pojde/config.sh
 echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_CSHARP_SUPPORT=\"${ENABLE_CSHARP_SUPPORT}\"" >>/etc/pojde/config.sh
+echo "export ENABLE_MONO_BUILD=\"${ENABLE_MONO_BUILD}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
 echo "export ENABLE_SECOPS_TOOLS=\"${ENABLE_SECOPS_TOOLS}\"" >>/etc/pojde/config.sh
 echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
@@ -134,7 +134,7 @@ git config --global init.defaultBranch main
 rm -rf ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
 
-if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
+if [ $ENABLE_MONO_BUILD = "1" ]; then
   rm -rf ${INSTALL_DIR}/mono.git
   mkdir -p ${INSTALL_DIR}/mono.git
   git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
@@ -147,10 +147,12 @@ if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
   make get-monolite-latest
   make -j$(nproc)
   make install
-
-  curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
-  ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+else
+  apk add mono mono-dev mono-doc mono-lang
 fi
+
+curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 rm -rf ${INSTALL_DIR}/lldb-mi
 mkdir -p ${INSTALL_DIR}/lldb-mi
@@ -548,7 +550,6 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
   "emmet.triggerExpansionOnTab": true,
   "clipboard-manager.snippet.enabled": false,
   "jest.autoEnable": false,
-  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/vi",
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -571,6 +572,9 @@ cat <<EOT >~/.local/share/code-server/User/settings.json
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[dockerfile]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[markdown]": {
@@ -654,8 +658,7 @@ mkdir -p plugins
 curl 'https://open-vsx.org/api/eamodio/gitlens' | jq '.files.download' | xargs curl --compressed -L -o plugins/gitlens.vsix
 curl 'https://open-vsx.org/api/mhutchie/git-graph' | jq '.files.download' | xargs curl --compressed -L -o plugins/git-graph.vsix
 curl 'https://open-vsx.org/api/esbenp/prettier-vscode' | jq '.files.download' | xargs curl --compressed -L -o plugins/prettier-vscode.vsix
-# curl 'https://open-vsx.org/api/vscodevim/vim/1.16.0' | jq '.files.download' | xargs curl --compressed -L -o plugins/vim.vsix # Locked to work with code-server # Currently disabled & replace with vscode-neovim until code-server rebases to VSCode 1.52
-curl 'https://open-vsx.org/api/asvetliakov/vscode-neovim' | jq '.files.download' | xargs curl --compressed -L -o plugins/nvim.vsix
+curl 'https://open-vsx.org/api/vscodevim/vim' | jq '.files.download' | xargs curl --compressed -L -o plugins/vim.vsix
 curl 'https://open-vsx.org/api/vscode/markdown' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown.vsix
 curl 'https://open-vsx.org/api/vscode/markdown-language-features' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-language-features.vsix
 curl 'https://open-vsx.org/api/vscode/yaml' | jq '.files.download' | xargs curl --compressed -L -o plugins/yaml.vsix
@@ -730,11 +733,8 @@ curl 'https://open-vsx.org/api/foam/foam-vscode' | jq '.files.download' | xargs 
 curl 'https://open-vsx.org/api/kortina/vscode-markdown-notes' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-markdown-notes.vsix
 curl 'https://open-vsx.org/api/tchayen/markdown-links' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-links.vsix
 curl 'https://open-vsx.org/api/yzhang/markdown-all-in-one' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-all-in-one.vsix
-
-if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-  curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
-  curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
-fi
+curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
+curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
 
 # Extensions from GitHub (second best option)
 curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
@@ -786,10 +786,8 @@ for extension in ~/.local/share/code-server/extensions/*; do
   cp -r $extension ${INSTALL_DIR}/theia/plugins
 done
 
-if [ $ENABLE_CSHARP_SUPPORT = "1" ]; then
-  rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-  ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
-fi
+rm ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
+ln -s $(which mono) ${INSTALL_DIR}/theia/plugins/omnisharp_theia_plugin.vsix-extracted/.omnisharp/bin/mono
 
 mkdir -p ${WORKSPACE_DIR}
 
