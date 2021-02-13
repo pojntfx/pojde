@@ -80,7 +80,7 @@ read -e -i "$SCREEN_RESOLUTION" -p "Please enter your virtual screen's resolutio
 SCREEN_RESOLUTION="${input:-$SCREEN_RESOLUTION}"
 read -e -i "$ENABLE_OS_SETUP" -p "Please enter 1 if you want to also setup the OS or 0 if you don't: " input
 ENABLE_OS_SETUP="${input:-$ENABLE_OS_SETUP}"
-read -e -i "$ENABLE_MONO_BUILD" -p "Please enter 1 if you want to build Mono from souce or 0 if you want the repository version:: " input
+read -e -i "$ENABLE_MONO_BUILD" -p "Please enter 1 if you want to build Mono from source or 0 if you want the repository version:: " input
 ENABLE_MONO_BUILD="${input:-$ENABLE_MONO_BUILD}"
 read -e -i "$ENABLE_NEOVIM_BUILD" -p "Please enter 1 if you want to build Neovim from source or 0 if you want the repository version: " input
 ENABLE_NEOVIM_BUILD="${input:-$ENABLE_NEOVIM_BUILD}"
