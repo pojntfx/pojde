@@ -357,10 +357,10 @@ Additionally, some additional shortcuts for better cross-browser support have be
 If you are using a domain, make sure to set the `A` and `AAAA` records correctly:
 
 ```zone
-A pojntfx.dev.alphahorizon.io 141.72.248.134
-AAAA pojntfx.dev.alphahorizon.io 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
-A *.pojntfx.dev.alphahorizon.io 141.72.248.134
-AAAA *.pojntfx.dev.alphahorizon.io 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
+A dev.felicitas.pojtinger.com 141.72.248.134
+AAAA dev.felicitas.pojtinger.com 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
+A *.webview.dev.felicitas.pojtinger.com 141.72.248.134
+AAAA *.webview.dev.felicitas.pojtinger.com 2001:7c7:2121:8d00:da47:32ff:fec9:62a0
 ```
 
 ### Updating
