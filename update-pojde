@@ -43,7 +43,7 @@ if [ -z ${NAMESERVER+x} ]; then export NAMESERVER="8.8.8.8"; fi
 if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
 
 if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="0"; fi
-if [ -z ${ENABLE_CSHARP_SUPPORT+x} ]; then export ENABLE_CSHARP_SUPPORT="0"; fi
+if [ -z ${ENABLE_MONO_BUILD+x} ]; then export ENABLE_MONO_BUILD="0"; fi
 if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi
 if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
 
@@ -80,8 +80,8 @@ read -e -i "$SCREEN_RESOLUTION" -p "Please enter your virtual screen's resolutio
 SCREEN_RESOLUTION="${input:-$SCREEN_RESOLUTION}"
 read -e -i "$ENABLE_OS_SETUP" -p "Please enter 1 if you want to also setup the OS or 0 if you don't: " input
 ENABLE_OS_SETUP="${input:-$ENABLE_OS_SETUP}"
-read -e -i "$ENABLE_CSHARP_SUPPORT" -p "Please enter 1 if you want C# support or 0 if you don't: " input
-ENABLE_CSHARP_SUPPORT="${input:-$ENABLE_CSHARP_SUPPORT}"
+read -e -i "$ENABLE_MONO_BUILD" -p "Please enter 1 if you want to build Mono from souce or 0 if you want the repository version:: " input
+ENABLE_MONO_BUILD="${input:-$ENABLE_MONO_BUILD}"
 read -e -i "$ENABLE_NEOVIM_BUILD" -p "Please enter 1 if you want to build Neovim from source or 0 if you want the repository version: " input
 ENABLE_NEOVIM_BUILD="${input:-$ENABLE_NEOVIM_BUILD}"
 read -e -i "$ENABLE_SECOPS_TOOLS" -p "Please enter 1 if you want the SecOps tools to be installed or 0 if you don't: " input

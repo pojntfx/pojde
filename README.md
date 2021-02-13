@@ -193,6 +193,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `serve`
 - `iperf3`
 - `upx`
+- WINE
 
 ### SecOps
 
