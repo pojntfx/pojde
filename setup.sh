@@ -735,6 +735,12 @@ curl 'https://open-vsx.org/api/tchayen/markdown-links' | jq '.files.download' | 
 curl 'https://open-vsx.org/api/yzhang/markdown-all-in-one' | jq '.files.download' | xargs curl --compressed -L -o plugins/markdown-all-in-one.vsix
 curl 'https://open-vsx.org/api/vscode/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp.vsix
 curl 'https://open-vsx.org/api/k--kato/docomment' | jq '.files.download' | xargs curl --compressed -L -o plugins/docomment.vsix
+curl 'https://open-vsx.org/api/muhammad-sammy/csharp' | jq '.files.download' | xargs curl --compressed -L -o plugins/csharp-free.vsix
+curl 'https://open-vsx.org/api/ms-vscode/cmake-tools' | jq '.files.download' | xargs curl --compressed -L -o plugins/cmake-tools.vsix
+curl 'https://open-vsx.org/api/GitHub/github-vscode-theme' | jq '.files.download' | xargs curl --compressed -L -o plugins/github-vscode-theme.vsix
+curl 'https://open-vsx.org/api/dracula-theme/theme-dracula' | jq '.files.download' | xargs curl --compressed -L -o plugins/theme-dracula.vsix
+curl 'https://open-vsx.org/api/Equinusocio/vsc-material-theme' | jq '.files.download' | xargs curl --compressed -L -o plugins/vsc-material-theme.vsix
+curl 'https://open-vsx.org/api/Equinusocio/vsc-material-theme-icons' | jq '.files.download' | xargs curl --compressed -L -o plugins/vsc-material-theme-icons.vsix
 
 # Extensions from GitHub (second best option)
 curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
@@ -751,14 +757,9 @@ code-server --force --install-extension 'miguelsolorio.min-theme'
 code-server --force --install-extension 'akamud.vscode-theme-onelight'
 code-server --force --install-extension 'akamud.vscode-theme-onedark'
 code-server --force --install-extension 'ahmadawais.shades-of-purple'
-code-server --force --install-extension 'dracula-theme.theme-dracula'
 code-server --force --install-extension 'jolaleye.horizon-theme-vscode'
 code-server --force --install-extension 'taniarascia.new-moon-vscode'
-code-server --force --install-extension 'github.github-vscode-theme'
-code-server --force --install-extension 'equinusocio.vsc-material-theme'
-code-server --force --install-extension 'equinusocio.vsc-material-theme-icons'
 code-server --force --install-extension 'ms-vscode.mono-debug'
-code-server --force --install-extension 'ms-vscode.cmake-tools'
 code-server --force --install-extension 'tyriar.lorem-ipsum'
 code-server --force --install-extension 'tomoki1207.pdf'
 code-server --force --install-extension 'cmstead.jsrefactor'
