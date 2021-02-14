@@ -741,10 +741,11 @@ curl 'https://open-vsx.org/api/GitHub/github-vscode-theme' | jq '.files.download
 curl 'https://open-vsx.org/api/dracula-theme/theme-dracula' | jq '.files.download' | xargs curl --compressed -L -o plugins/theme-dracula.vsix
 curl 'https://open-vsx.org/api/Equinusocio/vsc-material-theme' | jq '.files.download' | xargs curl --compressed -L -o plugins/vsc-material-theme.vsix
 curl 'https://open-vsx.org/api/Equinusocio/vsc-material-theme-icons' | jq '.files.download' | xargs curl --compressed -L -o plugins/vsc-material-theme-icons.vsix
+curl 'https://open-vsx.org/api/prime31/zig' | jq '.files.download' | xargs curl --compressed -L -o plugins/zig.vsix
+curl 'https://open-vsx.org/api/arcanis/vscode-zipfs' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-zipfs.vsix
 
 # Extensions from GitHub (second best option)
 curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
-curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
 curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
 curl --compressed -L -o plugins/vscode-tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
 
@@ -767,8 +768,6 @@ code-server --force --install-extension 'cmstead.jsrefactor'
 # Extensions from MS marketplace (worst option; rate limited)
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
 curl --compressed -L -o plugins/zig-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/lorenzopirro/vsextensions/zig-snippets/1.3.0/vspackage
-curl --compressed -L -o plugins/zig.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tiehuis/vsextensions/zig/0.2.5/vspackage
-curl --compressed -L -o plugins/vscode-zipfs.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/arcanis/vsextensions/vscode-zipfs/2.2.2/vspackage
 curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
