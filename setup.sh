@@ -1,6 +1,7 @@
 #!/bin/bash
 
-## Configure your IDE here
+# Read user configuration from env
+
 if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felix Pojtinger"; fi
 if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
 if [ -z ${THEIA_IDE_DESCRIPTION+x} ]; then export THEIA_IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
@@ -19,27 +20,32 @@ if [ -z ${ENABLE_MONO_BUILD+x} ]; then export ENABLE_MONO_BUILD="0"; fi     # Se
 if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi # Set to "1" if you want to build Neovim from source.
 if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
 if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
-## You shouldn't have to change anything below
 
-mkdir -p /etc/pojde
-echo "export FULL_NAME=\"${FULL_NAME}\"" >/etc/pojde/config.sh
-echo "export MOTD=\"${MOTD}\"" >>/etc/pojde/config.sh
-echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>/etc/pojde/config.sh
-echo "export EMAIL=\"${EMAIL}\"" >>/etc/pojde/config.sh
-echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>/etc/pojde/config.sh
-echo "export USERNAME=\"${USERNAME}\"" >>/etc/pojde/config.sh
-echo "export PASSWORD=\"${PASSWORD}\"" >>/etc/pojde/config.sh
-echo "export DOMAIN=\"${DOMAIN}\"" >>/etc/pojde/config.sh
-echo "export IP=\"${IP}\"" >>/etc/pojde/config.sh
-echo "export NAMESERVER=\"${NAMESERVER}\"" >>/etc/pojde/config.sh
-echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_MONO_BUILD=\"${ENABLE_MONO_BUILD}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>/etc/pojde/config.sh
-echo "export ENABLE_SECOPS_TOOLS=\"${ENABLE_SECOPS_TOOLS}\"" >>/etc/pojde/config.sh
-echo "export IDE_NAME=\"${IDE_NAME}\"" >>/etc/pojde/config.sh
-echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>/etc/pojde/config.sh
-echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>/etc/pojde/config.sh
+# Persist user configuration
+
+export CONFIG_DIR="/etc/pojde"
+mkdir -p "${CONFIG_DIR}"
+
+echo "export FULL_NAME=\"${FULL_NAME}\"" >${CONFIG_DIR}/config.sh
+echo "export MOTD=\"${MOTD}\"" >>${CONFIG_DIR}/config.sh
+echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>${CONFIG_DIR}/config.sh
+echo "export EMAIL=\"${EMAIL}\"" >>${CONFIG_DIR}/config.sh
+echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>${CONFIG_DIR}/config.sh
+echo "export USERNAME=\"${USERNAME}\"" >>${CONFIG_DIR}/config.sh
+echo "export PASSWORD=\"${PASSWORD}\"" >>${CONFIG_DIR}/config.sh
+echo "export DOMAIN=\"${DOMAIN}\"" >>${CONFIG_DIR}/config.sh
+echo "export IP=\"${IP}\"" >>${CONFIG_DIR}/config.sh
+echo "export NAMESERVER=\"${NAMESERVER}\"" >>${CONFIG_DIR}/config.sh
+echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>${CONFIG_DIR}/config.sh
+echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>${CONFIG_DIR}/config.sh
+echo "export ENABLE_MONO_BUILD=\"${ENABLE_MONO_BUILD}\"" >>${CONFIG_DIR}/config.sh
+echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>${CONFIG_DIR}/config.sh
+echo "export ENABLE_SECOPS_TOOLS=\"${ENABLE_SECOPS_TOOLS}\"" >>${CONFIG_DIR}/config.sh
+echo "export IDE_NAME=\"${IDE_NAME}\"" >>${CONFIG_DIR}/config.sh
+echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>${CONFIG_DIR}/config.sh
+echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>${CONFIG_DIR}/config.sh
+
+# Start installation
 
 if [ $ENABLE_OS_SETUP = "1" ]; then
   setup-timezone -z UTC
