@@ -765,9 +765,20 @@ if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
 fi
 
 # Extensions from GitHub (second best option)
-curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
-curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
-curl --compressed -L -o plugins/vscode-tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
+github_extensions_noarch=(
+  redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
+  cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
+  tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
+)
+
+function download_extension_from_github() {
+  curl --compressed -L -o "plugins/${2}".vsix "https://github.com/${1}"
+}
+
+for i in ${!github_extensions_noarch[@]}; do
+  echo ${github_extensions_noarch[$i]}
+  download_extension_from_github ${github_extensions_noarch[$i]} ${i}
+done
 
 # Extensions from MS marketplace (worst option; rate limited)
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
