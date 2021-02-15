@@ -743,27 +743,14 @@ curl 'https://open-vsx.org/api/Equinusocio/vsc-material-theme' | jq '.files.down
 curl 'https://open-vsx.org/api/Equinusocio/vsc-material-theme-icons' | jq '.files.download' | xargs curl --compressed -L -o plugins/vsc-material-theme-icons.vsix
 curl 'https://open-vsx.org/api/prime31/zig' | jq '.files.download' | xargs curl --compressed -L -o plugins/zig.vsix
 curl 'https://open-vsx.org/api/arcanis/vscode-zipfs' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-zipfs.vsix
+curl 'https://open-vsx.org/api/arcticicestudio/nord-visual-studio-code' | jq '.files.download' | xargs curl --compressed -L -o plugins/nord-visual-studio-code.vsix
+curl 'https://open-vsx.org/api/akamud/vscode-theme-onelight' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-theme-onelight.vsix
+curl 'https://open-vsx.org/api/akamud/vscode-theme-onedark' | jq '.files.download' | xargs curl --compressed -L -o plugins/vscode-theme-onedark.vsix
 
 # Extensions from GitHub (second best option)
 curl --compressed -L -o plugins/omnisharp_theia_plugin.vsix https://github.com/redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
 curl --compressed -L -o plugins/cmake-format.vsix https://github.com/cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
 curl --compressed -L -o plugins/vscode-tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
-
-# Extensions from code-server marketplace (third best option)
-code-server --force --install-extension 'naco-siren.gradle-language'
-code-server --force --install-extension 'dsznajder.es7-react-js-snippets'
-code-server --force --install-extension 'mtxr.sqltools'
-code-server --force --install-extension 'tinkertrain.theme-panda'
-code-server --force --install-extension 'miguelsolorio.min-theme'
-code-server --force --install-extension 'akamud.vscode-theme-onelight'
-code-server --force --install-extension 'akamud.vscode-theme-onedark'
-code-server --force --install-extension 'ahmadawais.shades-of-purple'
-code-server --force --install-extension 'jolaleye.horizon-theme-vscode'
-code-server --force --install-extension 'taniarascia.new-moon-vscode'
-code-server --force --install-extension 'ms-vscode.mono-debug'
-code-server --force --install-extension 'tyriar.lorem-ipsum'
-code-server --force --install-extension 'tomoki1207.pdf'
-code-server --force --install-extension 'cmstead.jsrefactor'
 
 # Extensions from MS marketplace (worst option; rate limited)
 curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
@@ -772,6 +759,18 @@ curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.v
 curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
 curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
 curl --compressed -L -o plugins/web-accessibility.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/MaxvanderSchee/vsextensions/web-accessibility/0.2.83/vspackage
+curl --compressed -L -o plugins/gradle-language.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/naco-siren/vsextensions/gradle-language/0.2.3/vspackage
+curl --compressed -L -o plugins/es7-react-js-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsznajder/vsextensions/es7-react-js-snippets/3.1.0/vspackage
+curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/0.23.0/vspackage
+curl --compressed -L -o plugins/theme-panda.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tinkertrain/vsextensions/theme-panda/1.3.0/vspackage
+curl --compressed -L -o plugins/min-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/miguelsolorio/vsextensions/min-theme/1.4.7/vspackage
+curl --compressed -L -o plugins/shades-of-purple.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ahmadawais/vsextensions/shades-of-purple/6.12.0/vspackage
+curl --compressed -L -o plugins/horizon-theme-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/jolaleye/vsextensions/horizon-theme-vscode/2.0.2/vspackage
+curl --compressed -L -o plugins/new-moon-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/taniarascia/vsextensions/new-moon-vscode/1.8.8/vspackage
+curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.16.2/vspackage
+curl --compressed -L -o plugins/lorem-ipsum.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Tyriar/vsextensions/lorem-ipsum/1.2.0/vspackage
+curl --compressed -L -o plugins/tomoki1207-pdf.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tomoki1207/vsextensions/pdf/1.1.0/vspackage
+curl --compressed -L -o plugins/jsrefactor.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/cmstead/vsextensions/jsrefactor/2.20.6/vspackage
 
 cd plugins
 for z in *.vsix; do

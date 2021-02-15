@@ -231,6 +231,7 @@ Headless Linux distribution for full-stack software development with web access 
 - GitHub
 - Material Theme
 - Material Theme Icons
+- Nord
 
 ### Desktop
 
