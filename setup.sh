@@ -123,6 +123,7 @@ HISTFILESIZE=
 source /etc/profile
 EOT
 chmod +x /root/.bashrc
+ln -sf /etc/profile.d/color_prompt /etc/profile.d/color_prompt.sh
 
 source /root/.bashrc
 
