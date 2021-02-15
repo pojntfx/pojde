@@ -750,8 +750,45 @@ openvsx_extensions_amd64=(
   kiteco/kite
 )
 
+# Extensions from GitHub (second best option)
+github_extensions_noarch=(
+  redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
+  cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
+  tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
+)
+
+# Extensions from MS marketplace (worst option; rate limited)
+vscode_marketplace_extensions_noarch=(
+  madhavd1/vsextensions/javadoc-tools/1.4.0
+  lorenzopirro/vsextensions/zig-snippets/1.3.0
+  mtxr/vsextensions/sqltools-driver-mysql/0.2.0
+  mtxr/vsextensions/sqltools-driver-sqlite/0.2.0
+  mtxr/vsextensions/sqltools-driver-pg/0.2.0
+  MaxvanderSchee/vsextensions/web-accessibility/0.2.83
+  naco-siren/vsextensions/gradle-language/0.2.3
+  dsznajder/vsextensions/es7-react-js-snippets/3.1.0
+  mtxr/vsextensions/sqltools/0.23.0
+  tinkertrain/vsextensions/theme-panda/1.3.0
+  miguelsolorio/vsextensions/min-theme/1.4.7
+  ahmadawais/vsextensions/shades-of-purple/6.12.0
+  jolaleye/vsextensions/horizon-theme-vscode/2.0.2
+  taniarascia/vsextensions/new-moon-vscode/1.8.8
+  ms-vscode/vsextensions/mono-debug/0.16.2
+  Tyriar/vsextensions/lorem-ipsum/1.2.0
+  tomoki1207/vsextensions/pdf/1.1.0
+  cmstead/vsextensions/jsrefactor/2.20.6
+)
+
 function download_extension_from_openvsx() {
-  curl "https://open-vsx.org/api/${1}" | jq '.files.download' | xargs curl --compressed -L -o "plugins/${2}".vsix
+  curl "https://open-vsx.org/api/${1}" | jq '.files.download' | xargs curl --compressed -L -o "plugins/openvsx_${2}".vsix
+}
+
+function download_extension_from_github() {
+  curl --compressed -L -o "plugins/github_${2}".vsix "https://github.com/${1}"
+}
+
+function download_extension_from_vscode_marketplace() {
+  curl --compressed -L -o "plugins/vscode_marketplace-${2}".vsix "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/${1}/vspackage"
 }
 
 for i in ${!openvsx_extensions_noarch[@]}; do
@@ -764,41 +801,13 @@ if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   done
 fi
 
-# Extensions from GitHub (second best option)
-github_extensions_noarch=(
-  redhat-developer/omnisharp-theia-plugin/releases/download/v0.0.6/omnisharp_theia_plugin.theia
-  cheshirekow/cmake_format/releases/download/v0.6.13/cmake-format-0.6.13.vsix
-  tinygo-org/vscode-tinygo/releases/download/0.2.0/vscode-tinygo-0.2.0.vsix
-)
-
-function download_extension_from_github() {
-  curl --compressed -L -o "plugins/${2}".vsix "https://github.com/${1}"
-}
-
 for i in ${!github_extensions_noarch[@]}; do
-  echo ${github_extensions_noarch[$i]}
   download_extension_from_github ${github_extensions_noarch[$i]} ${i}
 done
 
-# Extensions from MS marketplace (worst option; rate limited)
-curl --compressed -L -o plugins/vscode-javadoc-tools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/madhavd1/vsextensions/javadoc-tools/1.4.0/vspackage
-curl --compressed -L -o plugins/zig-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/lorenzopirro/vsextensions/zig-snippets/1.3.0/vspackage
-curl --compressed -L -o plugins/sqltools-driver-mysql.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/0.2.0/vspackage
-curl --compressed -L -o plugins/sqltools-driver-sqlite.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/0.2.0/vspackage
-curl --compressed -L -o plugins/sqltools-driver-pg.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/0.2.0/vspackage
-curl --compressed -L -o plugins/web-accessibility.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/MaxvanderSchee/vsextensions/web-accessibility/0.2.83/vspackage
-curl --compressed -L -o plugins/gradle-language.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/naco-siren/vsextensions/gradle-language/0.2.3/vspackage
-curl --compressed -L -o plugins/es7-react-js-snippets.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/dsznajder/vsextensions/es7-react-js-snippets/3.1.0/vspackage
-curl --compressed -L -o plugins/sqltools.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/0.23.0/vspackage
-curl --compressed -L -o plugins/theme-panda.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tinkertrain/vsextensions/theme-panda/1.3.0/vspackage
-curl --compressed -L -o plugins/min-theme.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/miguelsolorio/vsextensions/min-theme/1.4.7/vspackage
-curl --compressed -L -o plugins/shades-of-purple.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ahmadawais/vsextensions/shades-of-purple/6.12.0/vspackage
-curl --compressed -L -o plugins/horizon-theme-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/jolaleye/vsextensions/horizon-theme-vscode/2.0.2/vspackage
-curl --compressed -L -o plugins/new-moon-vscode.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/taniarascia/vsextensions/new-moon-vscode/1.8.8/vspackage
-curl --compressed -L -o plugins/mono-debug.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/mono-debug/0.16.2/vspackage
-curl --compressed -L -o plugins/lorem-ipsum.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/Tyriar/vsextensions/lorem-ipsum/1.2.0/vspackage
-curl --compressed -L -o plugins/tomoki1207-pdf.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/tomoki1207/vsextensions/pdf/1.1.0/vspackage
-curl --compressed -L -o plugins/jsrefactor.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/cmstead/vsextensions/jsrefactor/2.20.6/vspackage
+for i in ${!vscode_marketplace_extensions_noarch[@]}; do
+  download_extension_from_vscode_marketplace ${vscode_marketplace_extensions_noarch[$i]} ${i}
+done
 
 cd plugins
 for z in *.vsix; do
