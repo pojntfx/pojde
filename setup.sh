@@ -216,13 +216,31 @@ function setup_csharp() {
   else
     apk add mono mono-dev mono-doc mono-lang
   fi
+}
 
-  # Install dotnet
+setup_csharp
+
+# Setup .NET
+function setup_dotnet() {
   curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
   ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 }
 
-setup_csharp
+setup_dotnet
+
+# Setup PowerShell
+function setup_powershell() {
+  apk add userspace-rcu lttng-ust
+  curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.1.2/powershell-7.1.2-linux-alpine-x64.tar.gz -o /tmp/powershell.tar.gz
+  rm -rf /opt/microsoft/powershell/7
+  mkdir -p /opt/microsoft/powershell/7
+  tar -zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+  chmod +x /opt/microsoft/powershell/7/pwsh
+  ln -sf /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+  ln -sf /opt/microsoft/powershell/7/pwsh /usr/bin/powershell
+}
+
+setup_powershell
 
 # Setup LLDB
 function setup_lldb() {
