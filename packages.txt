@@ -161,3 +161,4 @@ vips-dev
 fftw-dev
 octave
 octave-doc
+zsh
