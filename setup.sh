@@ -99,36 +99,25 @@ EOF
 
   # Get the system architecture
   export SYSTEM_ARCHITECTURE=$(uname -m)
+
+  # Increase maximum file watcher count
+  echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/inotify && sysctl -p
 }
 
 setup_operating_system
 
-function install_go() {
-  # Install toolchain
-  apk add go
-
-  # Setup WebAssembly support
-  mkdir -p /usr/lib/go/misc/wasm/
-  curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
+# Setup the installation directory
+function setup_installation_directory() {
+  rm -rf ${INSTALL_DIR}
+  mkdir -p ${INSTALL_DIR}
 }
 
-install_go
+setup_installation_directory
 
-if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
-  install /tmp/alpimager /usr/local/bin
-fi
-
-curl https://sh.rustup.rs | bash -s -- -y
-
-wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-wget -O /tmp/glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
-wget -O /tmp/glibc-bin.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-bin-2.32-r0.apk
-wget -O /tmp/glibc-dev.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-dev-2.32-r0.apk
-wget -O /tmp/glibc-i18n.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-i18n-2.32-r0.apk
-apk add /tmp/glibc.apk /tmp/glibc-bin.apk /tmp/glibc-dev.apk /tmp/glibc-i18n.apk
-
-cat <<EOT >/etc/profile.d/main.sh
+# Setup profile and bashrc
+function setup_profile() {
+  # Setup user profile
+  cat <<EOT >/etc/profile.d/main.sh
 export JAVA_HOME="/usr/lib/jvm/java-14-openjdk"
 export PATH="\$JAVA_HOME/bin:\$PATH"
 export PATH="/root/go/bin:\$PATH"
@@ -146,73 +135,138 @@ alias zap="java -jar /opt/zap/ZAP_2.9.0/zap-2.9.0.jar"
 
 ulimit -n 65000
 EOT
-chmod +x /etc/profile.d/main.sh
+  chmod +x /etc/profile.d/main.sh
 
-cat <<EOT >/root/.bashrc
+  # Enable infinite history
+  cat <<EOT >/root/.bashrc
 HISTSIZE= 
 HISTFILESIZE=
 
 source /etc/profile
 EOT
-chmod +x /root/.bashrc
-ln -sf /etc/profile.d/color_prompt /etc/profile.d/color_prompt.sh
+  chmod +x /root/.bashrc
 
-source /root/.bashrc
+  # Enable proper prompt
+  ln -sf /etc/profile.d/color_prompt /etc/profile.d/color_prompt.sh
 
-git config --global user.name "${FULL_NAME}"
-git config --global user.email "${EMAIL}"
-git config --global pull.rebase false
-git config --global init.defaultBranch main
+  # Switch to the new shell now
+  source /root/.bashrc
+}
 
-rm -rf ${INSTALL_DIR}
-mkdir -p ${INSTALL_DIR}
+setup_profile
 
-if [ $ENABLE_MONO_BUILD = "1" ]; then
-  rm -rf ${INSTALL_DIR}/mono.git
-  mkdir -p ${INSTALL_DIR}/mono.git
-  git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
-  cd ${INSTALL_DIR}/mono.git
-  git checkout mono-6.10.0.105
-  apk add gettext gettext-dev libtool
-  ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
-  mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
-  sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
-  make get-monolite-latest
-  make -j$(nproc)
-  make install
-else
-  apk add mono mono-dev mono-doc mono-lang
+# Setup Go
+function setup_go() {
+  # Install toolchain
+  apk add go
+
+  # Setup WebAssembly support
+  mkdir -p /usr/lib/go/misc/wasm/
+  curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
+}
+
+setup_go
+
+# Setup Rust
+function setup_rust() {
+  curl https://sh.rustup.rs | bash -s -- -y
+}
+
+setup_rust
+
+# Setup GNU C Library compatibility layer
+function setup_glibc() {
+  wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+  wget -O /tmp/glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk
+  wget -O /tmp/glibc-bin.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-bin-2.32-r0.apk
+  wget -O /tmp/glibc-dev.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-dev-2.32-r0.apk
+  wget -O /tmp/glibc-i18n.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-i18n-2.32-r0.apk
+  apk add /tmp/glibc.apk /tmp/glibc-bin.apk /tmp/glibc-dev.apk /tmp/glibc-i18n.apk
+}
+
+setup_glibc
+
+# Setup Git
+function setup_git() {
+  # Setup username and email
+  git config --global user.name "${FULL_NAME}"
+  git config --global user.email "${EMAIL}"
+  git config --global pull.rebase false       # Set the default pull strategy to merge
+  git config --global init.defaultBranch main # Use `main` instead of `master` as the default branch
+}
+
+setup_git
+
+# Setup C#
+function setup_csharp() {
+  # If set, build mono from source, otherwise install from repo
+  if [ $ENABLE_MONO_BUILD = "1" ]; then
+    rm -rf ${INSTALL_DIR}/mono.git
+    mkdir -p ${INSTALL_DIR}/mono.git
+    git clone https://github.com/mono/mono.git ${INSTALL_DIR}/mono.git
+    cd ${INSTALL_DIR}/mono.git
+    git checkout mono-6.10.0.105
+    apk add gettext gettext-dev libtool
+    ./autogen.sh --prefix=/usr/local --with-mcs-docs=no --with-sigaltstack=no --disable-nls
+    mkdir -p /usr/include/sys && touch /usr/include/sys/sysctl.h
+    sed -i 's/HAVE_DECL_PTHREAD_MUTEXATTR_SETPROTOCOL/0/' mono/utils/mono-os-mutex.h
+    make get-monolite-latest
+    make -j$(nproc)
+    make install
+  else
+    apk add mono mono-dev mono-doc mono-lang
+  fi
+
+  # Install dotnet
+  curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
+  ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+}
+
+setup_csharp
+
+# Setup LLDB
+function setup_lldb() {
+  rm -rf ${INSTALL_DIR}/lldb-mi
+  mkdir -p ${INSTALL_DIR}/lldb-mi
+  git clone https://github.com/lldb-tools/lldb-mi.git ${INSTALL_DIR}/lldb-mi
+  cd ${INSTALL_DIR}/lldb-mi
+  cmake .
+  cmake --build . --target install
+}
+
+setup_lldb
+
+# Setup Neovim
+function setup_neovim() {
+  # If set, build Neovim from source, otherwise install from repo
+  if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
+    rm -rf ${INSTALL_DIR}/neovim
+    mkdir -p ${INSTALL_DIR}/neovim
+    git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
+    cd ${INSTALL_DIR}/neovim
+    make
+    make install
+
+    # Link it to /usr/bin/nvim universally
+    ln -sf /usr/local/bin/nvim /usr/bin/nvim
+  else
+    apk add neovim
+
+    # Link it to /usr/bin/nvim universally
+    ln -sf /usr/bin/nvim /usr/local/bin/nvim
+  fi
+
+  # Alias vi & vim to Neovim
+  ln -sf /usr/local/bin/nvim /usr/bin/vi
+  ln -sf /usr/local/bin/nvim /usr/bin/vim
+}
+
+setup_neovim
+
+if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+  curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
+  install /tmp/alpimager /usr/local/bin
 fi
-
-curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir /usr/share/dotnet
-ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
-
-rm -rf ${INSTALL_DIR}/lldb-mi
-mkdir -p ${INSTALL_DIR}/lldb-mi
-git clone https://github.com/lldb-tools/lldb-mi.git ${INSTALL_DIR}/lldb-mi
-cd ${INSTALL_DIR}/lldb-mi
-cmake .
-cmake --build . --target install
-
-if [ $ENABLE_NEOVIM_BUILD = "1" ]; then
-  rm -rf ${INSTALL_DIR}/neovim
-  mkdir -p ${INSTALL_DIR}/neovim
-  git clone https://github.com/neovim/neovim ${INSTALL_DIR}/neovim
-  cd ${INSTALL_DIR}/neovim
-  make
-  make install
-
-  ln -sf /usr/local/bin/nvim /usr/bin/nvim
-else
-  apk add neovim
-
-  ln -sf /usr/bin/nvim /usr/local/bin/nvim
-fi
-
-ln -sf /usr/local/bin/nvim /usr/bin/vi
-ln -sf /usr/local/bin/nvim /usr/bin/vim
-
-echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/inotify && sysctl -p
 
 gvfs_pkgs=$(apk search gvfs -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
 apk add $gvfs_pkgs
