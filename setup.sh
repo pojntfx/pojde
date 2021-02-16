@@ -880,7 +880,8 @@ vscode_marketplace_extensions_noarch=(
   ms-vscode/vsextensions/mono-debug/0.16.2
   Tyriar/vsextensions/lorem-ipsum/1.2.0
   tomoki1207/vsextensions/pdf/1.1.0
-  cmstead/vsextensions/jsrefactor/2.20.6
+  toasty-technologies/vsextensions/octave/0.0.3
+  paulosilva/vsextensions/vsc-octave-debugger/0.4.9
 )
 
 function download_extension_from_openvsx() {

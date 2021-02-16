@@ -159,3 +159,5 @@ dante
 util-linux
 vips-dev
 fftw-dev
+octave
+octave-doc

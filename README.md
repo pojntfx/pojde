@@ -125,6 +125,12 @@ Headless Linux distribution for full-stack software development with web access 
 - Python language support
 - Kite Autocomplete for Python
 
+### Octave
+
+- Octave editor
+- Octave language support
+- Octave debugging
+
 ### Ruby
 
 - Ruby language basics
