@@ -281,24 +281,26 @@ function setup_neovim() {
 
 setup_neovim
 
-if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
-  install /tmp/alpimager /usr/local/bin
-fi
+# Setup the desktop environment
+function setup_desktop() {
+  # Add GNOME virtual filesystem support
+  gvfs_pkgs=$(apk search gvfs -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
+  apk add $gvfs_pkgs
 
-gvfs_pkgs=$(apk search gvfs -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
-apk add $gvfs_pkgs
-ttfs=$(apk search -q ttf- | grep -v '\-doc')
-apk add $ttfs
+  # Add fonts
+  ttfs=$(apk search -q ttf- | grep -v '\-doc')
+  apk add $ttfs
+  apk del ttf-linux-libertine
+  apk del ttf-google-opensans
 
-apk del ttf-linux-libertine
-apk del ttf-google-opensans
+  # Enable launching Chromium w/o the manual `--no-sandbox` flag
+  echo "CHROMIUM_FLAGS='--no-sandbox'" >/etc/chromium/chromium.conf
 
-mkdir -p ~/Desktop
+  # Create the .desktop files
+  mkdir -p ~/Desktop
 
-echo "CHROMIUM_FLAGS='--no-sandbox --test-type'" >/etc/chromium/chromium.conf
-
-cat <<EOT >~/Desktop/Chromium.desktop
+  # Add a shortcut to Chromium
+  cat <<EOT >~/Desktop/Chromium.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -311,7 +313,8 @@ Terminal=false
 StartupNotify=false
 EOT
 
-cat <<EOT >~/Desktop/Firefox.desktop
+  # Add a shortcut to Chrome
+  cat <<EOT >~/Desktop/Firefox.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -323,7 +326,8 @@ Terminal=false
 StartupNotify=false
 EOT
 
-cat <<EOT >~/Desktop/Web.desktop
+  # Add a shortcut for GNOME Web
+  cat <<EOT >~/Desktop/Web.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -335,7 +339,8 @@ Terminal=false
 StartupNotify=false
 EOT
 
-cat <<EOT >~/Desktop/Onboard.desktop
+  # Add a shortcut for Onboard
+  cat <<EOT >~/Desktop/Onboard.desktop
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -348,33 +353,52 @@ Terminal=false
 StartupNotify=false
 EOT
 
-chmod +x ~/Desktop/*.desktop
+  # Make all .desktop files executable
+  chmod +x ~/Desktop/*.desktop
+}
 
-if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-else
-  curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
-fi
-install /tmp/skaffold /usr/local/bin
+setup_desktop
 
-if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-  curl -sLS https://dl.get-arkade.dev | sh
+# Setup the DevOps tools
+function setup_devops_tools() {
+  # Install skaffold
+  if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+  else
+    curl -L -o /tmp/skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-arm64
+  fi
+  install /tmp/skaffold /usr/local/bin
 
-  arkade get kubectl
-  arkade get k9s
-  arkade get helm
-  arkade get k3d
-  arkade get k3sup
+  # Install skaffold
+  if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+    curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
+    install /tmp/alpimager /usr/local/bin
+  fi
 
-  ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
-  ln -s ~/.arkade/bin/helm /usr/local/bin/helm
-else
-  apk add curl k9s helm
-fi
+  # Install kubectl etc. via arkade or repo
+  if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+    curl -sLS https://dl.get-arkade.dev | sh
 
-curl https://cli-assets.heroku.com/install.sh | sh
+    arkade get kubectl
+    arkade get k9s
+    arkade get helm
+    arkade get k3d
+    arkade get k3sup
 
-go get webwormhole.io/cmd/ww
+    ln -s ~/.arkade/bin/kubectl /usr/local/bin/kubectl
+    ln -s ~/.arkade/bin/helm /usr/local/bin/helm
+  else
+    apk add curl k9s helm
+  fi
+
+  # Add Heroku CLI
+  curl https://cli-assets.heroku.com/install.sh | sh
+
+  # Add WebWormhole
+  go get webwormhole.io/cmd/ww
+}
+
+setup_devops_tools
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
