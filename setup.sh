@@ -1,97 +1,123 @@
 #!/bin/bash
 
 # Read user configuration from env
+function read_user_configuration() {
+  if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felicitas Pojtinger"; fi
+  if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
+  if [ -z ${THEIA_IDE_DESCRIPTION+x} ]; then export THEIA_IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
+  if [ -z ${EMAIL+x} ]; then export EMAIL="felicitas@pojtinger.com"; fi
+  if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For your public SSH keys
+  if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the services
+  if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi         # For accessing the services
+  if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
+  if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
+  if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                      # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
+  if [ -z ${NAMESERVER+x} ]; then export NAMESERVER="8.8.8.8"; fi
+  if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
+  if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
+  if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi         # Set to "0" if you're not running this on a fresh system.
+  if [ -z ${ENABLE_MONO_BUILD+x} ]; then export ENABLE_MONO_BUILD="0"; fi     # Set to "1" if you want to build Mono from source.
+  if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi # Set to "1" if you want to build Neovim from source.
+  if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
+  if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
+}
 
-if [ -z ${FULL_NAME+x} ]; then export FULL_NAME="Felicitas Pojtinger"; fi
-if [ -z ${MOTD+x} ]; then export MOTD="Welcome to ${FULL_NAME}'s Alpine Linux Distribution!"; fi
-if [ -z ${THEIA_IDE_DESCRIPTION+x} ]; then export THEIA_IDE_DESCRIPTION="${FULL_NAME}'s Theia IDE"; fi
-if [ -z ${EMAIL+x} ]; then export EMAIL="felicitas@pojtinger.com"; fi
-if [ -z ${GITHUB_USERNAME+x} ]; then export GITHUB_USERNAME="pojntfx"; fi # For your public SSH keys
-if [ -z ${USERNAME+x} ]; then export USERNAME="pojntfx"; fi               # For accessing the services
-if [ -z ${PASSWORD+x} ]; then export PASSWORD='mysvcpassword'; fi         # For accessing the services
-if [ -z ${IDE_NAME+x} ]; then export IDE_NAME="pojde"; fi
-if [ -z ${DOMAIN+x} ]; then export DOMAIN="pojntfx.dev.alphahorizon.io"; fi # Used for TLS SAN extensions; `localhost` is always included. Keep as is if you don't have a domain.
-if [ -z ${IP+x} ]; then export IP="100.64.154.242"; fi                      # Used for TLS SAN extensions. Keep as is if you don't know the IP of the target machine.
-if [ -z ${NAMESERVER+x} ]; then export NAMESERVER="8.8.8.8"; fi
-if [ -z ${SCREEN_RESOLUTION+x} ]; then export SCREEN_RESOLUTION="1400x1050"; fi
-if [ -z ${ENABLE_SECOPS_TOOLS+x} ]; then export ENABLE_SECOPS_TOOLS="0"; fi
-if [ -z ${ENABLE_OS_SETUP+x} ]; then export ENABLE_OS_SETUP="1"; fi         # Set to "0" if you're not running this on a fresh system.
-if [ -z ${ENABLE_MONO_BUILD+x} ]; then export ENABLE_MONO_BUILD="0"; fi     # Set to "1" if you want to build Mono from source.
-if [ -z ${ENABLE_NEOVIM_BUILD+x} ]; then export ENABLE_NEOVIM_BUILD="0"; fi # Set to "1" if you want to build Neovim from source.
-if [ -z ${INSTALL_DIR+x} ]; then export INSTALL_DIR="/opt/${IDE_NAME}"; fi
-if [ -z ${WORKSPACE_DIR+x} ]; then export WORKSPACE_DIR="/root/${IDE_NAME}-workspace"; fi
+read_user_configuration
 
 # Persist user configuration
+function persist_user_configuration() {
+  export CONFIG_DIR="/etc/pojde"
+  mkdir -p "${CONFIG_DIR}"
 
-export CONFIG_DIR="/etc/pojde"
-mkdir -p "${CONFIG_DIR}"
+  echo "export FULL_NAME=\"${FULL_NAME}\"" >${CONFIG_DIR}/config.sh
+  echo "export MOTD=\"${MOTD}\"" >>${CONFIG_DIR}/config.sh
+  echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>${CONFIG_DIR}/config.sh
+  echo "export EMAIL=\"${EMAIL}\"" >>${CONFIG_DIR}/config.sh
+  echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>${CONFIG_DIR}/config.sh
+  echo "export USERNAME=\"${USERNAME}\"" >>${CONFIG_DIR}/config.sh
+  echo "export PASSWORD=\"${PASSWORD}\"" >>${CONFIG_DIR}/config.sh
+  echo "export DOMAIN=\"${DOMAIN}\"" >>${CONFIG_DIR}/config.sh
+  echo "export IP=\"${IP}\"" >>${CONFIG_DIR}/config.sh
+  echo "export NAMESERVER=\"${NAMESERVER}\"" >>${CONFIG_DIR}/config.sh
+  echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>${CONFIG_DIR}/config.sh
+  echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>${CONFIG_DIR}/config.sh
+  echo "export ENABLE_MONO_BUILD=\"${ENABLE_MONO_BUILD}\"" >>${CONFIG_DIR}/config.sh
+  echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>${CONFIG_DIR}/config.sh
+  echo "export ENABLE_SECOPS_TOOLS=\"${ENABLE_SECOPS_TOOLS}\"" >>${CONFIG_DIR}/config.sh
+  echo "export IDE_NAME=\"${IDE_NAME}\"" >>${CONFIG_DIR}/config.sh
+  echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>${CONFIG_DIR}/config.sh
+  echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>${CONFIG_DIR}/config.sh
+}
 
-echo "export FULL_NAME=\"${FULL_NAME}\"" >${CONFIG_DIR}/config.sh
-echo "export MOTD=\"${MOTD}\"" >>${CONFIG_DIR}/config.sh
-echo "export THEIA_IDE_DESCRIPTION=\"${THEIA_IDE_DESCRIPTION}\"" >>${CONFIG_DIR}/config.sh
-echo "export EMAIL=\"${EMAIL}\"" >>${CONFIG_DIR}/config.sh
-echo "export GITHUB_USERNAME=\"${GITHUB_USERNAME}\"" >>${CONFIG_DIR}/config.sh
-echo "export USERNAME=\"${USERNAME}\"" >>${CONFIG_DIR}/config.sh
-echo "export PASSWORD=\"${PASSWORD}\"" >>${CONFIG_DIR}/config.sh
-echo "export DOMAIN=\"${DOMAIN}\"" >>${CONFIG_DIR}/config.sh
-echo "export IP=\"${IP}\"" >>${CONFIG_DIR}/config.sh
-echo "export NAMESERVER=\"${NAMESERVER}\"" >>${CONFIG_DIR}/config.sh
-echo "export SCREEN_RESOLUTION=\"${SCREEN_RESOLUTION}\"" >>${CONFIG_DIR}/config.sh
-echo "export ENABLE_OS_SETUP=\"${ENABLE_OS_SETUP}\"" >>${CONFIG_DIR}/config.sh
-echo "export ENABLE_MONO_BUILD=\"${ENABLE_MONO_BUILD}\"" >>${CONFIG_DIR}/config.sh
-echo "export ENABLE_NEOVIM_BUILD=\"${ENABLE_NEOVIM_BUILD}\"" >>${CONFIG_DIR}/config.sh
-echo "export ENABLE_SECOPS_TOOLS=\"${ENABLE_SECOPS_TOOLS}\"" >>${CONFIG_DIR}/config.sh
-echo "export IDE_NAME=\"${IDE_NAME}\"" >>${CONFIG_DIR}/config.sh
-echo "export INSTALL_DIR=\"${INSTALL_DIR}\"" >>${CONFIG_DIR}/config.sh
-echo "export WORKSPACE_DIR=\"${WORKSPACE_DIR}\"" >>${CONFIG_DIR}/config.sh
+persist_user_configuration
 
-# Start installation
+# Setup the base operating system
+function setup_operating_system() {
+  if [ $ENABLE_OS_SETUP = "1" ]; then
+    # Set timezone to UTC by default
+    setup-timezone -z UTC
 
-if [ $ENABLE_OS_SETUP = "1" ]; then
-  setup-timezone -z UTC
-
-  cat <<-EOF >/etc/network/interfaces
+    # Setup networking
+    cat <<-EOF >/etc/network/interfaces
 		iface lo inet loopback
 		iface eth0 inet dhcp
 	EOF
 
+    # Enable networking
+    ln -s networking /etc/init.d/net.lo
+    ln -s networking /etc/init.d/net.eth0
+
+    rc-update add net.eth0 default
+    rc-update add net.lo boot
+  fi
+
+  # Set custom message of the day
   cat <<EOF >/etc/motd
 ${MOTD}
 EOF
 
-  ln -s networking /etc/init.d/net.lo
-  ln -s networking /etc/init.d/net.eth0
+  # Set the custom nameserver
+  echo "nameserver $NAMESERVER" >/etc/resolv.conf
 
-  rc-update add net.eth0 default
-  rc-update add net.lo boot
-fi
+  # Get and set the user's SSH keys
+  mkdir -m 700 -p /root/.ssh
+  wget -O - https://github.com/${GITHUB_USERNAME}.keys | tee /root/.ssh/authorized_keys
+  chmod 600 /root/.ssh/authorized_keys
 
-echo "nameserver $NAMESERVER" >/etc/resolv.conf
+  # Allow TCP forwarding via SSH
+  sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 
-mkdir -m 700 -p /root/.ssh
-wget -O - https://github.com/${GITHUB_USERNAME}.keys | tee /root/.ssh/authorized_keys
-chmod 600 /root/.ssh/authorized_keys
+  # Give root privileges to other users
+  usermod -p '*' root
 
-sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
+  # Make bash the default shell
+  ln -sf /bin/bash /bin/sh
 
-usermod -p '*' root
+  # Install system updates
+  apk update
+  apk upgrade
 
-ln -sf /bin/bash /bin/sh
+  # Get the system architecture
+  export SYSTEM_ARCHITECTURE=$(uname -m)
+}
 
-apk update
-apk upgrade
+setup_operating_system
 
-export SYSTEM_ARCHITECTURE=$(uname -m)
+function install_go() {
+  # Install toolchain
+  apk add go
 
-apk add go
+  # Setup WebAssembly support
+  mkdir -p /usr/lib/go/misc/wasm/
+  curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
+}
+
+install_go
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/alpimager https://github.com/pojntfx/alpimager/releases/download/unstable-linux/alpimager
   install /tmp/alpimager /usr/local/bin
 fi
-
-mkdir -p /usr/lib/go/misc/wasm/
-curl -L -o /usr/lib/go/misc/wasm/wasm_exec.js https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
 
 curl https://sh.rustup.rs | bash -s -- -y
 
