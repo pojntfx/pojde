@@ -100,6 +100,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Gradle language support
 - Project manager for Java
 - JavaDoc Tools
+- Java kernel for Jupyter
 
 ### C#
 

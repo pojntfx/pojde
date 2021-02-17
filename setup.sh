@@ -452,6 +452,16 @@ function add_octave_jupyter_kernel() {
 
 add_octave_jupyter_kernel
 
+function add_java_jupyter_kernel() {
+  rm -rf ${INSTALL_DIR}/IJava
+  mkdir -p ${INSTALL_DIR}/IJava
+  git clone https://github.com/SpencerPark/IJava.git ${INSTALL_DIR}/IJava
+  cd ${INSTALL_DIR}/IJava
+  ./gradlew installKernel
+}
+
+add_java_jupyter_kernel
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer
