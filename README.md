@@ -163,6 +163,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Lorem ipsum generator
 - Tailwind CSS IntelliSense
 - [Web Accessibility](https://github.com/mvdschee/web-accessibility)
+- JS kernel for Jupyter
 
 ### Zig
 
