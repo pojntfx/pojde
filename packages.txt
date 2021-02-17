@@ -164,3 +164,6 @@ octave-doc
 zsh
 zeromq-dev
 expect
+R
+R-dev
+R-doc

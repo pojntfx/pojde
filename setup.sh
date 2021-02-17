@@ -421,6 +421,14 @@ EOT
 
 setup_jupyter_lab
 
+function add_r_jupyter_kernel() {
+  echo "install.packages('IRkernel', repo='http://cran.rstudio.com/')" | R --no-save
+  echo "IRkernel::installspec(user = FALSE)" | R --no-save
+  jupyter labextension install @techrah/text-shortcuts
+}
+
+add_r_jupyter_kernel
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer
@@ -893,6 +901,8 @@ openvsx_extensions_noarch=(
   arcticicestudio/nord-visual-studio-code
   akamud/vscode-theme-onelight
   akamud/vscode-theme-onedark
+  Ikuyadeu/r
+  vscode/r
 )
 
 openvsx_extensions_amd64=(

@@ -125,6 +125,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Python language support
 - Kite Autocomplete for Python
 - Jupyter Lab (see [Access](#access))
+- Python kernel for Jupyter
 
 ### Octave
 
@@ -168,6 +169,12 @@ Headless Linux distribution for full-stack software development with web access 
 - Zig language basics
 - Zig language support
 - Zig snippets
+
+### R
+
+- R kernel for Jupyter
+- R language basics
+- R language support
 
 ### Databases
 
