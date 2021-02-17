@@ -480,9 +480,20 @@ EOT
   chmod +x /etc/init.d/kited
 fi
 
-pip install -U pylint --user
-pip install -U autopep8 --user
-pip install -U speedtest-cli --user
+function setup_python_tooling() {
+  pip install -U pylint --user
+  pip install -U autopep8 --user
+  pip install -U speedtest-cli --user
+
+  curl -L -o /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  chmod +x /tmp/miniconda.sh
+  /tmp/miniconda.sh -b -p /root/miniconda
+  source ~/miniconda/bin/activate
+  conda init
+  conda config --set auto_activate_base false
+}
+
+setup_python_tooling
 
 rm -rf /opt/wasmtime
 mkdir -p /opt/wasmtime

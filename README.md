@@ -127,6 +127,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Kite Autocomplete for Python
 - Jupyter Lab (see [Access](#access))
 - Python kernel for Jupyter
+- Miniconda
 
 ### Octave
 
