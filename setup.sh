@@ -436,6 +436,15 @@ function add_js_jupyter_kernel() {
 
 add_js_jupyter_kernel
 
+function add_ruby_jupyter_kernel() {
+  gem install ffi-rzmq
+  gem install iruby --pre
+  gem install pry pry-doc awesome_print gnuplot rubyvis nyaplot cztop
+  iruby register --force
+}
+
+add_ruby_jupyter_kernel
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer

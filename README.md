@@ -137,6 +137,7 @@ Headless Linux distribution for full-stack software development with web access 
 
 - Ruby language basics
 - Ruby language support
+- Ruby kernel for Jupyter
 
 ### JavaScript/TypeScript and Web Technologies
 
@@ -173,9 +174,9 @@ Headless Linux distribution for full-stack software development with web access 
 
 ### R
 
-- R kernel for Jupyter
 - R language basics
 - R language support
+- R kernel for Jupyter
 
 ### Databases
 
