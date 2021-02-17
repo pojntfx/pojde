@@ -462,6 +462,17 @@ function add_java_jupyter_kernel() {
 
 add_java_jupyter_kernel
 
+function add_go_jupyter_kernel() {
+  env GO111MODULE=on go get github.com/gopherdata/gophernotes
+  mkdir -p ~/.local/share/jupyter/kernels/gophernotes
+  cd ~/.local/share/jupyter/kernels/gophernotes
+  cp "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v0.7.1/kernel/* "."
+  chmod +w ./kernel.json
+  sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" <kernel.json.in >kernel.json
+}
+
+add_go_jupyter_kernel
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer

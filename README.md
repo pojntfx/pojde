@@ -88,6 +88,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Go language basics
 - Go language support
 - TinyGo support
+- Python kernel for Go
 
 ### Java
 
