@@ -429,6 +429,13 @@ function add_r_jupyter_kernel() {
 
 add_r_jupyter_kernel
 
+function add_js_jupyter_kernel() {
+  npm install -g --unsafe-perm ijavascript
+  ijsinstall --install=global
+}
+
+add_js_jupyter_kernel
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer
