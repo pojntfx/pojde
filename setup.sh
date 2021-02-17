@@ -402,6 +402,7 @@ setup_devops_tools
 
 function setup_jupyter_lab() {
   pip install jupyterlab
+  pip install jupyterlab_vim
   jupyter server --generate-config
 
   cat <<EOT >/tmp/expect-input
@@ -444,6 +445,12 @@ function add_ruby_jupyter_kernel() {
 }
 
 add_ruby_jupyter_kernel
+
+function add_octave_jupyter_kernel() {
+  pip install octave_kernel
+}
+
+add_octave_jupyter_kernel
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current

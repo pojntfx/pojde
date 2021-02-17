@@ -132,6 +132,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Octave editor
 - Octave language support
 - Octave debugging
+- Octave kernel for Jupyter
 
 ### Ruby
 
