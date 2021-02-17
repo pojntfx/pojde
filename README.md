@@ -88,7 +88,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Go language basics
 - Go language support
 - TinyGo support
-- Python kernel for Go
+- Go kernel for Jupyter
 
 ### Java
 
@@ -217,6 +217,7 @@ Headless Linux distribution for full-stack software development with web access 
 - `upx`
 - `zsh`
 - WINE
+- Bash kernel for Jupyter
 
 ### SecOps
 

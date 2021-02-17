@@ -473,6 +473,13 @@ function add_go_jupyter_kernel() {
 
 add_go_jupyter_kernel
 
+function add_bash_jupyter_kernel() {
+  pip install bash_kernel
+  python3 -m bash_kernel.install
+}
+
+add_bash_jupyter_kernel
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer
