@@ -162,3 +162,5 @@ fftw-dev
 octave
 octave-doc
 zsh
+zeromq-dev
+expect

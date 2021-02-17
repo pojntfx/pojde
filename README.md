@@ -124,6 +124,7 @@ Headless Linux distribution for full-stack software development with web access 
 - Python language basics
 - Python language support
 - Kite Autocomplete for Python
+- Jupyter Lab (see [Access](#access))
 
 ### Octave
 
@@ -308,7 +309,7 @@ For the next steps, continue to [Usage](#usage).
 4. Increase the disk image size by running `qemu-img resize pojde.qcow2 +20G`
 5. Start the virtual machine by running `qemu-system-x86_64 -m 4096 -accel kvm -nic user,hostfwd=tcp::8022-:22 -boot d -drive format=qcow2,file=pojde.qcow2`; use `-accel hvf` or `-accel hax` on macOS, `-accel kvm` on Linux. We are using a user net device with port forwarding in this example, but if you are using Linux as your host os, it is also possible to set up a [bridge](https://wiki.alpinelinux.org/wiki/Bridge) to access the VM from a dedicated IP from your host network and then start it by running `qemu-system-x86_64 -m 4096 -accel kvm -net nic -net bridge,br=br0 -boot d -drive format=qcow2,file=pojde.qcow2`. If you do so, there is no need to use `-p 8022` flag in the `ssh` commands below and you should replace `localhost` with the IP of the VM. Also, if you prefer not to use a graphical display, pass the `-nographic` flag to the startup commands above.
 6. Log into the machine and resize the file system by running `ssh -p 8022 root@localhost resize2fs /dev/sda`. If you're running in a public cloud `/dev/sda` might be something else such as `/dev/vda`.
-7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -L localhost:8003:localhost:8003 -p 8022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
+7. Setup secure access by running `ssh -L localhost:8000:localhost:8000 -L localhost:8001:localhost:8001 -L localhost:8002:localhost:8002 -L localhost:8003:localhost:8003 -L localhost:8004:localhost:8004 -p 8022 root@localhost`. If you do not setup secure access like so, the might be issues with webviews in Theia.
 8. Continue to [Usage](#usage)
 
 > Tested on:
@@ -343,6 +344,7 @@ To access the services, use the passwords you've specified in `setup.sh` and the
 - Theia: [https://localhost:8001](https://localhost:8001)
 - code-server: [https://localhost:8002](https://localhost:8002)
 - noVNC: [https://localhost:8003](https://localhost:8003)
+- Jupyter Lab: [https://localhost:8004](https://localhost:8004)
 
 If you chose the Docker or virtualized installation options, you can also SSH into the container/virtual machine with `ssh -p 8022 root@localhost`.
 

@@ -400,6 +400,27 @@ function setup_devops_tools() {
 
 setup_devops_tools
 
+function setup_jupyter_lab() {
+  pip install jupyterlab
+  jupyter server --generate-config
+
+  cat <<EOT >/tmp/expect-input
+#!/usr/bin/expect
+set timeout 360
+spawn jupyter server password
+expect "Enter password: " { send "${PASSWORD}\n" }
+expect "Verify password: " { send "${PASSWORD}\n" }
+exit
+EOT
+  chmod +x /tmp/expect-input
+  /tmp/expect-input
+  rm /tmp/expect-input
+
+  mkdir -p /root/Notebooks
+}
+
+setup_jupyter_lab
+
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
   chmod +x /tmp/kite-installer
@@ -1126,6 +1147,13 @@ autorestart=true
 priority=800
 ${SUPERVISORD_ENV_VARIABLES}
 command=/bin/sh -c "mkdir -p /run/nginx && /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf"
+user=root
+autorestart=true
+
+[program:jupyter-lab]
+priority=900
+${SUPERVISORD_ENV_VARIABLES}
+command=/usr/bin/jupyter-lab --certfile=/etc/nginx/server.crt --keyfile /etc/nginx/server.key --allow-root --port 8004 --ip="0.0.0.0" --notebook-dir=/root/Notebooks
 user=root
 autorestart=true
 EOT
