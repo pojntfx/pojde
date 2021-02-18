@@ -110,7 +110,10 @@ Headless Linux distribution for full-stack software development with web access 
 - C# debugging with Mono (see https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) for a launch configuration
 - C# XML documentation comments
 - .NET
-- PowerShell
+- PowerShell language basics
+- PowerShell language support
+- PowerShell (X86_64 only)
+- PowerShell kernel for Jupyter
 
 ### Godot
 
