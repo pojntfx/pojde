@@ -167,3 +167,4 @@ expect
 R
 R-dev
 R-doc
+py3-numpy-dev
