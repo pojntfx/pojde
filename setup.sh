@@ -513,6 +513,8 @@ function setup_python_tooling() {
   pip install -U autopep8 --user
   pip install -U speedtest-cli --user
 
+  pip install wheel
+
   curl -L -o /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   chmod +x /tmp/miniconda.sh
   /tmp/miniconda.sh -b -p /root/miniconda
