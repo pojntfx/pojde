@@ -123,6 +123,7 @@ export PATH="\$JAVA_HOME/bin:\$PATH"
 export PATH="/root/go/bin:\$PATH"
 export DOTNET_ROOT="/usr/share/dotnet"
 export PATH="\$DOTNET_ROOT:\$PATH"
+export PATH="\$PATH:/root/.dotnet/tools"
 export LIBRARY_PATH="/lib:/usr/lib"
 export PATH="/root/.cargo/bin:\$PATH"
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
@@ -490,6 +491,13 @@ function add_powershell_jupyter_kernel() {
 }
 
 add_powershell_jupyter_kernel
+
+function add_dotnet_jupyter_kernel() {
+  dotnet tool install -g --add-source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json" Microsoft.dotnet-interactive
+  dotnet interactive jupyter install
+}
+
+add_dotnet_jupyter_kernel
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
