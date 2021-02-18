@@ -483,15 +483,6 @@ function add_bash_jupyter_kernel() {
 
 add_bash_jupyter_kernel
 
-function add_powershell_jupyter_kernel() {
-  if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
-    pip install powershell_kernel
-    python3 -m powershell_kernel.install
-  fi
-}
-
-add_powershell_jupyter_kernel
-
 function add_dotnet_jupyter_kernel() {
   dotnet tool install -g --add-source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json" Microsoft.dotnet-interactive
   dotnet interactive jupyter install
@@ -1246,7 +1237,7 @@ autorestart=true
 [program:jupyter-lab]
 priority=900
 ${SUPERVISORD_ENV_VARIABLES}
-command=/usr/bin/jupyter-lab --certfile=/etc/nginx/server.crt --keyfile /etc/nginx/server.key --allow-root --port 8004 --ip="0.0.0.0" --notebook-dir=/root/Notebooks
+command=/bin/sh -c "source /etc/profile && /usr/bin/jupyter-lab --certfile=/etc/nginx/server.crt --keyfile /etc/nginx/server.key --allow-root --port 8004 --ip=0.0.0.0 --notebook-dir=/root/Notebooks"
 user=root
 autorestart=true
 EOT

@@ -103,18 +103,20 @@ Headless Linux distribution for full-stack software development with web access 
 - JavaDoc Tools
 - Java kernel for Jupyter
 
-### C#
+### Mono/.NET/C#/F# and PowerShell
 
+- Mono
+- .NET
+- PowerShell (X86_64 only)
 - C# language basics
 - C# language support
 - C# debugging with Mono (see https://marketplace.visualstudio.com/items?itemName=ms-vscode.mono-debug) for a launch configuration
 - C# XML documentation comments
-- .NET
-- .NET kernel for Jupyter
+- F# language basics
+- F# language support
 - PowerShell language basics
 - PowerShell language support
-- PowerShell (X86_64 only)
-- PowerShell kernel for Jupyter
+- C#, F# and PowerShell kernels for Jupyter
 
 ### Godot
 
