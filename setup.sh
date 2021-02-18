@@ -230,14 +230,16 @@ setup_dotnet
 
 # Setup PowerShell
 function setup_powershell() {
-  apk add userspace-rcu lttng-ust
-  curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.1.2/powershell-7.1.2-linux-alpine-x64.tar.gz -o /tmp/powershell.tar.gz
-  rm -rf /opt/microsoft/powershell/7
-  mkdir -p /opt/microsoft/powershell/7
-  tar -zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
-  chmod +x /opt/microsoft/powershell/7/pwsh
-  ln -sf /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
-  ln -sf /opt/microsoft/powershell/7/pwsh /usr/bin/powershell
+  if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+    apk add userspace-rcu lttng-ust
+    curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.1.2/powershell-7.1.2-linux-alpine-x64.tar.gz -o /tmp/powershell.tar.gz
+    rm -rf /opt/microsoft/powershell/7
+    mkdir -p /opt/microsoft/powershell/7
+    tar -zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+    chmod +x /opt/microsoft/powershell/7/pwsh
+    ln -sf /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+    ln -sf /opt/microsoft/powershell/7/pwsh /usr/bin/powershell
+  fi
 }
 
 setup_powershell
@@ -479,6 +481,15 @@ function add_bash_jupyter_kernel() {
 }
 
 add_bash_jupyter_kernel
+
+function add_powershell_jupyter_kernel() {
+  if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
+    pip install powershell_kernel
+    python3 -m powershell_kernel.install
+  fi
+}
+
+add_powershell_jupyter_kernel
 
 if [ $SYSTEM_ARCHITECTURE = "x86_64" ]; then
   curl -L -o /tmp/kite-installer https://linux.kite.com/dls/linux/current
@@ -965,6 +976,7 @@ openvsx_extensions_noarch=(
   akamud/vscode-theme-onedark
   Ikuyadeu/r
   vscode/r
+  vscode/powershell
 )
 
 openvsx_extensions_amd64=(
@@ -999,6 +1011,7 @@ vscode_marketplace_extensions_noarch=(
   tomoki1207/vsextensions/pdf/1.1.0
   toasty-technologies/vsextensions/octave/0.0.3
   paulosilva/vsextensions/vsc-octave-debugger/0.4.9
+  ms-vscode/vsextensions/PowerShell/2020.6.0
 )
 
 function download_extension_from_openvsx() {
