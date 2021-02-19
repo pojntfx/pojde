@@ -299,63 +299,6 @@ function setup_desktop() {
   # Enable launching Chromium w/o the manual `--no-sandbox` flag
   echo "CHROMIUM_FLAGS='--no-sandbox'" >/etc/chromium/chromium.conf
 
-  # Create the .desktop files
-  mkdir -p ~/Desktop
-
-  # Add a shortcut to Chromium
-  cat <<EOT >~/Desktop/Chromium.desktop
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Chromium
-Comment=Access the Internet
-Exec=chromium-browser %U
-Icon=chromium
-Path=
-Terminal=false
-StartupNotify=false
-EOT
-
-  # Add a shortcut to Chrome
-  cat <<EOT >~/Desktop/Firefox.desktop
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Firefox
-Exec=firefox %U
-Icon=firefox
-Path=
-Terminal=false
-StartupNotify=false
-EOT
-
-  # Add a shortcut for GNOME Web
-  cat <<EOT >~/Desktop/Web.desktop
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Web
-Exec=epiphany %U
-Icon=org.gnome.Epiphany
-Path=
-Terminal=false
-StartupNotify=false
-EOT
-
-  # Add a shortcut for Onboard
-  cat <<EOT >~/Desktop/Onboard.desktop
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Onboard
-Comment=Flexible onscreen keyboard
-Exec=onboard
-Icon=onboard
-Path=
-Terminal=false
-StartupNotify=false
-EOT
-
   # Make all .desktop files executable
   chmod +x ~/Desktop/*.desktop
 }
@@ -1173,7 +1116,7 @@ EOT
 
 DOCKER_HOST_OVERWRITE=""
 if grep docker /proc/1/cgroup -qa; then DOCKER_HOST_OVERWRITE="DOCKER_HOST=\"unix:///opt/pojde/docker.sock\","; fi # dind
-SUPERVISORD_ENV_VARIABLES="environment=HOME=/root,USER=root,${DOCKER_HOST_OVERWRITE}DISPLAY=\":1\""
+SUPERVISORD_ENV_VARIABLES="environment=HOME=/root,USER=root,${DOCKER_HOST_OVERWRITE}DISPLAY=\":1\",XDG_SESSION_TYPE=x11"
 
 cat <<EOT >/etc/supervisord.conf
 [supervisord]
@@ -1215,10 +1158,10 @@ command=x11vnc -rfbauth /etc/vncsecret -display :1 -xkb -noxrecord -noxfixes -no
 user=root
 autorestart=true
 
-[program:startxfce4]
+[program:gnome]
 priority=600
 ${SUPERVISORD_ENV_VARIABLES}
-command=/usr/bin/startxfce4
+command=/usr/bin/gnome-session
 user=root
 autorestart=true
 

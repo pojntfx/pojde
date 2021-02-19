@@ -266,7 +266,7 @@ Headless Linux distribution for full-stack software development with web access 
 
 ### Desktop
 
-- XFCE4
+- GNOME
 - Chromium
 - Firefox
 - GNOME Web (Epiphany/WebKit)
@@ -276,7 +276,6 @@ Headless Linux distribution for full-stack software development with web access 
 - aerc
 - Godot Editor
 - Flatpak
-- On-Screen Keyboard
 - youtube-dl
 - spotify-dl
 - ffmpeg
