@@ -677,6 +677,14 @@ cat <<EOT >~/.theia/keymaps.json
   {
     "key": "f1",
     "command": "-workbench.action.showCommands"
+  },
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "-workbench.action.terminal.new"
   }
 ]
 EOT
