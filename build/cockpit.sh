@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install Cockpit
-sudo apt install -y cockpit
+apt install -y cockpit
 
 # Change the listen port to 3000
 mkdir -p /etc/systemd/system/cockpit.socket.d

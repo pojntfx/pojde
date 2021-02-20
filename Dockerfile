@@ -14,6 +14,12 @@ RUN ./packages.sh
 COPY build/cockpit.sh .
 RUN ./cockpit.sh
 
+COPY build/code-server.sh .
+RUN ./code-server.sh
+
+# Clean up
+RUN rm -rf /opt/pojde-ng/build
+
 # Go back to home dir
 WORKDIR /root
 
