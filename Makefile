@@ -1,8 +1,11 @@
 all: build
 
+.PHONY: build
+
 # Lifecycle
 
 build:
+	chmod +x ./build/*.sh
 	docker build -t pojntfx/pojde-ng .
 
 apply:
