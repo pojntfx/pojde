@@ -11,6 +11,9 @@ RUN ./repositories.sh
 COPY build/packages.sh .
 RUN ./packages.sh
 
+COPY build/cockpit.sh .
+RUN ./cockpit.sh
+
 # Go back to home dir
 WORKDIR /root
 
