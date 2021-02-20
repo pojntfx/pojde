@@ -8,6 +8,9 @@ WORKDIR /opt/pojde-ng/build
 COPY build/repositories.sh .
 RUN ./repositories.sh
 
+COPY build/packages.sh .
+RUN ./packages.sh
+
 # Go back to home dir
 WORKDIR /root
 
