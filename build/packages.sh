@@ -2,6 +2,7 @@
 
 packages=(
     sudo
+    vim
 )
 
-apt install -y "${packages}"
+apt install -y "${packages[@]}"
