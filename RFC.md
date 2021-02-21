@@ -4,8 +4,8 @@
 
 Headless development environment with web access for all components.
 
-- <5 Minute installation time
-- <2 GB installation size
+- <5 Minutes installation time
+- <3 GB installation size
 - Based on Debian
 - Graphical customization
 - Languages (toolchain, VSCode extensions and Jupyter Lab) should be configurable
