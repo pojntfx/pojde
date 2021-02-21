@@ -37,3 +37,16 @@ server {
 }
 EOT
 done
+
+# Add block for SSH
+cat <<EOT >/etc/nginx/modules-enabled/pojde-ng.conf
+stream {
+    upstream ssh {
+        server localhost:38022;
+    }
+    server {
+        listen 8022;
+        proxy_pass ssh;
+    }
+}
+EOT
