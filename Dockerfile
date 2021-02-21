@@ -26,6 +26,9 @@ RUN ./novnc.sh
 COPY build/jupyter-lab.sh .
 RUN ./jupyter-lab.sh
 
+COPY build/nginx.sh .
+RUN ./nginx.sh
+
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 

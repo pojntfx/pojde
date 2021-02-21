@@ -46,14 +46,14 @@ ExecStart=/usr/bin/x11vnc -display :1 -rfbauth /etc/vncsecret -forever
 WantedBy=multi-user.target
 EOT
 
-# Create systemd service for novnc
+# Create systemd service for novnc with the listen port set to 38003
 cat <<EOT >/usr/lib/systemd/system/novnc.service
 [Unit]
 Description=noVNC
 
 [Service]
 Type=simple
-ExecStart=/usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 3003
+ExecStart=/usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 38003
 
 [Install]
 WantedBy=multi-user.target
