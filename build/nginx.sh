@@ -27,6 +27,7 @@ server {
 
     location / {
         proxy_pass http://localhost:3${port};
+        proxy_set_header Origin http://localhost:3${port};
         proxy_set_header Host \$host;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;

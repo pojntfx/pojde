@@ -10,3 +10,10 @@ cat <<EOT >/etc/systemd/system/cockpit.socket.d/listen.conf
 ListenStream=
 ListenStream=38000
 EOT
+
+# Enable CORS
+cat <<EOT >/etc/cockpit/cockpit.conf
+[WebService]
+AllowUnencrypted = true
+Origins = http://localhost:38000
+EOT
