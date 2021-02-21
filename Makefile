@@ -13,6 +13,7 @@ apply:
 	docker run -d --name pojde-ng --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -p 18000-18004:8000-8004 -p 18022:8022 pojntfx/pojde-ng
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/parameters.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/user.sh
+	docker exec -it pojde-ng /opt/pojde-ng/configuration/code-server.sh
 
 start:
 	docker start pojde-ng
