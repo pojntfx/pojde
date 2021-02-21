@@ -34,7 +34,7 @@ RUN rm -rf /opt/pojde-ng/build
 
 # Add configuration scripts and create preferences directory
 RUN mkdir -p /opt/pojde-ng/configuration
-COPY configuration/* /opt/pojde-ng/configuration
+COPY configuration/* /opt/pojde-ng/configuration/
 RUN mkdir -p /opt/pojde-ng/preferences
 
 # Go back to home dir
