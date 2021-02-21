@@ -23,6 +23,9 @@ RUN ./ttyd.sh
 COPY build/novnc.sh .
 RUN ./novnc.sh
 
+COPY build/jupyter-lab.sh .
+RUN ./jupyter-lab.sh
+
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 
