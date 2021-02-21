@@ -8,7 +8,7 @@ echo "root:${POJDE_NG_ROOT_PASSWORD}" | chpasswd
 
 # Create new user and add them to the wheel group
 addgroup --system wheel
-useradd "${POJDE_NG_USERNAME}"
+useradd -m "${POJDE_NG_USERNAME}"
 sed -i 's/#auth required pam_wheel.so/auth required pam_wheel.so/g' /etc/pam.d/su
 adduser "${POJDE_NG_USERNAME}" wheel
 adduser "${POJDE_NG_USERNAME}" sudo
