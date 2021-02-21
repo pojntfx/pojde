@@ -20,6 +20,9 @@ RUN ./code-server.sh
 COPY build/ttyd.sh .
 RUN ./ttyd.sh
 
+COPY build/novnc.sh .
+RUN ./novnc.sh
+
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 
