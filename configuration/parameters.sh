@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Install dialog
-apt install -y dialog
-
 # Display welcome message
 dialog --msgbox "Welcome to Pojde Next Generation! Please press ENTER to start the configuration process." 0 0
 

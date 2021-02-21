@@ -5,6 +5,7 @@ packages=(
     sudo
     vim
     curl
+    dialog
 )
 
 # Download all common packages
