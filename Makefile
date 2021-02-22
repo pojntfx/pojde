@@ -14,6 +14,7 @@ apply:
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/parameters.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/user.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/code-server.sh
+	docker exec -it pojde-ng /opt/pojde-ng/configuration/ttyd.sh
 
 start:
 	docker start pojde-ng
