@@ -18,6 +18,7 @@ apply:
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/novnc.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/jupyter-lab.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/nginx.sh
+	docker exec -it pojde-ng /opt/pojde-ng/configuration/webwormhole.sh
 
 start:
 	docker start pojde-ng
