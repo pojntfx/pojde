@@ -17,7 +17,8 @@ echo export "'"POJDE_NG_ROOT_PASSWORD="$(dialog --stdout --nocancel --insecure -
 echo export "'"POJDE_NG_USERNAME="$(dialog --stdout --nocancel --inputbox "Enter the new username or press ENTER to keep the current one:" 0 0 ${POJDE_NG_USERNAME})""'" >>${PREFERENCE_FILE}
 echo export "'"POJDE_NG_PASSWORD="$(dialog --stdout --nocancel --insecure --passwordbox "Enter the new password or press ENTER to keep the current one:" 0 0 ${POJDE_NG_PASSWORD})""'" >>${PREFERENCE_FILE}
 
-# Ask for domain
+# Ask for IP domain
+echo export "'"POJDE_NG_IP="$(dialog --stdout --nocancel --inputbox "Enter the new IP or press ENTER to keep the current one:" 0 0 ${POJDE_NG_IP})""'" >>${PREFERENCE_FILE}
 echo export "'"POJDE_NG_DOMAIN="$(dialog --stdout --nocancel --inputbox "Enter the new domain or press ENTER to keep the current one:" 0 0 ${POJDE_NG_DOMAIN})""'" >>${PREFERENCE_FILE}
 
 # Ask for GitHub username

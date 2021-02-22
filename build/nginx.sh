@@ -12,6 +12,7 @@ map \$http_upgrade \$connection_upgrade {
 EOT
 
 # Create server blocks for ports 8000-8004
+# `# %POJDE_NG_CERTIFICATES%` is a template slot and will be replaced with a proper SSL configuration
 ports=(
     8000
     8001
@@ -24,6 +25,7 @@ for port in "${ports[@]}"; do
     cat <<EOT >>/etc/nginx/conf.d/pojde-ng.conf
 server {
     listen ${port};
+    # %POJDE_NG_CERTIFICATES%
 
     location / {
         proxy_pass http://localhost:3${port};

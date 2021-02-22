@@ -32,10 +32,11 @@ RUN ./nginx.sh
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 
-# Add configuration scripts and create preferences directory
+# Add configuration scripts and create preferences & CA directory
 RUN mkdir -p /opt/pojde-ng/configuration
 COPY configuration/* /opt/pojde-ng/configuration/
 RUN mkdir -p /opt/pojde-ng/preferences
+RUN mkdir -p /opt/pojde-ng/ca
 
 # Go back to home dir
 WORKDIR /root
