@@ -29,6 +29,9 @@ RUN ./jupyter-lab.sh
 COPY build/nginx.sh .
 RUN ./nginx.sh
 
+COPY build/webwormhole.sh .
+RUN ./webwormhole.sh
+
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 
