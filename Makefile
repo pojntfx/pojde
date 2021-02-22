@@ -16,6 +16,7 @@ apply:
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/code-server.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/ttyd.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/novnc.sh
+	docker exec -it pojde-ng /opt/pojde-ng/configuration/jupyter-lab.sh
 
 start:
 	docker start pojde-ng

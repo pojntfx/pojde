@@ -68,6 +68,3 @@ Headless development environment with web access for all components.
   - Setup certificates for domain
 - Customize SSH
   - Fetch keys from GitHub into authorized_keys
-- Customize systemd
-  - Enable all services
-  - Start all services
