@@ -18,6 +18,7 @@ apply:
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/novnc.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/jupyter-lab.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/nginx.sh
+	docker exec -it pojde-ng /opt/pojde-ng/configuration/ssh.sh
 	docker exec -it pojde-ng /opt/pojde-ng/configuration/webwormhole.sh
 
 start:
@@ -31,6 +32,9 @@ restart:
 
 remove:
 	docker rm -f pojde-ng
+
+purge: remove
+	docker volume rm pojde-ng-preferences pojde-ng-ca
 
 # Debugging
 

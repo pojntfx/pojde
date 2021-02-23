@@ -4,7 +4,7 @@ FROM jrei/systemd-debian:10
 RUN mkdir -p /opt/pojde-ng/build
 WORKDIR /opt/pojde-ng/build
 
-# Run scripts
+# Run build scripts
 COPY build/repositories.sh .
 RUN ./repositories.sh
 
@@ -26,6 +26,9 @@ RUN ./novnc.sh
 COPY build/jupyter-lab.sh .
 RUN ./jupyter-lab.sh
 
+COPY build/ssh.sh .
+RUN ./ssh.sh
+
 COPY build/nginx.sh .
 RUN ./nginx.sh
 
@@ -35,11 +38,13 @@ RUN ./webwormhole.sh
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 
-# Add configuration scripts and create preferences & CA directory
-RUN mkdir -p /opt/pojde-ng/configuration
-COPY configuration/* /opt/pojde-ng/configuration/
+# Create preferences & CA directories
 RUN mkdir -p /opt/pojde-ng/preferences
 RUN mkdir -p /opt/pojde-ng/ca
+
+# Add configuration scripts
+RUN mkdir -p /opt/pojde-ng/configuration
+COPY configuration/* /opt/pojde-ng/configuration/
 
 # Go back to home dir
 WORKDIR /root
