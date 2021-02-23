@@ -4,9 +4,11 @@ all: build
 
 # Lifecycle
 
-build:
+pre:
 	chmod +x ./build/*.sh
 	chmod +x ./configuration/*.sh
+
+build: pre
 	docker build -t pojntfx/pojde-ng .
 
 apply:
