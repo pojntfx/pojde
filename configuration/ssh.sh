@@ -11,6 +11,6 @@ chmod 600 ${CONFIG_DIR}/authorized_keys
 
 # Enable & restart the services
 if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
-    ln -sf /etc/init.d/dropbear /etc/rc3.d/dropbear
-    service dropbear restart
+    rc-service dropbear restart
+    rc-update add dropbear default
 fi

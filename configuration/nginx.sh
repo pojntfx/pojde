@@ -41,8 +41,8 @@ sed -i "s/# %POJDE_NG_CERTIFICATES%/ssl_certificate server.crt;\n    ssl_certifi
 
 # Enable & restart the services
 if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
-    ln -sf /etc/init.d/nginx /etc/rc3.d/nginx
-    service nginx restart
+    rc-service nginx restart
+    rc-update add nginx default
 else
     systemctl enable nginx
     systemctl restart nginx

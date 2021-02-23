@@ -27,8 +27,7 @@ apply)
             "POJDE_NG_SYSVINIT=true"
         )
         export docker_args=(
-            "/sbin/init"
-            "100"
+            "/sbin/openrc-init"
         )
         export docker_image="pojntfx/pojde-ng:latest-sysvinit"
     fi
