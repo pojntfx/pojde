@@ -17,16 +17,32 @@ configuration_scripts=(
 # Parse command
 case "$1" in
 apply)
+    # Check if we are on systemd or not
+    docker_flags=()
+    docker_args=()
+    docker_image="pojntfx/pojde-ng:latest"
+    if [ ! -n "$(which systemctl)" ]; then
+        export docker_flags=(
+            "-e"
+            "POJDE_NG_SYSVINIT=true"
+        )
+        export docker_args=(
+            "/sbin/init"
+            "100"
+        )
+        export docker_image="pojntfx/pojde-ng:latest-sysvinit"
+    fi
+
     # Create or start the container
     if [ -z "$(docker ps -q -f name=pojde-ng)" ]; then
-        docker run -d --name pojde-ng --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 pojntfx/pojde-ng
+        docker run -d --name pojde-ng --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 "${docker_flags[@]}" "${docker_image}" "${docker_args[@]}"
     else
         $0 start
     fi
 
     # Run configuration scripts
     for script in "${configuration_scripts[@]}"; do
-        docker exec -it pojde-ng /opt/pojde-ng/configuration/${script}.sh
+        docker exec -it "${docker_flags[@]}" pojde-ng /opt/pojde-ng/configuration/${script}.sh
     done
     ;;
 
@@ -58,7 +74,11 @@ purge)
 
 logs)
     # Tail the logs
-    docker exec -it pojde-ng journalctl -f
+    if [ -n "$(docker exec -it pojde-ng which systemctl)" ]; then
+        docker exec -it pojde-ng journalctl -f
+    else
+        docker logs -f pojde-ng
+    fi
     ;;
 
 enter)

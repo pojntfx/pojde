@@ -1,7 +1,16 @@
 #!/bin/bash
 
-# Install XFCE4 and dependencies
-apt install -y xvfb xfce4 x11vnc novnc net-tools onboard
+# Install noVNC
+apt install -y xvfb x11vnc novnc net-tools
+
+# Install desktop
+if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
+    # Install fluxbox & matchbox-keyboard (XFCE4 & Onboard require systemd)
+    apt install -y fluxbox matchbox-keyboard
+else
+    # Install XFCE4
+    apt install -y xfce4 onboard
+fi
 
 # Add temporary password
 x11vnc -storepasswd changeme /etc/vncsecret

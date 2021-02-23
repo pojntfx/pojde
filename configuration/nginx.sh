@@ -40,5 +40,10 @@ sed -i 's/\(listen [0-9][0-9][0-9][0-9]\);/\1 ssl;/g' /etc/nginx/conf.d/pojde-ng
 sed -i "s/# %POJDE_NG_CERTIFICATES%/ssl_certificate server.crt;\n    ssl_certificate_key server.key;\n    server_name ${POJDE_NG_DOMAIN};/g" /etc/nginx/conf.d/pojde-ng.conf
 
 # Enable & restart the services
-systemctl enable nginx
-systemctl restart nginx
+if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
+    ln -sf /etc/init.d/nginx /etc/rc3.d/nginx
+    service nginx restart
+else
+    systemctl enable nginx
+    systemctl restart nginx
+fi

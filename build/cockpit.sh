@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit if not on systemd
+if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then exit 0; fi
+
 # Install Cockpit
 apt install -y cockpit
 
