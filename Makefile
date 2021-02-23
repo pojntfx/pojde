@@ -8,10 +8,10 @@ pre:
 	chmod +x ./bin/*
 
 build: pre
-	docker build -t pojntfx/pojde-ng:latest .
+	docker build --build-arg POJDE_NG_SYSVINIT=false -t pojntfx/pojde-ng:latest .
 
 build-sysvinit: pre
-	docker build --build-arg POJDE_NG_SYSVINIT='true' -t pojntfx/pojde-ng:latest-sysvinit .
+	docker build --build-arg POJDE_NG_SYSVINIT=true -t pojntfx/pojde-ng:latest-sysvinit .
 
 link: pre
 	sudo ln -sf "$(shell pwd)/bin/pojdectl" /usr/bin/pojdectl

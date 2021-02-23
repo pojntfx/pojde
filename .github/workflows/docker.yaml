@@ -31,6 +31,8 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: pojntfx/pojde-ng:latest
+          build-args: |
+            POJDE_NG_SYSVINIT=false
       - name: Build and push latest SysVinit-based image
         uses: docker/build-push-action@v2
         with:
@@ -39,4 +41,5 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: pojntfx/pojde-ng:latest-sysvinit
-          build-args: POJDE_NG_SYSVINIT='true'
+          build-args: |
+            POJDE_NG_SYSVINIT=true
