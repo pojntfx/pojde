@@ -47,6 +47,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Run pre target with make
+        run: make pre
       - name: Build and push latest SysVinit-based image
         uses: docker/build-push-action@v2
         with:
