@@ -6,15 +6,15 @@
 
 🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. 🚧
 
-`pojde` is a headless development environment with web access for all components, which can be installed, configured and managed by using `pojdectl`, it's management tool.
+`pojde` is a headless development environment with web access for all components, which can be installed, configured and managed using `pojdectl`, it's management tool.
 
 - Based on Debian
 - Interactive configuration
-- Languages (toolchain, VSCode & Jupyter Lab extensions) are configurable
-- Tools (browsers, CLIs etc.) are configurable
+- Modular language packs (toolchains, VSCode & Jupyter Lab extensions)
+- Modular toolpacks (browsers, CLIs etc.)
 - <1 GB base image size (<3 minutes to download on DSL or <15 seconds to download on Gigabit)
 - <1 minute installation time
-- Runs on both `amd64` and `arm64`
+- Runs on both `amd64` and `arm64` processors
 - Includes multiple services; see [Usage](#usage)
 
 ## Installation
@@ -37,7 +37,7 @@ Both work on Linux, macOS and Windows (through WSL).
 
 ### Services
 
-After installation & configuration, the following services should be available:
+After [installation & configuration](#Installation), the following services should be available:
 
 - [Cockpit](https://cockpit-project.org/), a general management interface for pojde and the container
 - [code-server](https://github.com/cdr/code-server), VSCode in the browser
@@ -45,7 +45,7 @@ After installation & configuration, the following services should be available:
 - [noVNC](https://novnc.com/info.html), which gives you graphical access to pojde
 - [Jupyter Lab](http://jupyterlab.io/), an interactive development environment
 
-Before accessing them, add the CA certificate to your system; we've created video tutorials for it (the interactive configuration should have prompted you to download yours; you can re-download it by running `pojdectl apply` again):
+Before accessing them, add the CA certificate to your system; we've created video tutorials for it. The interactive configuration should have prompted you to download yours; you can re-download it by running `pojdectl apply` again:
 
 - [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
 - [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
@@ -67,9 +67,9 @@ Additionally, a SSH server is running inside the container; you can SSH into the
 $ ssh -p 18022 root@MY_IP
 ```
 
-### Accessing other services
+### Accessing other Services
 
-If you want to access any other services running in the container to your host, use SSH forwarding. To for example expose a web server running on port `1234` in the container to your host, run:
+If you want to access any other services running in the container from your host, use SSH forwarding. To for example expose a web server running on port `1234` in the container to your host, run:
 
 ```shell
 $ ssh -L localhost:1234:localhost:1234 -p 18022 root@MY_IP
@@ -91,7 +91,7 @@ To update `pojde` or to change it's configuration, run:
 $ pojdectl apply
 ```
 
-### Option reference
+## Command Reference
 
 ```shell
 $ pojdectl --help
