@@ -1,8 +1,8 @@
 FROM debian:10
 
 # Choose init system
-ARG POJDE_NG_SYSVINIT='false'
-ENV POJDE_NG_SYSVINIT ${POJDE_NG_SYSVINIT}
+ARG POJDE_NG_OPENRC='false'
+ENV POJDE_NG_OPENRC ${POJDE_NG_OPENRC}
 
 # Disable interactive prompts
 ENV DEBIAN_FRONTEND noninteractive

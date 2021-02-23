@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Configure the init system
-if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
-    # Install SysVinit
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    # Install OpenRC
     apt install -y openrc
 
     # Enable running in Docker (see https://github.com/pojntfx/alpine-openrc/blob/main/Dockerfile.edge)

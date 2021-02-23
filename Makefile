@@ -1,4 +1,4 @@
-all: build build-sysvinit
+all: build build-openrc
 
 .PHONY: build apply
 
@@ -8,10 +8,10 @@ pre:
 	chmod +x ./bin/*
 
 build: pre
-	docker build --build-arg POJDE_NG_SYSVINIT=false -t pojntfx/pojde-ng:latest .
+	docker build --build-arg POJDE_NG_OPENRC=false -t pojntfx/pojde-ng:latest .
 
-build-sysvinit: pre
-	docker build --build-arg POJDE_NG_SYSVINIT=true -t pojntfx/pojde-ng:latest-sysvinit .
+build-openrc: pre
+	docker build --build-arg POJDE_NG_OPENRC=true -t pojntfx/pojde-ng:latest-openrc .
 
 link: pre
 	sudo ln -sf "$(shell pwd)/bin/pojdectl" /usr/bin/pojdectl

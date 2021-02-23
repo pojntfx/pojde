@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install SSH server
-if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
     # Install dropbear (OpenSSH server requires systemd)
     apt install -y dropbear
 

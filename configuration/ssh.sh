@@ -10,7 +10,7 @@ curl -L "${POJDE_NG_SSH_KEY_URL}" | tee ${CONFIG_DIR}/authorized_keys
 chmod 600 ${CONFIG_DIR}/authorized_keys
 
 # Enable & restart the services
-if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
     rc-service dropbear restart
     rc-update add dropbear default
 fi

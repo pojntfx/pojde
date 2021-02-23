@@ -40,7 +40,7 @@ sed -i 's/\(listen [0-9][0-9][0-9][0-9]\);/\1 ssl;/g' /etc/nginx/conf.d/pojde-ng
 sed -i "s/# %POJDE_NG_CERTIFICATES%/ssl_certificate server.crt;\n    ssl_certificate_key server.key;\n    server_name ${POJDE_NG_DOMAIN};/g" /etc/nginx/conf.d/pojde-ng.conf
 
 # Enable & restart the services
-if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
     rc-service nginx restart
     rc-update add nginx default
 else
