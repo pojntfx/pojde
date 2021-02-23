@@ -1,10 +1,11 @@
 FROM debian:10
 
-# Disable interactive prompts
-ENV DEBIAN_FRONTEND noninteractive
-
 # Choose init system
 ARG POJDE_NG_SYSVINIT='false'
+ENV POJDE_NG_SYSVINIT ${POJDE_NG_SYSVINIT}
+
+# Disable interactive prompts
+ENV DEBIAN_FRONTEND noninteractive
 
 # Setup environment
 RUN mkdir -p /opt/pojde-ng/build
@@ -15,13 +16,13 @@ COPY build/repositories.sh .
 RUN ./repositories.sh
 
 COPY build/init.sh .
-RUN env POJDE_NG_SYSVINIT=${POJDE_NG_SYSVINIT} ./init.sh
+RUN ./init.sh
 
 COPY build/packages.sh .
 RUN ./packages.sh
 
 COPY build/cockpit.sh .
-RUN env POJDE_NG_SYSVINIT=${POJDE_NG_SYSVINIT} ./cockpit.sh
+RUN ./cockpit.sh
 
 COPY build/code-server.sh .
 RUN ./code-server.sh
@@ -30,13 +31,13 @@ COPY build/ttyd.sh .
 RUN ./ttyd.sh
 
 COPY build/novnc.sh .
-RUN env POJDE_NG_SYSVINIT=${POJDE_NG_SYSVINIT} ./novnc.sh
+RUN ./novnc.sh
 
 COPY build/jupyter-lab.sh .
 RUN ./jupyter-lab.sh
 
 COPY build/ssh.sh .
-RUN env POJDE_NG_SYSVINIT=${POJDE_NG_SYSVINIT} ./ssh.sh
+RUN ./ssh.sh
 
 COPY build/nginx.sh .
 RUN ./nginx.sh
