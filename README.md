@@ -18,16 +18,22 @@ Headless development environment with web access for all components.
 
 ## Management
 
-`pojdectl` is the new management tool.
+```plaintext
+Usage:
 
-- `apply` starts or creates the container, interactively configures it, and restarts it's services
-- `start` starts the container
-- `stop` stops the container
-- `restart` restarts the container
-- `remove` removes the container
-- `purge` removes the container and the volumes
-- `logs` shows the system logs
-- `enter` opens a shell in the container
+pojdectl is the new management tool.
+
+- "apply" starts or creates the container, interactively configures it, and restarts it's services
+- "start" starts the container
+- "stop" stops the container
+- "restart" restarts the container
+- "remove" removes the container
+- "purge" removes the container and it's volumes
+- "logs" shows the system logs
+- "enter" opens a shell in the container
+
+For more information, please visit https://github.com/pojntfx/pojde-ng.
+```
 
 ## License
 
