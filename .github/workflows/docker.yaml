@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Run pre target with make
         run: make pre
-      - name: Build and push latest image
+      - name: Build and push latest systemd-based image
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -31,3 +31,12 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: pojntfx/pojde-ng:latest
+      - name: Build and push latest SysVinit-based image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64/v8
+          push: true
+          tags: pojntfx/pojde-ng:latest-sysvinit
+          build-args: POJDE_NG_SYSVINIT='true'

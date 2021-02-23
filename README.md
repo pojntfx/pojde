@@ -39,7 +39,7 @@ Both work on Linux, macOS and Windows (through WSL).
 
 After [installation & configuration](#Installation), the following services should be available:
 
-- [Cockpit](https://cockpit-project.org/), a general management interface for pojde and the container
+- [Cockpit](https://cockpit-project.org/), a general management interface for pojde and the container. Disabled if on host system without systemd.
 - [code-server](https://github.com/cdr/code-server), VSCode in the browser
 - [ttyd](https://tsl0922.github.io/ttyd/), which gives you shell access to pojde
 - [noVNC](https://novnc.com/info.html), which gives you graphical access to pojde
@@ -66,6 +66,8 @@ Additionally, a SSH server is running inside the container; you can SSH into the
 ```shell
 $ ssh -p 18022 root@MY_IP
 ```
+
+> Can't access via SSH? Try again with `ssh -oPubkeyAcceptedKeyTypes=+rsa-sha2-512` (see [this issue](https://bugzilla.redhat.com/show_bug.cgi?id=1881301) for more details).
 
 ### Accessing other Services
 

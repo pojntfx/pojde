@@ -6,8 +6,6 @@ packages=(
     vim
     curl
     dialog
-    systemd
-    systemd-sysv
 )
 
 # Download all common packages
