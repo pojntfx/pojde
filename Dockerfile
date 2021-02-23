@@ -1,10 +1,16 @@
-FROM jrei/systemd-debian:10
+FROM debian:10
+
+# Disable interactive prompts
+ENV DEBIAN_FRONTEND noninteractive
 
 # Setup environment
 RUN mkdir -p /opt/pojde-ng/build
 WORKDIR /opt/pojde-ng/build
 
 # Run build scripts
+COPY build/systemd.sh .
+RUN ./systemd.sh
+
 COPY build/repositories.sh .
 RUN ./repositories.sh
 
@@ -34,6 +40,9 @@ RUN ./nginx.sh
 
 COPY build/webwormhole.sh .
 RUN ./webwormhole.sh
+
+COPY build/clean.sh .
+RUN ./clean.sh
 
 # Add `pojdectl`
 COPY bin/* /usr/bin/

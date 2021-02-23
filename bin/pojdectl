@@ -11,6 +11,7 @@ configuration_scripts=(
     nginx
     ssh
     webwormhole
+    clean
 )
 
 # Parse command
