@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Define configuration scripts
+configuration_scripts=(
+    parameters
+    user
+    code-server
+    ttyd
+    novnc
+    jupyter-lab
+    nginx
+    ssh
+    webwormhole
+)
+
+# Parse command
+case "$1" in
+apply)
+    # Create or start the container
+    if [ -z "$(docker ps -q -f name=pojde-ng)" ]; then
+        docker run -d --name pojde-ng --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 pojntfx/pojde-ng
+    else
+        $0 start
+    fi
+
+    # Run configuration scripts
+    for script in "${configuration_scripts[@]}"; do
+        docker exec -it pojde-ng /opt/pojde-ng/configuration/${script}.sh
+    done
+    ;;
+
+start)
+    # Start the container
+    docker start pojde-ng
+    ;;
+
+stop)
+    # Stop the container
+    docker stop pojde-ng
+    ;;
+
+restart)
+    # Restart the container
+    docker restart pojde-ng
+    ;;
+
+remove)
+    # Remove the container
+    docker rm -f pojde-ng
+    ;;
+
+purge)
+    # Remove the container and it's volumes
+    $0 remove
+    docker volume rm pojde-ng-preferences pojde-ng-ca
+    ;;
+
+logs)
+    # Tail the logs
+    docker exec -it pojde-ng journalctl -f
+    ;;
+
+enter)
+    # Open a shell in the container
+    docker exec -it pojde-ng bash
+    ;;
+
+*)
+    echo "Unknown command \"$1\".
+
+Usage:
+
+pojdectl is the new management tool.
+
+- \"apply\" starts or creates the container, interactively configures it, and restarts it's services
+- \"start\" starts the container
+- \"stop\" stops the container
+- \"restart\" restarts the container
+- \"remove\" removes the container
+- \"purge\" removes the container and it's volumes
+- \"logs\" shows the system logs
+- \"enter\" opens a shell in the container
+
+For more information, please visit https://github.com/pojntfx/pojde-ng."
+    ;;
+esac

@@ -35,6 +35,9 @@ RUN ./nginx.sh
 COPY build/webwormhole.sh .
 RUN ./webwormhole.sh
 
+# Add `pojdectl`
+COPY bin/* /usr/bin/
+
 # Clean up
 RUN rm -rf /opt/pojde-ng/build
 
