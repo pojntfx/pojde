@@ -65,22 +65,29 @@ enter)
     docker exec -it pojde-ng bash
     ;;
 
+update-pojdectl)
+    # Self-Update pojdectl
+    sudo curl -L -o $0 https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl
+    sudo chmod +x $0
+    ;;
+
 *)
-    echo "Unknown command \"$1\".
+    [ "$1" != '--help' ] && printf "Unknown command \"$1\".\n\n"
+
+    echo "pojdectl is the management tool for pojde.
 
 Usage:
 
-pojdectl is the new management tool.
+    apply:              Starts or creates the container, interactively configures it, and restarts it's services
+    start:              Starts the container
+    stop:               Stops the container
+    restart:            Restarts the container
+    remove:             Removes the container
+    purge:              Removes the container and it's volumes
+    logs:               Shows the system logs
+    enter:              Opens a shell in the container
+    update-pojdectl:    Updates pojdectl
 
-- \"apply\" starts or creates the container, interactively configures it, and restarts it's services
-- \"start\" starts the container
-- \"stop\" stops the container
-- \"restart\" restarts the container
-- \"remove\" removes the container
-- \"purge\" removes the container and it's volumes
-- \"logs\" shows the system logs
-- \"enter\" opens a shell in the container
-
-For more information, please visit https://github.com/pojntfx/pojde-ng."
+For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
     ;;
 esac

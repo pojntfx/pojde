@@ -20,4 +20,4 @@ else
 fi
 
 # Display final success message
-dialog --msgbox "Configuration successfully completed! Please continue to https://github.com/pojntfx/pojde-ng for the next steps." 0 0
+dialog --msgbox "Configuration successfully completed! Please continue to https://github.com/pojntfx/pojde-ng#Usage for the next steps." 0 0
