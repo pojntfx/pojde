@@ -4,7 +4,7 @@
 apt install -y xvfb x11vnc novnc net-tools
 
 # Install desktop
-if [ "${POJDE_NG_SYSVINIT}" = 'true' ]; then
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
     # Install fluxbox & matchbox-keyboard (XFCE4 & Onboard require systemd)
     apt install -y fluxbox matchbox-keyboard
 else

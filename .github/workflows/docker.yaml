@@ -32,8 +32,8 @@ jobs:
           push: true
           tags: pojntfx/pojde-ng:latest
           build-args: |
-            POJDE_NG_SYSVINIT=false
-  build-sysvinit:
+            POJDE_NG_OPENRC=false
+  build-openrc:
     runs-on: ubuntu-latest
 
     steps:
@@ -49,13 +49,13 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Run pre target with make
         run: make pre
-      - name: Build and push latest SysVinit-based image
+      - name: Build and push latest OpenRC-based image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64/v8
           push: true
-          tags: pojntfx/pojde-ng:latest-sysvinit
+          tags: pojntfx/pojde-ng:latest-openrc
           build-args: |
-            POJDE_NG_SYSVINIT=true
+            POJDE_NG_OPENRC=true

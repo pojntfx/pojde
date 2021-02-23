@@ -24,12 +24,12 @@ apply)
     if [ ! -n "$(which systemctl)" ]; then
         export docker_flags=(
             "-e"
-            "POJDE_NG_SYSVINIT=true"
+            "POJDE_NG_OPENRC=true"
         )
         export docker_args=(
             "/sbin/openrc-init"
         )
-        export docker_image="pojntfx/pojde-ng:latest-sysvinit"
+        export docker_image="pojntfx/pojde-ng:latest-openrc"
     fi
 
     # Create or start the container
