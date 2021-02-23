@@ -88,8 +88,8 @@ enter)
 
 update-pojdectl)
     # Self-Update pojdectl
-    sudo curl -L -o $0 https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl
-    sudo chmod +x $0
+    sudo curl -L -o /usr/bin/pojdectl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl
+    sudo chmod +x /usr/bin/pojdectl
     ;;
 
 *)
