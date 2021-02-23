@@ -11,10 +11,10 @@ build: pre
 	docker build -t pojntfx/pojde-ng .
 
 link: pre
-	sudo ln -sf "$(shell pwd)/bin/pojdectl" /usr/local/bin/pojdectl
+	sudo ln -sf "$(shell pwd)/bin/pojdectl" /usr/bin/pojdectl
 
 install:
-	sudo install bin/pojdectl /usr/local/bin
+	sudo install bin/pojdectl /usr/bin
 
 uninstall:
-	sudo rm /usr/local/bin/pojdectl
+	sudo rm /usr/bin/pojdectl
