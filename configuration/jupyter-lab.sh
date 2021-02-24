@@ -15,11 +15,6 @@ echo "c.NotebookApp.allow_origin = '*'" >>$CONFIG_FILE
 
 # Enable & restart the services
 if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
-    # Set the user for the OpenRC service
-    mkdir -p /opt/pojde-ng/jupyter-lab
-    CONFIG_FILE=/opt/pojde-ng/jupyter-lab/user
-    echo "${POJDE_NG_USERNAME}" >$CONFIG_FILE
-
     rc-service jupyter-lab restart
     rc-update add jupyter-lab default
 else
