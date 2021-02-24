@@ -11,6 +11,11 @@ auth: password
 password: "${POJDE_NG_PASSWORD}"
 EOT
 
-# Enable & restart the service
-systemctl enable "code-server@${POJDE_NG_USERNAME}"
-systemctl restart "code-server@${POJDE_NG_USERNAME}"
+# Enable & restart the services
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    rc-service code-server restart
+    rc-update add code-server default
+else
+    systemctl enable "code-server@${POJDE_NG_USERNAME}"
+    systemctl restart "code-server@${POJDE_NG_USERNAME}"
+fi

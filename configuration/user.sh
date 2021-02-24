@@ -18,3 +18,10 @@ echo "${POJDE_NG_USERNAME}:${POJDE_NG_PASSWORD}" | chpasswd
 
 # Use bash as the default shell for the new user
 chsh -s /bin/bash "${POJDE_NG_USERNAME}"
+
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    # Persist the username for OpenRC services
+    mkdir -p /opt/pojde-ng/user
+    CONFIG_FILE=/opt/pojde-ng/user/user
+    echo "${POJDE_NG_USERNAME}" >$CONFIG_FILE
+fi
