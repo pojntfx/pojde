@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install pip
-apt install -y python3-pip
+apt install -y python3-pip libffi-dev
 
 # Install Jupyter Lab
 pip3 install jupyterlab
