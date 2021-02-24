@@ -101,7 +101,7 @@ pojdectl is the management tool for pojde.
 
 Usage:
 
-    apply:              Starts or creates the container, interactively configures it, and restarts it's services
+    apply:              (Re-)creates the container, interactively configures it, and restarts it's services
     start:              Starts the container
     stop:               Stops the container
     restart:            Restarts the container
