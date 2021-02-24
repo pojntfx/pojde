@@ -18,7 +18,7 @@ configuration_scripts=(
 case "$1" in
 apply)
     # Remove the old container if it exists
-    if [ -n "$(docker ps -q -f name=pojde-ng)" ]; then
+    if [ -n "$(docker ps -q -a -f name=pojde-ng)" ]; then
         $0 remove
     fi
 
@@ -64,6 +64,25 @@ restart)
     docker restart pojde-ng
     ;;
 
+status)
+    # Get container's status
+    if [ "$(docker inspect -f '{{.State.Running}}' pojde-ng)" = 'true' ]; then
+        echo "pojde-ng is running."
+    else
+        echo "pojde-ng is not running."
+    fi
+    ;;
+
+info)
+    # Get container's info
+    docker ps -f "name=pojde-ng"
+    ;;
+
+inspect)
+    # Inspect the container
+    docker inspect pojde-ng
+    ;;
+
 remove)
     # Remove the container
     docker rm -f pojde-ng
@@ -106,6 +125,9 @@ Usage:
     start:              Starts the container
     stop:               Stops the container
     restart:            Restarts the container
+    status:             Shows whether the container is running
+    info:               Shows overview of the container
+    inspect:            Shows details about the container
     remove:             Removes the container
     purge:              Removes the container and it's volumes
     logs:               Shows the system logs

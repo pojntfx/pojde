@@ -105,6 +105,9 @@ Usage:
     start:              Starts the container
     stop:               Stops the container
     restart:            Restarts the container
+    status:             Shows whether the container is running
+    info:               Shows overview of the container
+    inspect:            Shows details about the container
     remove:             Removes the container
     purge:              Removes the container and it's volumes
     logs:               Shows the system logs
