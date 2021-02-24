@@ -13,6 +13,16 @@ echo "c.NotebookApp.password='"$(python3 -c "from IPython.lib.security import pa
 echo 'c.NotebookApp.allow_remote_access = True' >>$CONFIG_FILE
 echo "c.NotebookApp.allow_origin = '*'" >>$CONFIG_FILE
 
-# Enable & restart the service
-systemctl enable "jupyter-lab@${POJDE_NG_USERNAME}"
-systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
+# Enable & restart the services
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    # Set the user for the OpenRC service
+    mkdir -p /opt/pojde-ng/jupyter-lab
+    CONFIG_FILE=/opt/pojde-ng/jupyter-lab/user
+    echo "${POJDE_NG_USERNAME}" >$CONFIG_FILE
+
+    rc-service jupyter-lab restart
+    rc-update add jupyter-lab default
+else
+    systemctl enable "jupyter-lab@${POJDE_NG_USERNAME}"
+    systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
+fi
