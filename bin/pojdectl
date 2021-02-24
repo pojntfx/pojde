@@ -17,6 +17,11 @@ configuration_scripts=(
 # Parse command
 case "$1" in
 apply)
+    # Remove the old container if it exists
+    if [ -n "$(docker ps -q -f name=pojde-ng)" ]; then
+        $0 remove
+    fi
+
     # Check if we are on systemd or not
     docker_flags=()
     docker_args=()
@@ -32,12 +37,11 @@ apply)
         export docker_image="pojntfx/pojde-ng:latest-openrc"
     fi
 
-    # Create or start the container
-    if [ -z "$(docker ps -q -f name=pojde-ng)" ]; then
-        docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 "${docker_flags[@]}" "${docker_image}" "${docker_args[@]}"
-    else
-        $0 start
-    fi
+    # Pull the newest image
+    docker pull "${docker_image}"
+
+    # Create the container
+    docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 "${docker_flags[@]}" "${docker_image}" "${docker_args[@]}"
 
     # Run configuration scripts
     for script in "${configuration_scripts[@]}"; do
@@ -98,7 +102,7 @@ update-pojdectl)
 
 Usage:
 
-    apply:              Starts or creates the container, interactively configures it, and restarts it's services
+    apply:              (Re-)creates the container, interactively configures it, and restarts it's services
     start:              Starts the container
     stop:               Stops the container
     restart:            Restarts the container
