@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read configuration file
-source /opt/pojde-ng/preferences/preferences.sh
+. /opt/pojde-ng/preferences/preferences.sh
 
 # Persist CA in volume and certs in nginx's directory
 OUT_DIR=/etc/nginx

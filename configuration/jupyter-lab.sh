@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read configuration file
-source /opt/pojde-ng/preferences/preferences.sh
+. /opt/pojde-ng/preferences/preferences.sh
 
 # Create notebooks directory
 su - $POJDE_NG_USERNAME -c "mkdir -p /home/${POJDE_NG_USERNAME}/Notebooks"
