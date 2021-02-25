@@ -182,7 +182,7 @@ cat <<EOT >${CONFIG_DIR}/settings.json
 EOT
 
 # Fix permissions for user
-chown -R ${POJDE_NG_USERNAME} /home/${POJDE_NG_USERNAME}/.local/share/code-server/
+chown -R ${POJDE_NG_USERNAME} /home/${POJDE_NG_USERNAME}/.local/
 
 # Enable & restart the services
 if [ "${POJDE_NG_OPENRC}" = 'true' ]; then

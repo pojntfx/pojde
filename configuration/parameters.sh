@@ -21,7 +21,7 @@ echo export "'"POJDE_NG_PASSWORD="$(dialog --stdout --nocancel --insecure --pass
 
 # Ask for email and full name address (for Git)
 echo export "'"POJDE_NG_EMAIL="$(dialog --stdout --nocancel --insecure --inputbox "Your email address (for Git):" 0 0 ${POJDE_NG_EMAIL})""'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_NG_FULL_NAME="$(dialog --stdout --nocancel --insecure --inputbox "Your full name (for Git):" 0 0 ${POJDE_NG_FULL_NAME})""'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_NG_FULL_NAME="$(dialog --stdout --nocancel --insecure --inputbox "Your full name (for Git):" 0 0 "${POJDE_NG_FULL_NAME}")""'" >>${TMP_PREFERENCE_FILE}
 
 # Ask for IP domain
 echo export "'"POJDE_NG_IP="$(dialog --stdout --nocancel --inputbox "IP address of this host:" 0 0 ${POJDE_NG_IP})""'" >>${TMP_PREFERENCE_FILE}
