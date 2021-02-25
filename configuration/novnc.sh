@@ -11,15 +11,19 @@ chown "${POJDE_NG_USERNAME}" $CONFIG_FILE
 # Enable & restart the services
 services=(
     xvfb
-    xfce4
+    desktop
     x11vnc
     novnc
 )
 
-for service in "${services[@]}"; do
-    systemctl enable "${service}@${POJDE_NG_USERNAME}"
-done
-
-for service in "${services[@]}"; do
-    systemctl restart "${service}@${POJDE_NG_USERNAME}"
-done
+if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    for service in "${services[@]}"; do
+        rc-update add "${service}" default
+        rc-service "${service}" restart
+    done
+else
+    for service in "${services[@]}"; do
+        systemctl enable "${service}@${POJDE_NG_USERNAME}"
+        systemctl restart "${service}@${POJDE_NG_USERNAME}"
+    done
+fi
