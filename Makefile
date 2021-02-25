@@ -3,9 +3,10 @@ all: build build-openrc
 .PHONY: build apply
 
 pre:
+	chmod +x ./bin/*
 	chmod +x ./build/*.sh
 	chmod +x ./configuration/*.sh
-	chmod +x ./bin/*
+	chmod +x ./modules/*.sh
 
 build: pre
 	docker build --build-arg POJDE_NG_OPENRC=false -t pojntfx/pojde-ng:latest .
