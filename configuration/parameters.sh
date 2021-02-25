@@ -32,9 +32,7 @@ fi
 echo export "'"POJDE_NG_SSH_KEY_URL="$(dialog --stdout --nocancel --inputbox "Link to your SSH keys:" 0 0 ${POJDE_NG_SSH_KEY_URL})""'" >>${TMP_PREFERENCE_FILE}
 
 # Ask for module customization
-if [ -n "${POJDE_NG_MODULES}" ]; then
-    export POJDE_NG_MODULES="lang.go Go on"
-fi
+POJDE_NG_MODULES="lang.go Go on lang.python Python on"
 echo export "'"POJDE_NG_MODULES="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${POJDE_NG_MODULES})""'" >>${TMP_PREFERENCE_FILE}
 
 # Ask for confirmation
