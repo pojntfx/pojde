@@ -10,6 +10,7 @@ configuration_scripts=(
     jupyter-lab
     nginx
     ssh
+    modules
     webwormhole
     clean
 )
