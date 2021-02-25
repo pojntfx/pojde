@@ -74,8 +74,12 @@ remove)
 
 purge)
     # Remove the container and it's volumes
-    $0 remove
-    docker volume rm pojde-ng-preferences pojde-ng-ca
+    read -p "Purging pojde-ng will all data from it. Really purge pojde-ng (y/n)? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        $0 remove
+        docker volume rm pojde-ng-preferences pojde-ng-ca
+    fi
     ;;
 
 logs)
