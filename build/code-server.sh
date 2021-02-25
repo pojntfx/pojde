@@ -32,5 +32,5 @@ else
     sed -i "s@ExecStart=/usr/bin/code-server@ExecStart=/usr/bin/code-server --config $CONFIG_FILE@g" /usr/lib/systemd/system/code-server@.service
 
     # Use Open-VSX as the default marketplace
-    sed 's@Restart=always@Restart=always\nEnvironment=SERVICE_URL=${SERVICE_URL}\nEnvironment=ITEM_URL=${ITEM_URL}@g' /usr/lib/systemd/system/code-server\@.service
+    sed -i "s@Restart=always@Restart=always\nEnvironment=SERVICE_URL=${SERVICE_URL}\nEnvironment=ITEM_URL=${ITEM_URL}@g" /usr/lib/systemd/system/code-server\@.service
 fi
