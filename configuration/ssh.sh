@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read configuration file
-source /opt/pojde-ng/preferences/preferences.sh
+. /opt/pojde-ng/preferences/preferences.sh
 
 # Add the user's SSH keys to authorized_keys
 CONFIG_DIR=/root/.ssh

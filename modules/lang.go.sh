@@ -3,7 +3,7 @@
 # Root script
 function as_root() {
     # Read configuration file
-    source /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde-ng/preferences/preferences.sh
 
     # Fetch Go binary package
     GO_VERSION=1.16
@@ -24,15 +24,15 @@ function as_root() {
     chmod +x /etc/profile.d/go.sh
 
     # Add Go to both .bashrcs
-    echo 'source /etc/profile.d/go.sh' >>/root/.bashrc
-    echo 'source /etc/profile.d/go.sh' >>/home/${POJDE_NG_USERNAME}/.bashrc
-    source /root/.bashrc
+    echo '. /etc/profile.d/go.sh' >>/root/.bashrc
+    echo '. /etc/profile.d/go.sh' >>/home/${POJDE_NG_USERNAME}/.bashrc
+    . /root/.bashrc
 }
 
 # User script
 function as_user() {
     # Read configuration file
-    source /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde-ng/preferences/preferences.sh
 
     # Install the Go VSCode extension
     code-server --install-extension 'golang.Go'

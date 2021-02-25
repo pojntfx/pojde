@@ -1,19 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # Define configuration scripts
-configuration_scripts=(
-    parameters
-    user
-    code-server
-    ttyd
-    novnc
-    jupyter-lab
-    nginx
-    ssh
-    modules
-    webwormhole
-    clean
-)
+configuration_scripts="parameters user code-server ttyd novnc jupyter-lab nginx ssh modules webwormhole clean"
 
 # Parse command
 case "$1" in
@@ -24,17 +12,12 @@ apply)
     fi
 
     # Check if we are on systemd or not
-    docker_flags=()
-    docker_args=()
+    docker_flags=""
+    docker_args=""
     docker_image="pojntfx/pojde-ng:latest"
     if [ ! -n "$(which systemctl)" ]; then
-        export docker_flags=(
-            "-e"
-            "POJDE_NG_OPENRC=true"
-        )
-        export docker_args=(
-            "/sbin/openrc-init"
-        )
+        export docker_flags="-e POJDE_NG_OPENRC=true"
+        export docker_args="/sbin/openrc-init"
         export docker_image="pojntfx/pojde-ng:latest-openrc"
     fi
 
@@ -42,11 +25,11 @@ apply)
     docker pull "${docker_image}"
 
     # Create the container
-    docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 "${docker_flags[@]}" "${docker_image}" "${docker_args[@]}"
+    docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 ${docker_flags} ${docker_image} ${docker_args}
 
     # Run configuration scripts
-    for script in "${configuration_scripts[@]}"; do
-        docker exec -it "${docker_flags[@]}" pojde-ng /opt/pojde-ng/configuration/${script}.sh
+    for script in $configuration_scripts; do
+        docker exec -it ${docker_flags} pojde-ng "/opt/pojde-ng/configuration/${script}.sh"
     done
     ;;
 
@@ -67,7 +50,7 @@ restart)
 
 status)
     # Get container's status
-    if [ "$(docker inspect -f '{{.State.Running}}' pojde-ng)" = 'true' ]; then
+    if [ "$(docker inspect --type container -f '{{.State.Running}}' pojde-ng)" = 'true' ]; then
         echo "pojde-ng is running."
     else
         echo "pojde-ng is not running."
@@ -81,7 +64,7 @@ info)
 
 inspect)
     # Inspect the container
-    docker inspect pojde-ng
+    docker inspect --type container pojde-ng
     ;;
 
 remove)

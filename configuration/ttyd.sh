@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read configuration file
-source /opt/pojde-ng/preferences/preferences.sh
+. /opt/pojde-ng/preferences/preferences.sh
 
 # Create config file
 mkdir -p /opt/pojde-ng/ttyd

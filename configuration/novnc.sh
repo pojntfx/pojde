@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read configuration file
-source /opt/pojde-ng/preferences/preferences.sh
+. /opt/pojde-ng/preferences/preferences.sh
 
 # Change the password to the new value
 CONFIG_FILE="/etc/vncsecret@${POJDE_NG_USERNAME}"

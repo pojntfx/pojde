@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read configuration file
-source /opt/pojde-ng/preferences/preferences.sh
+. /opt/pojde-ng/preferences/preferences.sh
 
 # Set new root password
 echo "root:${POJDE_NG_ROOT_PASSWORD}" | chpasswd
