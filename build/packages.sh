@@ -6,6 +6,7 @@ packages=(
     vim
     curl
     dialog
+    git
 )
 
 # Download all common packages
