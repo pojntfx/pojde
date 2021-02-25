@@ -32,8 +32,18 @@ fi
 echo export "'"POJDE_NG_SSH_KEY_URL="$(dialog --stdout --nocancel --inputbox "Link to your SSH keys:" 0 0 ${POJDE_NG_SSH_KEY_URL})""'" >>${TMP_PREFERENCE_FILE}
 
 # Ask for module customization
-POJDE_NG_MODULES="lang.go Go on lang.python Python on"
-echo export "'"POJDE_NG_MODULES="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${POJDE_NG_MODULES})""'" >>${TMP_PREFERENCE_FILE}
+available_modules=(
+    lang.go Go $(${POJDE_NG_MODULE_GO_ENABLED} && echo on || echo off)
+    lang.python Python $(${POJDE_NG_MODULE_PYTHON_ENABLED} && echo on || echo off)
+)
+selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
+
+# Persist checklist state
+echo export "'"POJDE_NG_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_NG_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+
+# Persist checklist selection
+echo export "'"POJDE_NG_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}
 
 # Ask for confirmation
 dialog --yesno 'Are you sure you want apply the configuration?' 0 0 || exit 1
