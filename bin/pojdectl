@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Define configuration scripts
-configuration_scripts="parameters user code-server ttyd novnc jupyter-lab nginx ssh modules webwormhole clean"
+configuration_scripts="parameters user code-server ttyd novnc jupyter-lab nginx ssh git modules webwormhole clean"
 
 # Parse command
 case "$1" in
