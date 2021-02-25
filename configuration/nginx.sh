@@ -37,7 +37,7 @@ DNS.4 = ${POJDE_NG_DOMAIN}")
 sed -i 's/\(listen [0-9][0-9][0-9][0-9]\);/\1 ssl;/g' /etc/nginx/conf.d/pojde-ng.conf
 
 # Add cert and key of the nginx config
-sed -i "s/# %POJDE_NG_CERTIFICATES%/ssl_certificate server.crt;\n    ssl_certificate_key server.key;\n    server_name ${POJDE_NG_DOMAIN};/g" /etc/nginx/conf.d/pojde-ng.conf
+sed -i "s/# %POJDE_NG_CERTIFICATES%/ssl_certificate server.crt;\n    ssl_certificate_key server.key;\n    server_name ${POJDE_NG_DOMAIN};\n    error_page 497 https:\/\/\$host:\$server_port\$request_uri;/g" /etc/nginx/conf.d/pojde-ng.conf
 
 # Enable & restart the services
 if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
