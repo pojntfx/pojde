@@ -2,7 +2,7 @@
 
 # Root script
 function as_root() {
-    :
+    apt install -y cmake build-essential
 }
 
 # User script
@@ -22,4 +22,9 @@ function as_user() {
     code-server --install-extension 'matklad.rust-analyzer'
     code-server --install-extension 'bungcip.better-toml'
     code-server --install-extension 'vadimcn.vscode-lldb'
+
+    # Download the Go Jupyter Kernel (see https://github.com/google/evcxr/blob/master/evcxr_jupyter/README.md#linux-debianubuntu)
+    rustup component add rust-src
+    cargo install evcxr_jupyter
+    evcxr_jupyter --install
 }
