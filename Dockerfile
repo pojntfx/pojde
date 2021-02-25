@@ -62,6 +62,10 @@ RUN mkdir -p /opt/pojde-ng/ca
 RUN mkdir -p /opt/pojde-ng/configuration
 COPY configuration/* /opt/pojde-ng/configuration/
 
+# Add module scripts
+RUN mkdir -p /opt/pojde-ng/modules
+COPY modules/* /opt/pojde-ng/modules/
+
 # Go back to home dir
 WORKDIR /root
 

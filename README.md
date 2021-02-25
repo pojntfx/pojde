@@ -10,8 +10,7 @@
 
 - Based on Debian
 - Interactive configuration
-- Modular language packs (toolchains, VSCode & Jupyter Lab extensions)
-- Modular toolpacks (browsers, CLIs etc.)
+- Monolithic base image with optional modules for programming languages (and their VSCode/Jupyter Lab extensions), browsers, CLIs etc.
 - <1 GB base image size (<3 minutes to download on DSL or <15 seconds to download on Gigabit)
 - <1 minute installation time
 - Runs on both `amd64` and `arm64` processors
