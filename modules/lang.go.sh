@@ -26,7 +26,6 @@ function as_root() {
     # Add Go to both .bashrcs
     echo '. /etc/profile.d/go.sh' >>/root/.bashrc
     echo '. /etc/profile.d/go.sh' >>/home/${POJDE_NG_USERNAME}/.bashrc
-    . /root/.bashrc
 }
 
 # User script
