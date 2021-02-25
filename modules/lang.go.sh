@@ -34,6 +34,10 @@ function as_user() {
     # Read configuration file
     . /opt/pojde-ng/preferences/preferences.sh
 
+    # We'll use Open-VSX
+    export SERVICE_URL=https://open-vsx.org/vscode/gallery
+    export ITEM_URL=https://open-vsx.org/vscode/item
+
     # Install the Go VSCode extension
     code-server --install-extension 'golang.Go'
 
