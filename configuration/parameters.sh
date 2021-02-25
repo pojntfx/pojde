@@ -40,6 +40,7 @@ available_modules=(
     lang.go Go $(${POJDE_NG_MODULE_GO_ENABLED} && echo on || echo off)
     lang.python Python $(${POJDE_NG_MODULE_PYTHON_ENABLED} && echo on || echo off)
     lang.rust Rust $(${POJDE_NG_MODULE_RUST_ENABLED} && echo on || echo off)
+    lang.javascript JavaScript $(${POJDE_NG_MODULE_JAVASCRIPT_ENABLED} && echo on || echo off)
 )
 selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
 
@@ -47,6 +48,7 @@ selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules t
 echo export "'"POJDE_NG_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 echo export "'"POJDE_NG_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 echo export "'"POJDE_NG_MODULE_RUST_ENABLED=$([[ "$selected_modules" == *"lang.rust"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_NG_MODULE_JAVASCRIPT_ENABLED=$([[ "$selected_modules" == *"lang.javascript"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
 # Persist checklist selection
 echo export "'"POJDE_NG_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}
