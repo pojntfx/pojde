@@ -198,5 +198,9 @@ EOT
 
 # Refresh script
 function refresh() {
-  :
+  # Read configuration file
+  . /opt/pojde-ng/preferences/preferences.sh
+
+  # Remove extensions
+  rm -rf /home/${POJDE_NG_USERNAME}/.local/share/code-server/extensions/*
 }

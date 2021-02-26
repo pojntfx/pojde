@@ -27,5 +27,9 @@ function upgrade() {
 
 # Refresh script
 function refresh() {
-    :
+    # Read configuration file
+    . /opt/pojde-ng/preferences/preferences.sh
+
+    # Remove kernels
+    rm -rf /home/${POJDE_NG_USERNAME}/.local/share/jupyter/kernels/*
 }
