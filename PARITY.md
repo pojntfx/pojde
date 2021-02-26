@@ -4,11 +4,6 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## C/C++
 
-- clangd
-- C/C++ debug (Native Debug)
-- CMake language support
-- CMake tools
-- CMake formatter (https://github.com/cheshirekow/cmake_format/releases/tag/v0.6.13)
 - C++ kernel for Juypter
 
 ## Ruby

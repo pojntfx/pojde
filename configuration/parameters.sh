@@ -39,6 +39,7 @@ function upgrade() {
 
     # Ask for module customization
     available_modules=(
+        lang.ccpp C/C++ $(${POJDE_NG_MODULE_CCPP_ENABLED} && echo on || echo off)
         lang.go Go $(${POJDE_NG_MODULE_GO_ENABLED} && echo on || echo off)
         lang.python Python $(${POJDE_NG_MODULE_PYTHON_ENABLED} && echo on || echo off)
         lang.rust Rust $(${POJDE_NG_MODULE_RUST_ENABLED} && echo on || echo off)
@@ -50,6 +51,7 @@ function upgrade() {
     selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
 
     # Persist checklist state
+    echo export "'"POJDE_NG_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_RUST_ENABLED=$([[ "$selected_modules" == *"lang.rust"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
