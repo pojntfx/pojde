@@ -19,11 +19,26 @@ function as_root() {
     # Remove the extracted package
     rm /tmp/go.tar.gz
 
-    # Add Go to PATH using profile
-    echo 'export PATH=$PATH:/usr/local/go/bin' >/etc/profile.d/go.sh
-    chmod +x /etc/profile.d/go.sh
+    # Fetch TinyGo binary package
+    TINYGO_VERSION=0.16.0
+    if [ "$(uname -m)" = 'x86_64' ]; then
+        curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/tinygo_${TINYGO_VERSION}_amd64.deb
+    else
+        curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/tinygo_${TINYGO_VERSION}_arm.deb
+    fi
 
-    # Add Go to both .bashrcs
+    # Install the TinyGo binary package
+    dpkg -i /tmp/tinygo.deb
+
+    # Add Go and TinyGo to PATH using profile
+    CONFIG_FILE=/etc/profile.d/go.sh
+    cat <<EOT >$CONFIG_FILE
+export PATH=\$PATH:/usr/local/go/bin
+export PATH=\$PATH:/usr/local/tinygo/bin
+EOT
+    chmod +x ${CONFIG_FILE}
+
+    # Add Go and TinyGo to both .bashrcs
     echo '. /etc/profile.d/go.sh' >>/root/.bashrc
     echo '. /etc/profile.d/go.sh' >>/home/${POJDE_NG_USERNAME}/.bashrc
 }
@@ -38,14 +53,19 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the Go VSCode extension
-    code-server --install-extension 'golang.Go'
+    code-server --force --install-extension 'golang.Go'
+
+    # Install the TinyGo VSCode extension
+    TINYGO_EXTENSION_VERSION=0.2.0
+    curl -L -o /tmp/tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/${TINYGO_EXTENSION_VERSION}/vscode-tinygo-${TINYGO_EXTENSION_VERSION}.vsix
+    unzip -o -d /home/${POJDE_NG_USERNAME}/.local/share/code-server/extensions/vscode-tinygo /tmp/tinygo.vsix
 
     # Download the Go Jupyter Kernel (see https://github.com/gopherdata/gophernotes)
     GOPHER_NOTES_VERSION=0.7.1
     env GO111MODULE=on go get github.com/gopherdata/gophernotes
     mkdir -p /home/${POJDE_NG_USERNAME}/.local/share/jupyter/kernels/gophernotes
     cd /home/${POJDE_NG_USERNAME}/.local/share/jupyter/kernels/gophernotes
-    cp "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v${GOPHER_NOTES_VERSION}/kernel/* "."
+    cp -rf "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v${GOPHER_NOTES_VERSION}/kernel/* "."
     chmod +w ./kernel.json # in case copied kernel.json has no write permission
     sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" <kernel.json.in >kernel.json
 }

@@ -23,10 +23,10 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install Java extensions
-    code-server --install-extension 'vscjava.vscode-maven'
-    code-server --install-extension 'vscjava.vscode-java-dependency'
-    code-server --install-extension 'redhat.java'
-    code-server --install-extension 'redhat.vscode-xml'
-    code-server --install-extension 'vscjava.vscode-java-debug'
-    code-server --install-extension 'vscjava.vscode-java-test'
+    code-server --force --install-extension 'vscjava.vscode-maven'
+    code-server --force --install-extension 'vscjava.vscode-java-dependency'
+    code-server --force --install-extension 'redhat.java'
+    code-server --force --install-extension 'redhat.vscode-xml'
+    code-server --force --install-extension 'vscjava.vscode-java-debug'
+    code-server --force --install-extension 'vscjava.vscode-java-test'
 }

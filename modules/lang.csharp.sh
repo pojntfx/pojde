@@ -45,7 +45,7 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the C# VSCode extension
-    code-server --install-extension 'muhammad-sammy.csharp'
+    code-server --force --install-extension 'muhammad-sammy.csharp'
 
     # Download the C# Jupyter Kernel (see https://github.com/dotnet/interactive/blob/main/docs/NotebooksLocalExperience.md#installing-net-interactive-as-a-jupyter-kernel)
     dotnet tool install -g --add-source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json" Microsoft.dotnet-interactive
