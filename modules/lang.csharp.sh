@@ -28,8 +28,10 @@ EOT
     # Restart Jupyter Lab (so that the new PATH is re-read)
     if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
         rc-service jupyter-lab restart
+        rc-service code-server restart
     else
         systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
+        systemctl restart "code-server@${POJDE_NG_USERNAME}"
     fi
 }
 
