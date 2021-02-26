@@ -4,13 +4,6 @@
 function as_root() {
     # Install build dependencies
     apt install -y cmake build-essential
-
-    # Restart Jupyter Lab (so that the new PATH is re-read)
-    if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
-        rc-service jupyter-lab restart
-    else
-        systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
-    fi
 }
 
 # User script

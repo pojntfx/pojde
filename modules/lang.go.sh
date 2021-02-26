@@ -26,13 +26,6 @@ function as_root() {
     # Add Go to both .bashrcs
     echo '. /etc/profile.d/go.sh' >>/root/.bashrc
     echo '. /etc/profile.d/go.sh' >>/home/${POJDE_NG_USERNAME}/.bashrc
-
-    # Restart Jupyter Lab (so that the new PATH is re-read)
-    if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
-        rc-service jupyter-lab restart
-    else
-        systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
-    fi
 }
 
 # User script
