@@ -5,18 +5,20 @@ function as_root() {
     # Read configuration file
     . /opt/pojde-ng/preferences/preferences.sh
 
-    # Fetch and install Microsoft keys package
-    curl -L -o /tmp/packages-microsoft-prod.deb https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb
-    dpkg -i /tmp/packages-microsoft-prod.deb
-    rm /tmp/packages-microsoft-prod.deb
-
     # Install C#
-    apt update
-    apt install -y dotnet-sdk-5.0 aspnetcore-runtime-5.0
+    DOTNET_ROOT=/home/${POJDE_NG_USERNAME}/.dotnet
+    curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir ${DOTNET_ROOT}
+
+    # Fix permissions
+    chown -R ${POJDE_NG_USERNAME} ${DOTNET_ROOT}
 
     # Add C# tools to PATH using profile
     CONFIG_FILE=/etc/profile.d/csharp.sh
-    echo "export PATH=\$PATH:/home/${POJDE_NG_USERNAME}/.dotnet/tools" >${CONFIG_FILE}
+    cat <<EOT >$CONFIG_FILE
+export DOTNET_ROOT=${DOTNET_ROOT}
+export PATH=\$PATH:\${DOTNET_ROOT}
+export PATH=\$PATH:\${DOTNET_ROOT}/tools
+EOT
     chmod +x ${CONFIG_FILE}
 
     # Add C# tools to both .bashrcs
@@ -24,7 +26,11 @@ function as_root() {
     echo ". ${CONFIG_FILE}" >>/home/${POJDE_NG_USERNAME}/.bashrc
 
     # Restart Jupyter Lab (so that the new PATH is re-read)
-    systemctl restart jupyter-lab@${POJDE_NG_USERNAME}
+    if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+        rc-service jupyter-lab restart
+    else
+        systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
+    fi
 }
 
 # User script
