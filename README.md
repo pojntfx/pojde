@@ -107,6 +107,7 @@ Usage:
     status:             Shows whether the container is running
     info:               Shows overview of the container
     inspect:            Shows details about the container
+    refresh:            Resets configurations of services in the container
     remove:             Removes the container
     purge:              Removes the container and it's volumes
     logs:               Shows the system logs

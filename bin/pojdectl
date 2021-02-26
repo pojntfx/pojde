@@ -27,7 +27,7 @@ apply)
     # Create the container
     docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -v pojde-home-root:/root:z -v pojde-home-user:/home:z -p 18000-18004:8000-8004 -p 18022:8022 ${docker_flags} ${docker_image} ${docker_args}
 
-    # Run configuration scripts
+    # Run configuration scripts' upgrade hooks
     for script in $configuration_scripts; do
         docker exec -it ${docker_flags} pojde-ng bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
     done
@@ -67,6 +67,16 @@ inspect)
     docker inspect --type container pojde-ng
     ;;
 
+refresh)
+    # Run configuration scripts' refresh hooks
+    for script in $configuration_scripts; do
+        docker exec -it ${docker_flags} pojde-ng bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
+    done
+
+    # Re-apply
+    $0 apply
+    ;;
+
 remove)
     # Remove the container
     docker rm -f pojde-ng
@@ -78,7 +88,7 @@ purge)
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         $0 remove
-        docker volume rm pojde-ng-preferences pojde-ng-ca
+        docker volume rm pojde-ng-preferences pojde-ng-ca pojde-home-root pojde-home-user
     fi
     ;;
 
@@ -116,6 +126,7 @@ Usage:
     status:             Shows whether the container is running
     info:               Shows overview of the container
     inspect:            Shows details about the container
+    refresh:            Resets configurations of services in the container
     remove:             Removes the container
     purge:              Removes the container and it's volumes
     logs:               Shows the system logs
