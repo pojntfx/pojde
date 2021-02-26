@@ -25,7 +25,7 @@ apply)
     docker pull "${docker_image}"
 
     # Create the container
-    docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -p 18000-18004:8000-8004 -p 18022:8022 ${docker_flags} ${docker_image} ${docker_args}
+    docker run -d --name pojde-ng --privileged --restart always -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -v pojde-home-root:/root:z -v pojde-home-user:/home:z -p 18000-18004:8000-8004 -p 18022:8022 ${docker_flags} ${docker_image} ${docker_args}
 
     # Run configuration scripts
     for script in $configuration_scripts; do
