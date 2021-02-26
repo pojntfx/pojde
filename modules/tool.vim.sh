@@ -12,5 +12,5 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the VSCodeVim VSCode extension
-    code-server --install-extension 'vscodevim.vim'
+    code-server --force --install-extension 'vscodevim.vim'
 }

@@ -12,5 +12,5 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the Go VSCode extension
-    code-server --install-extension 'ms-python.python'
+    code-server --force --install-extension 'ms-python.python'
 }

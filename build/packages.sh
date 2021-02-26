@@ -7,6 +7,7 @@ packages=(
     curl
     dialog
     git
+    unzip
 )
 
 # Download all common packages

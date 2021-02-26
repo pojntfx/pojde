@@ -20,9 +20,9 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the Rust VSCode extension
-    code-server --install-extension 'matklad.rust-analyzer'
-    code-server --install-extension 'bungcip.better-toml'
-    code-server --install-extension 'vadimcn.vscode-lldb'
+    code-server --force --install-extension 'matklad.rust-analyzer'
+    code-server --force --install-extension 'bungcip.better-toml'
+    code-server --force --install-extension 'vadimcn.vscode-lldb'
 
     # Download the Go Jupyter Kernel (see https://github.com/google/evcxr/blob/master/evcxr_jupyter/README.md#linux-debianubuntu)
     rustup component add rust-src
