@@ -41,7 +41,7 @@ available_modules=(
     lang.python Python $(${POJDE_NG_MODULE_PYTHON_ENABLED} && echo on || echo off)
     lang.rust Rust $(${POJDE_NG_MODULE_RUST_ENABLED} && echo on || echo off)
     lang.javascript JavaScript $(${POJDE_NG_MODULE_JAVASCRIPT_ENABLED} && echo on || echo off)
-    lang.dotnet .NET $(${POJDE_NG_MODULE_DOTNET_ENABLED} && echo on || echo off)
+    lang.csharp C# $(${POJDE_NG_MODULE_CSHARP_ENABLED} && echo on || echo off)
     tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
 )
 selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
@@ -51,7 +51,7 @@ echo export "'"POJDE_NG_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go"
 echo export "'"POJDE_NG_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 echo export "'"POJDE_NG_MODULE_RUST_ENABLED=$([[ "$selected_modules" == *"lang.rust"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 echo export "'"POJDE_NG_MODULE_JAVASCRIPT_ENABLED=$([[ "$selected_modules" == *"lang.javascript"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_NG_MODULE_DOTNET_ENABLED=$([[ "$selected_modules" == *"lang.dotnet"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_NG_MODULE_CSHARP_ENABLED=$([[ "$selected_modules" == *"lang.csharp"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
 # Persist checklist selection

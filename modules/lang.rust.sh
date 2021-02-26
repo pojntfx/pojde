@@ -2,7 +2,11 @@
 
 # Root script
 function as_root() {
+    # Install build dependencies
     apt install -y cmake build-essential
+
+    # Restart Jupyter Lab (so that the new PATH is re-read)
+    systemctl restart jupyter-lab@${POJDE_NG_USERNAME}
 }
 
 # User script
