@@ -4,7 +4,7 @@
 
 ## Overview
 
-🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. 🚧
+🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. Take a look at [PARITIY.md](./PARITY.md) for a list of currently missing features. 🚧
 
 `pojde` is a headless development environment with web access for all components, which can be installed, configured and managed using `pojdectl`, it's management tool.
 
