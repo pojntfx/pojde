@@ -39,8 +39,8 @@ EOT
     chmod +x ${CONFIG_FILE}
 
     # Add Go and TinyGo to both .bashrcs
-    echo '. /etc/profile.d/go.sh' >>/root/.bashrc
-    echo '. /etc/profile.d/go.sh' >>/home/${POJDE_NG_USERNAME}/.bashrc
+    echo ". ${CONFIG_FILE}" >>/root/.bashrc
+    echo ". ${CONFIG_FILE}" >>/home/${POJDE_NG_USERNAME}/.bashrc
 }
 
 # User script

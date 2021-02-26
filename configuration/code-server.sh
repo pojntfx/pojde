@@ -1,22 +1,24 @@
 #!/bin/bash
 
-# Read configuration file
-. /opt/pojde-ng/preferences/preferences.sh
+# Upgrade script
+function upgrade() {
+  # Read configuration file
+  . /opt/pojde-ng/preferences/preferences.sh
 
-# Change the password to the new value
-CONFIG_FILE=/opt/pojde-ng/code-server/code-server.yaml
-cat <<EOT >$CONFIG_FILE
+  # Change the password to the new value
+  CONFIG_FILE=/opt/pojde-ng/code-server/code-server.yaml
+  cat <<EOT >$CONFIG_FILE
 bind-addr: 127.0.0.1:38001
 auth: password
 password: "${POJDE_NG_PASSWORD}"
 EOT
 
-# Create the config dir
-CONFIG_DIR=/home/${POJDE_NG_USERNAME}/.local/share/code-server/User/
-mkdir -p ${CONFIG_DIR}
+  # Create the config dir
+  CONFIG_DIR=/home/${POJDE_NG_USERNAME}/.local/share/code-server/User/
+  mkdir -p ${CONFIG_DIR}
 
-# Add web-optimized shortcuts
-cat <<EOT >${CONFIG_DIR}/keybindings.json
+  # Add web-optimized shortcuts
+  cat <<EOT >${CONFIG_DIR}/keybindings.json
 [
   {
     "command": "-editor.action.marker.nextInFiles",
@@ -173,22 +175,28 @@ cat <<EOT >${CONFIG_DIR}/keybindings.json
 ]
 EOT
 
-# Add web-optimized configuration
-cat <<EOT >${CONFIG_DIR}/settings.json
+  # Add web-optimized configuration
+  cat <<EOT >${CONFIG_DIR}/settings.json
 {
   "editor.autoSave": "on",
   "keyboard.dispatch": "keyCode"
 }
 EOT
 
-# Fix permissions for user
-chown -R ${POJDE_NG_USERNAME} /home/${POJDE_NG_USERNAME}/.local/
+  # Fix permissions for user
+  chown -R ${POJDE_NG_USERNAME} /home/${POJDE_NG_USERNAME}/.local/
 
-# Enable & restart the services
-if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
-  rc-service code-server restart
-  rc-update add code-server default
-else
-  systemctl enable "code-server@${POJDE_NG_USERNAME}"
-  systemctl restart "code-server@${POJDE_NG_USERNAME}"
-fi
+  # Enable & restart the services
+  if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    rc-service code-server restart
+    rc-update add code-server default
+  else
+    systemctl enable "code-server@${POJDE_NG_USERNAME}"
+    systemctl restart "code-server@${POJDE_NG_USERNAME}"
+  fi
+}
+
+# Refresh script
+function refresh() {
+  :
+}

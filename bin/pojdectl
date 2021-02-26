@@ -29,7 +29,7 @@ apply)
 
     # Run configuration scripts
     for script in $configuration_scripts; do
-        docker exec -it ${docker_flags} pojde-ng "/opt/pojde-ng/configuration/${script}.sh"
+        docker exec -it ${docker_flags} pojde-ng bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
     done
     ;;
 
