@@ -14,6 +14,8 @@ Headless Linux distribution for full-stack software development with web access 
 
 [🚀 Get started](#installation)
 
+🚧 This project is currently undergoing a rewrite. Check out [pojde-ng](https://github.com/pojntfx/pojde-ng) for more information. 🚧
+
 ## Overview
 
 ### Services
