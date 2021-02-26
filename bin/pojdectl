@@ -67,27 +67,51 @@ inspect)
     docker inspect --type container pojde-ng
     ;;
 
-refresh)
-    # Run configuration scripts' refresh hooks
-    for script in $configuration_scripts; do
-        docker exec -it ${docker_flags} pojde-ng bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
-    done
-
-    # Re-apply
-    $0 apply
-    ;;
-
 remove)
     # Remove the container
-    docker rm -f pojde-ng
+    read -p "Removing the pojde-ng container might lead to data loss (see --help). Really remove pojde-ng (y/n)? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        docker rm -f pojde-ng
+    fi
+    ;;
+
+refresh)
+    # Reset the service configurations
+    read -p "Refreshing pojde-ng might lead to data loss (see --help). Really refresh pojde-ng (y/n)? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # Run configuration scripts' refresh hooks
+        for script in $configuration_scripts; do
+            docker exec -it ${docker_flags} pojde-ng bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
+        done
+
+        docker rm -f pojde-ng
+
+        $0 apply
+    fi
+    ;;
+
+reset)
+    # Wipe the home directories
+    read -p "Resetting pojde-ng will lead to data loss (see --help). Really reset pojde-ng (y/n)? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        docker rm -f pojde-ng
+
+        docker volume rm pojde-home-root pojde-home-user
+
+        $0 apply
+    fi
     ;;
 
 purge)
     # Remove the container and it's volumes
-    read -p "Purging pojde-ng will all data from it. Really purge pojde-ng (y/n)? " -n 1 -r
+    read -p "Purging pojde-ng will lead to data loss (see --help). Really purge pojde-ng (y/n)? " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        $0 remove
+        docker rm -f pojde-ng
+
         docker volume rm pojde-ng-preferences pojde-ng-ca pojde-home-root pojde-home-user
     fi
     ;;
@@ -126,9 +150,10 @@ Usage:
     status:             Shows whether the container is running
     info:               Shows overview of the container
     inspect:            Shows details about the container
-    refresh:            Resets configurations of services in the container
-    remove:             Removes the container
-    purge:              Removes the container and it's volumes
+    remove:             Removes the container, but keeps configurations, home directories, preferences & CA
+    refresh:            Wipes service configurations, but keeps home directories, preferences & CA
+    reset:              Wipes home directories, but keeps preferences & CA
+    purge:              Wipes everything
     logs:               Shows the system logs
     enter:              Opens a shell in the container
     update-pojdectl:    Updates pojdectl

@@ -107,9 +107,10 @@ Usage:
     status:             Shows whether the container is running
     info:               Shows overview of the container
     inspect:            Shows details about the container
-    refresh:            Resets configurations of services in the container
-    remove:             Removes the container
-    purge:              Removes the container and it's volumes
+    remove:             Removes the container, but keeps configurations, home directories, preferences & CA
+    refresh:            Wipes service configurations, but keeps home directories, preferences & CA
+    reset:              Wipes home directories, but keeps preferences & CA
+    purge:              Wipes everything
     logs:               Shows the system logs
     enter:              Opens a shell in the container
     update-pojdectl:    Updates pojdectl

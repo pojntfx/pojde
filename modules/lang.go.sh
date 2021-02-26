@@ -56,9 +56,11 @@ function as_user() {
     code-server --force --install-extension 'golang.Go'
 
     # Install the TinyGo VSCode extension
-    TINYGO_EXTENSION_VERSION=0.2.0
-    curl -L -o /tmp/tinygo.vsix https://github.com/tinygo-org/vscode-tinygo/releases/download/${TINYGO_EXTENSION_VERSION}/vscode-tinygo-${TINYGO_EXTENSION_VERSION}.vsix
-    unzip -o -d /home/${POJDE_NG_USERNAME}/.local/share/code-server/extensions/vscode-tinygo /tmp/tinygo.vsix
+    VSIX_VERSION=0.2.0
+    VSIX_FILE=/tmp/tinygo.vsix
+    curl -L -o ${VSIX_FILE} https://github.com/tinygo-org/vscode-tinygo/releases/download/${VSIX_VERSION}/vscode-tinygo-${VSIX_VERSION}.vsix
+    code-server --force --install-extension ${VSIX_FILE}
+    rm ${VSIX_FILE}
 
     # Download the Go Jupyter Kernel (see https://github.com/gopherdata/gophernotes)
     GOPHER_NOTES_VERSION=0.7.1

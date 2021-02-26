@@ -128,6 +128,7 @@ The following parts will have to be implemented in order to have feature parity 
 - jq
 - htop
 - procps
+- tree
 
 ## Desktop Browsers and Mail
 
