@@ -2,15 +2,6 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## Ruby
-
-- Ruby extension
-- Ruby kernel for Jupyter
-
-## Zig
-
-- Zig Builder + ZLS + Zig Language Extension
-
 ## Octave
 
 - Octave extension
