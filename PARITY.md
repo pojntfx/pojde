@@ -2,10 +2,6 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## C/C++
-
-- C++ kernel for Juypter
-
 ## Ruby
 
 - Ruby extension
@@ -43,7 +39,7 @@ The following parts will have to be implemented in order to have feature parity 
 - SQLTools PostgreSQL Driver
 - SQLTools SQLite Driver
 - SQLTools MySQL Driver
-- SQLite kernel for Jupyter
+- SQLite kernel for Jupyter (see https://github.com/jupyter-xeus/xeus-sqlite#installing-from-source)
 
 ## Technical Documentation
 
