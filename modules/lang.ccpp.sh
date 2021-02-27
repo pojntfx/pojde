@@ -11,44 +11,21 @@ function as_root() {
     # Use clangd-8 as default clangd
     update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-8 100
 
-    # Download the C++ Jupyter Kernel (see https://github.com/jupyter-xeus/xeus-cling#installation-from-source)
+    # Download the C++ Jupyter Kernel (see https://github.com/pojntfx/xeus-cling-binaries#installation)
 
-    # Install miniforge
-    MINIFORGE_PREFIX=/usr/local/miniforge
-    if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
-    else
-        curl -L -o /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
-    fi
-    chmod +x /tmp/miniforge.sh
-    mkdir -p ${MINIFORGE_PREFIX}
-    /tmp/miniforge.sh -bfp /usr/local/miniforge -u
-    rm /tmp/miniforge.sh
+    # Fetch the xeus-cling binary package
+    curl -L -o /tmp/xeus-cling.tar.gz https://github.com/pojntfx/xeus-cling-binaries/releases/download/latest/xeus-cling.$(uname -m).tar.gz
 
-    # Add miniforge to the path temporarily
-    export PATH="$PATH:${MINIFORGE_PREFIX}/bin"
+    # Extract the package to /usr/local/xeus-cling
+    XEUS_PREFIX=/usr/local/xeus-cling
+    mkdir -p ${XEUS_PREFIX}
+    tar -C ${XEUS_PREFIX} -xzf /tmp/xeus-cling.tar.gz
+    rm /tmp/xeus-cling.tar.gz
 
-    # Install dependencies
-    conda install -c conda-forge -y cmake xeus=1.0.0 cling=0.8 clangdev=5.0 llvmdev=5 nlohmann_json cppzmq xtl pugixml cxxopts
-
-    # Install xeus-cling
-    XEUS_CLING_VERSION=0.12.0
-    rm -rf /tmp/xeus-cling
-    cd /tmp
-    git clone https://github.com/jupyter-xeus/xeus-cling.git
-    cd xeus-cling
-    git checkout ${XEUS_CLING_VERSION}
-    mkdir -p build && cd build
-    cmake -D CMAKE_INSTALL_PREFIX=${MINIFORGE_PREFIX} -D CMAKE_INSTALL_LIBDIR=${MINIFORGE_PREFIX}/lib -D DOWNLOAD_GTEST=ON ..
-    make install -j$(nproc)
-
-    # Register kernel with Jupyter
-    jupyter kernelspec install ${MINIFORGE_PREFIX}/share/jupyter/kernels/xcpp11/ --sys-prefix
-    jupyter kernelspec install ${MINIFORGE_PREFIX}/share/jupyter/kernels/xcpp14/ --sys-prefix
-    jupyter kernelspec install ${MINIFORGE_PREFIX}/share/jupyter/kernels/xcpp17/ --sys-prefix
-
-    # Clean up
-    rm -rf /tmp/xeus-cling
+    # Install the kernels
+    jupyter kernelspec install ${XEUS_PREFIX}/share/jupyter/kernels/xcpp11 --sys-prefix
+    jupyter kernelspec install ${XEUS_PREFIX}/share/jupyter/kernels/xcpp14 --sys-prefix
+    jupyter kernelspec install ${XEUS_PREFIX}/share/jupyter/kernels/xcpp17 --sys-prefix
 }
 
 # User script
