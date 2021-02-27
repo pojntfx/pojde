@@ -10,6 +10,35 @@ function as_root() {
 
     # Use clangd-8 as default clangd
     update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-8 100
+
+    # Download the C++ Jupyter Kernel (see https://github.com/jupyter-xeus/xeus-cling#installation-from-source)
+
+    # Install miniforge
+    if [ "$(uname -m)" = 'x86_64' ]; then
+        curl -L -o /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+    else
+        curl -L -o /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
+    fi
+    chmod +x /tmp/miniforge.sh
+    /tmp/miniforge.sh -bfp /usr/local -u
+    rm /tmp/miniforge.sh
+
+    # Install dependencies
+    conda install -c conda-forge -y cmake xeus=1.0.0 cling=0.8 clangdev=5.0 llvmdev=5 nlohmann_json cppzmq xtl pugixml cxxopts
+
+    # Install xeus-cling
+    XEUS_CLING_VERSION=0.12.0
+    rm -rf /tmp/xeus-cling
+    cd /tmp
+    git clone https://github.com/jupyter-xeus/xeus-cling.git
+    cd xeus-cling
+    git checkout ${XEUS_CLING_VERSION}
+    mkdir -p build && cd build
+    cmake -D CMAKE_INSTALL_PREFIX=/usr/local -D CMAKE_INSTALL_LIBDIR=/usr/local/lib -D DOWNLOAD_GTEST=ON ..
+    make install -j$(nproc)
+
+    # Clean up
+    rm -rf /tmp/xeus-cling
 }
 
 # User script
