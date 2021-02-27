@@ -14,14 +14,19 @@ function as_root() {
     # Download the C++ Jupyter Kernel (see https://github.com/jupyter-xeus/xeus-cling#installation-from-source)
 
     # Install miniforge
+    MINIFORGE_PREFIX=/usr/local/miniforge
     if [ "$(uname -m)" = 'x86_64' ]; then
         curl -L -o /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
     else
         curl -L -o /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
     fi
     chmod +x /tmp/miniforge.sh
-    /tmp/miniforge.sh -bfp /usr/local -u
+    mkdir -p ${MINIFORGE_PREFIX}
+    /tmp/miniforge.sh -bfp /usr/local/miniforge -u
     rm /tmp/miniforge.sh
+
+    # Add miniforge to the path temporarily
+    export PATH="$PATH:${MINIFORGE_PREFIX}/bin"
 
     # Install dependencies
     conda install -c conda-forge -y cmake xeus=1.0.0 cling=0.8 clangdev=5.0 llvmdev=5 nlohmann_json cppzmq xtl pugixml cxxopts
@@ -34,8 +39,13 @@ function as_root() {
     cd xeus-cling
     git checkout ${XEUS_CLING_VERSION}
     mkdir -p build && cd build
-    cmake -D CMAKE_INSTALL_PREFIX=/usr/local -D CMAKE_INSTALL_LIBDIR=/usr/local/lib -D DOWNLOAD_GTEST=ON ..
+    cmake -D CMAKE_INSTALL_PREFIX=${MINIFORGE_PREFIX} -D CMAKE_INSTALL_LIBDIR=${MINIFORGE_PREFIX}/lib -D DOWNLOAD_GTEST=ON ..
     make install -j$(nproc)
+
+    # Register kernel with Jupyter
+    jupyter kernelspec install ${MINIFORGE_PREFIX}/share/jupyter/kernels/xcpp11/ --sys-prefix
+    jupyter kernelspec install ${MINIFORGE_PREFIX}/share/jupyter/kernels/xcpp14/ --sys-prefix
+    jupyter kernelspec install ${MINIFORGE_PREFIX}/share/jupyter/kernels/xcpp17/ --sys-prefix
 
     # Clean up
     rm -rf /tmp/xeus-cling
