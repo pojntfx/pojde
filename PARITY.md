@@ -2,17 +2,6 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## Octave
-
-- Octave extension
-- Octave debugging
-- Octave kernel for Jupyter
-
-## R
-
-- R extension
-- R debugger
-- R kernel for Jupyter
 
 ## Bash Scripting
 
@@ -64,6 +53,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## DevOps Tools
 
+- Kubernetes extension
 - kubectl
 - k9s
 - helm
@@ -73,9 +63,8 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Containers
 
-- podman
-- podman-remote
-- podman-docker
+- Docker extension
+- docker-ce-cli
 
 ## Virtualization
 
@@ -103,6 +92,7 @@ The following parts will have to be implemented in order to have feature parity 
 - GitLens
 - Git Graph
 - Tabnine
+- Test Explorer (plus the extensions for supported languages)
 
 ## Common CLIs
 

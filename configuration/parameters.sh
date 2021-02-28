@@ -49,22 +49,24 @@ function upgrade() {
         lang.java Java $(${POJDE_NG_MODULE_JAVA_ENABLED} && echo on || echo off)
         lang.julia Julia $(${POJDE_NG_MODULE_JULIA_ENABLED} && echo on || echo off)
         lang.octave Octave $(${POJDE_NG_MODULE_OCTAVE_ENABLED} && echo on || echo off)
+        lang.r R $(${POJDE_NG_MODULE_R_ENABLED} && echo on || echo off)
         tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
     )
     selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
 
     # Persist checklist state
-    echo export "'"POJDE_NG_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_RUST_ENABLED=$([[ "$selected_modules" == *"lang.rust"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_JAVASCRIPT_ENABLED=$([[ "$selected_modules" == *"lang.javascript"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_RUBY_ENABLED=$([[ "$selected_modules" == *"lang.ruby"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_CSHARP_ENABLED=$([[ "$selected_modules" == *"lang.csharp"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_JAVA_ENABLED=$([[ "$selected_modules" == *"lang.java"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_JULIA_ENABLED=$([[ "$selected_modules" == *"lang.julia"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_OCTAVE_ENABLED=$([[ "$selected_modules" == *"lang.octave"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-    echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_RUST_ENABLED=$([[ "$selected_modules" == *"lang.rust "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_JAVASCRIPT_ENABLED=$([[ "$selected_modules" == *"lang.javascript "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_RUBY_ENABLED=$([[ "$selected_modules" == *"lang.ruby "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_CSHARP_ENABLED=$([[ "$selected_modules" == *"lang.csharp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_JAVA_ENABLED=$([[ "$selected_modules" == *"lang.java "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_JULIA_ENABLED=$([[ "$selected_modules" == *"lang.julia "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_OCTAVE_ENABLED=$([[ "$selected_modules" == *"lang.octave "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_R_ENABLED=$([[ "$selected_modules" == *"lang.r "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
     # Persist checklist selection
     echo export "'"POJDE_NG_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}

@@ -27,7 +27,7 @@ apply)
     fi
 
     # Create the container
-    docker run -d --name pojde-ng --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /var/run/docker.sock:/var/run/docker.sock:z -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -v pojde-home-root:/root:z -v pojde-home-user:/home:z -p 18000-18004:8000-8004 -p 18022:8022 --restart always ${docker_flags} ${docker_image} ${docker_args}
+    docker run -d --name pojde-ng --tmpfs /tmp:exec --tmpfs /run:exec --tmpfs /run/lock:exec -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /var/run/docker.sock:/var/run/docker.sock:z -v pojde-ng-preferences:/opt/pojde-ng/preferences:z -v pojde-ng-ca:/opt/pojde-ng/ca:z -v pojde-home-root:/root:z -v pojde-home-user:/home:z -p 18000-18004:8000-8004 -p 18022:8022 --restart always ${docker_flags} ${docker_image} ${docker_args}
 
     # Run configuration scripts' upgrade hooks
     for script in $configuration_scripts; do
