@@ -4,14 +4,6 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## SQL
 
-- SQL language basics
-- SQLite
-- PostgreSQL Client
-- MariaDB Client
-- SQLTools
-- SQLTools PostgreSQL Driver
-- SQLTools SQLite Driver
-- SQLTools MySQL Driver
 - SQLite kernel for Jupyter (see https://github.com/jupyter-xeus/xeus-sqlite#installing-from-source)
 
 ## Technical Documentation
