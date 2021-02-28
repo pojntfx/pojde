@@ -53,9 +53,9 @@ function upgrade() {
         lang.sql SQL $(${POJDE_NG_MODULE_SQL_ENABLED} && echo on || echo off)
         lang.bash Bash $(${POJDE_NG_MODULE_BASH_ENABLED} && echo on || echo off)
         tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
-        tool.devops DevOps $(${POJDE_NG_MODULE_DEVOPS_ENABLED} && echo on || echo off)
+        tool.devops "QEMU, Docker and Kubernetes" $(${POJDE_NG_MODULE_DEVOPS_ENABLED} && echo on || echo off)
     )
-    selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
+    selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}")"
 
     # Persist checklist state
     echo export "'"POJDE_NG_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}

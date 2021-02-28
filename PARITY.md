@@ -4,6 +4,8 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Technical Documentation
 
+`tools.techdocs`
+
 - LTeX (grammar/spell checker)
 - LaTeX Workshop (with a full texlive installation)
 - Foam (and recommended extensions)
@@ -16,6 +18,8 @@ The following parts will have to be implemented in order to have feature parity 
 - gnuplot
 
 ## Web Development
+
+`tools.webdev`
 
 - Protobuf language support
 - GraphQL language support
@@ -34,6 +38,8 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Common VSCode Extensions
 
+`tools.extensions`
+
 - Prettier
 - Clipboard manager
 - GitLens
@@ -41,7 +47,19 @@ The following parts will have to be implemented in order to have feature parity 
 - Tabnine
 - Test Explorer (plus the extensions for supported languages)
 
+## Common CLIs
+
+`tools.clis`
+
+- tmux
+- jq
+- htop
+- procps
+- tree
+
 ## Networking
+
+`tools.networking`
 
 - iproute2
 - wireshark
@@ -54,22 +72,18 @@ The following parts will have to be implemented in order to have feature parity 
 - serve
 - localtunnel
 
-## Common CLIs
+## Browsers and Mail (GUI)
 
-- tmux
-- jq
-- htop
-- procps
-- tree
-
-## Desktop Browsers and Mail
+`tools.inetgui`
 
 - Chromium
 - Firefox
 - Web
 - Thunderbird
 
-## Terminal Browsers and Mail
+## Browsers and Mail (TUI)
+
+`tools.intettui`
 
 - Lynx
 - Links
@@ -77,6 +91,8 @@ The following parts will have to be implemented in order to have feature parity 
 - aerc
 
 ## Multimedia
+
+`tools.multimedia`
 
 - webtorrent-hybrid
 - WebWormhole CLI
