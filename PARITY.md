@@ -32,26 +32,14 @@ The following parts will have to be implemented in order to have feature parity 
 - Web Accessibility
 - wasmer
 
-## DevOps Tools
+## Common VSCode Extensions
 
-- Kubernetes extension
-- kubectl
-- k9s
-- helm
-- skaffold
-- k3d
-- k3sup
-
-## Containers
-
-- Docker extension
-- docker-ce-cli
-
-## Virtualization
-
-- alpimager
-- qemu
-- qemu-kvm
+- Prettier
+- Clipboard manager
+- GitLens
+- Git Graph
+- Tabnine
+- Test Explorer (plus the extensions for supported languages)
 
 ## Networking
 
@@ -65,15 +53,6 @@ The following parts will have to be implemented in order to have feature parity 
 - iperf3
 - serve
 - localtunnel
-
-## Common VSCode Extensions
-
-- Prettier
-- Clipboard manager
-- GitLens
-- Git Graph
-- Tabnine
-- Test Explorer (plus the extensions for supported languages)
 
 ## Common CLIs
 
