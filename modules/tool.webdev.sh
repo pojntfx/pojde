@@ -17,7 +17,6 @@ function as_user() {
     code-server --force --install-extension 'GraphQL.vscode-graphql'
     code-server --force --install-extension '42Crunch.vscode-openapi'
     code-server --force --install-extension 'dsznajder.es7-react-js-snippets'
-    code-server --force --install-extension 'Orta.vscode-jest'
     code-server --force --install-extension 'firefox-devtools.vscode-firefox-debug'
     code-server --force --install-extension 'jpoissonnier.vscode-styled-components'
     code-server --force --install-extension 'arcanis.vscode-zipfs'

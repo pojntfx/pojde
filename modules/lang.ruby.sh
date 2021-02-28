@@ -26,6 +26,7 @@ function as_user() {
     # Install the Ruby VSCode extensions
     code-server --force --install-extension 'rebornix.ruby'
     code-server --force --install-extension 'kaiwood.endwise'
+    code-server --force --install-extension 'connorshea.vscode-ruby-test-adapter'
 
     # Register the Ruby Jupyter kernel
     iruby register --force

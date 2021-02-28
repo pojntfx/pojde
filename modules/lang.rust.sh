@@ -23,6 +23,7 @@ function as_user() {
     code-server --force --install-extension 'matklad.rust-analyzer'
     code-server --force --install-extension 'bungcip.better-toml'
     code-server --force --install-extension 'vadimcn.vscode-lldb'
+    code-server --force --install-extension 'Swellaby.vscode-rust-test-adapter'
 
     # Download the Go Jupyter Kernel (see https://github.com/google/evcxr/blob/master/evcxr_jupyter/README.md#linux-debianubuntu)
     rustup component add rust-src

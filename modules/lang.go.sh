@@ -52,8 +52,9 @@ function as_user() {
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
 
-    # Install the Go VSCode extension
+    # Install the Go VSCode extensions
     code-server --force --install-extension 'golang.Go'
+    code-server --force --install-extension 'ethan-reesor.vscode-go-test-adapter'
 
     # Install the TinyGo VSCode extension
     VSIX_VERSION=0.2.0
