@@ -42,6 +42,9 @@ RUN ./ssh.sh
 COPY build/nginx.sh .
 RUN ./nginx.sh
 
+COPY build/docker.sh .
+RUN ./docker.sh
+
 COPY build/webwormhole.sh .
 RUN ./webwormhole.sh
 
