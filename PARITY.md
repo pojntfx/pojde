@@ -2,16 +2,6 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## Common CLIs
-
-`tool.clis`
-
-- tmux
-- jq
-- htop
-- procps
-- tree
-
 ## Networking
 
 `tool.networking`
