@@ -50,6 +50,7 @@ function upgrade() {
         lang.julia Julia $(${POJDE_NG_MODULE_JULIA_ENABLED} && echo on || echo off)
         lang.octave Octave $(${POJDE_NG_MODULE_OCTAVE_ENABLED} && echo on || echo off)
         lang.r R $(${POJDE_NG_MODULE_R_ENABLED} && echo on || echo off)
+        lang.bash Bash $(${POJDE_NG_MODULE_BASH_ENABLED} && echo on || echo off)
         tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
     )
     selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
@@ -66,6 +67,7 @@ function upgrade() {
     echo export "'"POJDE_NG_MODULE_JULIA_ENABLED=$([[ "$selected_modules" == *"lang.julia "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_OCTAVE_ENABLED=$([[ "$selected_modules" == *"lang.octave "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_R_ENABLED=$([[ "$selected_modules" == *"lang.r "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_BASH_ENABLED=$([[ "$selected_modules" == *"lang.bash "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
     # Persist checklist selection
