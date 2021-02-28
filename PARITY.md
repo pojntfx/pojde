@@ -2,17 +2,6 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## Common VSCode Extensions
-
-`tool.extensions`
-
-- Prettier
-- Clipboard manager
-- GitLens
-- Git Graph
-- Tabnine
-- Test Explorer UI
-
 ## Common CLIs
 
 `tool.clis`
