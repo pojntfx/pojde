@@ -2,24 +2,9 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## Technical Documentation
-
-`tools.techdocs`
-
-- LTeX (grammar/spell checker)
-- LaTeX Workshop (with a full texlive installation)
-- Foam (and recommended extensions)
-- Draw.io integration
-- Image Preview
-- SVG all-in-one
-- PDF viewer (https://github.com/tomoki1207/vscode-pdfviewer/releases/tag/v1.0.0)
-- mdBook
-- PlantUML
-- gnuplot
-
 ## Web Development
 
-`tools.webdev`
+`tool.webdev`
 
 - Protobuf language support
 - GraphQL language support
@@ -38,7 +23,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Common VSCode Extensions
 
-`tools.extensions`
+`tool.extensions`
 
 - Prettier
 - Clipboard manager
@@ -49,7 +34,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Common CLIs
 
-`tools.clis`
+`tool.clis`
 
 - tmux
 - jq
@@ -59,7 +44,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Networking
 
-`tools.networking`
+`tool.networking`
 
 - iproute2
 - wireshark
@@ -74,7 +59,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Browsers and Mail (GUI)
 
-`tools.inetgui`
+`tool.inetgui`
 
 - Chromium
 - Firefox
@@ -83,7 +68,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Browsers and Mail (TUI)
 
-`tools.intettui`
+`tool.intettui`
 
 - Lynx
 - Links
@@ -92,7 +77,7 @@ The following parts will have to be implemented in order to have feature parity 
 
 ## Multimedia
 
-`tools.multimedia`
+`tool.multimedia`
 
 - webtorrent-hybrid
 - WebWormhole CLI
