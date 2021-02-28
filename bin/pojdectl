@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Define configuration scripts
 configuration_scripts="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
