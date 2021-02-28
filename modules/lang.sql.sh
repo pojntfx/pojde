@@ -4,6 +4,10 @@
 function as_root() {
     # Install SQLite, MariaDB client and PostgreSQL client
     apt install -y sqlite3 mariadb-client postgresql-client
+
+    # Install Node (required for the drivers)
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+    apt install -y nodejs build-essential
 }
 
 # User script
