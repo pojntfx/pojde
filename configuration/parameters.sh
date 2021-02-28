@@ -53,6 +53,7 @@ function upgrade() {
         lang.sql SQL $(${POJDE_NG_MODULE_SQL_ENABLED} && echo on || echo off)
         lang.bash Bash $(${POJDE_NG_MODULE_BASH_ENABLED} && echo on || echo off)
         tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
+        tool.devops DevOps $(${POJDE_NG_MODULE_DEVOPS_ENABLED} && echo on || echo off)
     )
     selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
 
@@ -71,6 +72,7 @@ function upgrade() {
     echo export "'"POJDE_NG_MODULE_SQL_ENABLED=$([[ "$selected_modules" == *"lang.sql "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_BASH_ENABLED=$([[ "$selected_modules" == *"lang.bash "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_DEVOPS_ENABLED=$([[ "$selected_modules" == *"tool.devops "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
     # Persist checklist selection
     echo export "'"POJDE_NG_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}
