@@ -11,7 +11,7 @@ The following parts will have to be implemented in order to have feature parity 
 - GitLens
 - Git Graph
 - Tabnine
-- Test Explorer (plus the extensions for supported languages)
+- Test Explorer UI
 
 ## Common CLIs
 

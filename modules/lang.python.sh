@@ -14,4 +14,5 @@ function as_user() {
 
     # Install the Python VSCode extension
     code-server --force --install-extension 'ms-python.python'
+    code-server --force --install-extension 'littlefoxteam.vscode-python-test-adapter'
 }
