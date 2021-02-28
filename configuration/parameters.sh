@@ -47,6 +47,7 @@ function upgrade() {
         lang.ruby Ruby $(${POJDE_NG_MODULE_RUBY_ENABLED} && echo on || echo off)
         lang.csharp C# $(${POJDE_NG_MODULE_CSHARP_ENABLED} && echo on || echo off)
         lang.java Java $(${POJDE_NG_MODULE_JAVA_ENABLED} && echo on || echo off)
+        lang.julia Julia $(${POJDE_NG_MODULE_JULIA_ENABLED} && echo on || echo off)
         tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
     )
     selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 ${available_modules[@]})"
@@ -60,6 +61,7 @@ function upgrade() {
     echo export "'"POJDE_NG_MODULE_RUBY_ENABLED=$([[ "$selected_modules" == *"lang.ruby"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_CSHARP_ENABLED=$([[ "$selected_modules" == *"lang.csharp"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_JAVA_ENABLED=$([[ "$selected_modules" == *"lang.java"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_JULIA_ENABLED=$([[ "$selected_modules" == *"lang.julia"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim"* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
     # Persist checklist selection

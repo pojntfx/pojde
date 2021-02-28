@@ -100,7 +100,7 @@ pojdectl is the management tool for pojde.
 
 Usage:
 
-    apply:              (Re-)creates the container, interactively configures it, and restarts it's services
+    apply [-l]:         Reconfigures the container. -l disables fetching the latest image.
     start:              Starts the container
     stop:               Stops the container
     restart:            Restarts the container
@@ -108,8 +108,8 @@ Usage:
     info:               Shows overview of the container
     inspect:            Shows details about the container
     remove [-f]:        Removes the container, but keeps configurations, home directories, preferences & CA
-    refresh [-f]:       Wipes service configurations, but keeps home directories, preferences & CA
-    reset [-f]:         Wipes home directories, but keeps preferences & CA
+    refresh [-f] [-l]:  Wipes service configurations, but keeps home directories, preferences & CA. -l disables fetching the latest image.
+    reset [-f] [-l]:    Wipes home directories, but keeps preferences & CA. -l disables fetching the latest image.
     purge [-f]:         Wipes everything
     logs:               Shows the system logs
     enter:              Opens a shell in the container
