@@ -8,7 +8,6 @@ function upgrade() {
     # Add Docker group and add user to it
     groupadd docker
     usermod -aG docker ${POJDE_NG_USERNAME}
-    newgrp docker
 }
 
 # Refresh script

@@ -25,7 +25,7 @@ EOT
     echo ". ${CONFIG_FILE}" >>/root/.bashrc
     echo ". ${CONFIG_FILE}" >>/home/${POJDE_NG_USERNAME}/.bashrc
 
-    # Restart Jupyter Lab (so that the new PATH is re-read)
+    # Restart Jupyter Lab and code-server (so that the new PATH is re-read)
     if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
         rc-service jupyter-lab restart
         rc-service code-server restart
