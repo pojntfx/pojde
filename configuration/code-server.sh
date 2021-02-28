@@ -179,7 +179,8 @@ EOT
   cat <<EOT >${CONFIG_DIR}/settings.json
 {
   "editor.autoSave": "on",
-  "keyboard.dispatch": "keyCode"
+  "keyboard.dispatch": "keyCode",
+  "sqltools.useNodeRuntime": true
 }
 EOT
 
