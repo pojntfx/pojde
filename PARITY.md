@@ -2,25 +2,6 @@
 
 The following parts will have to be implemented in order to have feature parity with the [original pojde](https://github.com/pojntfx/pojde).
 
-## Web Development
-
-`tool.webdev`
-
-- Protobuf language support
-- GraphQL language support
-- OpenAPI/Swagger language support
-- ES7 React/Redux/GraphQL/React-Native snippets
-- Jest support
-- Firefox debugging
-- CSS, LESS and SCSS language features
-- Styled Components
-- Emmet
-- ZipFS
-- Vetur
-- Faker
-- Web Accessibility
-- wasmer
-
 ## Common VSCode Extensions
 
 `tool.extensions`
