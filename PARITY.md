@@ -11,15 +11,6 @@ The following parts will have to be implemented in order to have feature parity 
 - Web
 - Thunderbird
 
-## Browsers and Mail (TUI)
-
-`tool.intettui`
-
-- Lynx
-- Links
-- w3m
-- aerc
-
 ## Multimedia
 
 `tool.multimedia`
