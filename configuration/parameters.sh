@@ -60,6 +60,7 @@ function upgrade() {
         tool.clis "Common CLIs" $(${POJDE_NG_MODULE_CLIS_ENABLED} && echo on || echo off)
         tool.networking Networking $(${POJDE_NG_MODULE_NETWORKING_ENABLED} && echo on || echo off)
         tool.inettui "Browsers and Mail (TUI)" $(${POJDE_NG_MODULE_INETTUI_ENABLED} && echo on || echo off)
+        tool.inetgui "Browsers and Mail (GUI)" $(${POJDE_NG_MODULE_INETGUI_ENABLED} && echo on || echo off)
     )
     selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}")"
 
@@ -85,6 +86,7 @@ function upgrade() {
     echo export "'"POJDE_NG_MODULE_CLIS_ENABLED=$([[ "$selected_modules" == *"tool.clis "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_NETWORKING_ENABLED=$([[ "$selected_modules" == *"tool.networking "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_INETTUI_ENABLED=$([[ "$selected_modules" == *"tool.inettui "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_INETGUI_ENABLED=$([[ "$selected_modules" == *"tool.inetgui "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
     # Persist checklist selection
     echo export "'"POJDE_NG_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}
