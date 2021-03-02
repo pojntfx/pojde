@@ -1,0 +1,49 @@
+#!/bin/bash
+
+DOCKER_PREFIX=pojde-ng-
+SCRIPTS="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
+
+case $1 in
+apply)
+    name=$2
+    start_port=$3
+    end_port=$((${start_port} + 4))
+    ssh_port=$((${start_port} + 22))
+
+    docker run \
+        -d \
+        --name ${DOCKER_PREFIX}${name} \
+        --tmpfs /tmp:exec \
+        --tmpfs /run:exec \
+        --tmpfs /run/lock:exec \
+        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+        -v /var/run/docker.sock:/var/run/docker.sock:z \
+        -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde-ng/preferences:z \
+        -v ${DOCKER_PREFIX}${name}-ca:/opt/pojde-ng/ca:z \
+        -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
+        -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
+        -p ${start_port}-${end_port}:8000-8004 \
+        -p ${ssh_port}:8022 \
+        --restart always \
+        pojntfx/pojde-ng:latest \
+        /lib/systemd/systemd
+
+    for script in $SCRIPTS; do
+        docker exec -it ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
+    done
+    ;;
+
+remove)
+    name=$2
+
+    docker rm -f ${DOCKER_PREFIX}${name}
+    ;;
+
+list)
+    docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }} ({{ .State.Status }})" $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
+    ;;
+
+*)
+    echo "pojdectl-ng is the management tool for pojde-ng."
+    ;;
+esac
