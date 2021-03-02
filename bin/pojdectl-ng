@@ -83,7 +83,7 @@ forward)
         i=$((i + 1))
     done
 
-    ssh ${sshArgs} -p ${sshPort} root@localhost
+    nohup ssh -f -p ${sshPort} root@localhost ${sshArgs} -N &>/dev/null
     ;;
 
 *)
