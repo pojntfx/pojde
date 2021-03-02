@@ -3,26 +3,53 @@
 DOCKER_PREFIX=pojde-ng-
 SCRIPTS="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
 
+function print_help() {
+    [[ ! "$1" =~ -h|--help ]] && printf "Unknown command \"$1\".\n\n"
+
+    echo "pojdectl-ng is the management tool for pojde-ng.
+
+Usage:
+
+    apply <name> <startPort> [-fur]
+    remove <name> [-fcptu]
+    list
+
+    start <name>
+    stop <name>
+    restart <name>
+    logs <name>
+
+    enter <name>
+    forward <name> [localPort:remotePort...]
+
+    upgrade-pojdectl-ng
+
+For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
+
+    exit 0
+}
+
 case $1 in
 apply)
-    name=$2
-    start_port=$3
-    end_port=$((${start_port} + 4))
-    ssh_port=$((${start_port} + 22))
-
-    docker_flags=""
-    docker_args=""
-    docker_image="pojntfx/pojde-ng:latest"
-    if [ ! -n "$(which systemctl)" ]; then
-        export docker_flags="-e POJDE_NG_OPENRC=true"
-        export docker_args="/sbin/openrc-init"
-        export docker_image="pojntfx/pojde-ng:latest-openrc"
-    fi
-
+    name=""
+    start_port=""
+    end_port=""
+    ssh_port=""
     skip_confirmations=false
     pull_latest_image=false
     recreate_container=false
+    i=0
     for arg; do
+        if [ "$i" = "1" ]; then
+            name=${arg}
+        fi
+
+        if [ "$i" = "2" ]; then
+            start_port=${arg}
+            end_port=$((${start_port} + 4))
+            ssh_port=$((${start_port} + 22))
+        fi
+
         if [ "${arg}" = "-f" ]; then
             skip_confirmations=true
         fi
@@ -34,7 +61,22 @@ apply)
         if [ "${arg}" = "-r" ]; then
             recreate_container=true
         fi
+
+        if [[ "${arg}" =~ -h|--help ]]; then
+            print_help $1
+        fi
+
+        i=$((${i} + 1))
     done
+
+    docker_flags=""
+    docker_args=""
+    docker_image="pojntfx/pojde-ng:latest"
+    if [ ! -n "$(which systemctl)" ]; then
+        export docker_flags="-e POJDE_NG_OPENRC=true"
+        export docker_args="/sbin/openrc-init"
+        export docker_image="pojntfx/pojde-ng:latest-openrc"
+    fi
 
     if [ "${pull_latest_image}" = "true" ]; then
         docker pull ${docker_image}
@@ -247,24 +289,6 @@ upgrade-pojdectl-ng)
     ;;
 
 *)
-    echo "pojdectl-ng is the management tool for pojde-ng.
-
-Usage:
-
-    apply <name> <startPort> [-fur]
-    remove <name> [-fcptu]
-    list
-
-    start <name>
-    stop <name>
-    restart <name>
-    logs <name>
-
-    enter <name>
-    forward <name> [localPort:remotePort...]
-
-    upgrade-pojdectl-ng
-
-For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
+    print_help $1
     ;;
 esac
