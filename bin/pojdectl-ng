@@ -46,7 +46,105 @@ apply)
 remove)
     name=$2
 
-    docker rm -f ${DOCKER_PREFIX}${name}
+    skip_confirmations=false
+    remove_customizations=false
+    remove_preferences=false
+    remove_ca=false
+    remove_user_data=false
+    for arg; do
+        if [ "${arg}" = "-f" ]; then
+            skip_confirmations=true
+        fi
+
+        if [ "${arg}" = "-c" ]; then
+            remove_customizations=true
+        fi
+
+        if [ "${arg}" = "-p" ]; then
+            remove_preferences=true
+        fi
+
+        if [ "${arg}" = "-t" ]; then
+            remove_ca=true
+        fi
+
+        if [ "${arg}" = "-u" ]; then
+            remove_user_data=true
+        fi
+    done
+
+    # Remove customizations
+    if [ "${remove_customizations}" = "true" ]; then
+        if [ "${skip_confirmations}" = "true" ]; then
+            REPLY='y'
+        else
+            read -p "Really remove customizations from ${name} (y/n)? " -n 1 -r
+            echo
+        fi
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            for script in $SCRIPTS; do
+                docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
+            done
+
+            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+        fi
+    fi
+
+    # Remove preferences
+    if [ "${remove_preferences}" = "true" ]; then
+        if [ "${skip_confirmations}" = "true" ]; then
+            REPLY='y'
+        else
+            read -p "Really remove preferences from ${name} (y/n)? " -n 1 -r
+            echo
+        fi
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            docker volume rm ${DOCKER_PREFIX}${name}-preferences
+
+            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+        fi
+    fi
+
+    # Remove CA
+    if [ "${remove_ca}" = "true" ]; then
+        if [ "${skip_confirmations}" = "true" ]; then
+            REPLY='y'
+        else
+            read -p "Really remove CA from ${name} (y/n)? " -n 1 -r
+            echo
+        fi
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            docker volume rm ${DOCKER_PREFIX}${name}-ca
+
+            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+        fi
+    fi
+
+    # Remove user data
+    if [ "${remove_user_data}" = "true" ]; then
+        if [ "${skip_confirmations}" = "true" ]; then
+            REPLY='y'
+        else
+            read -p "Really remove user data from ${name} (y/n)? " -n 1 -r
+            echo
+        fi
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
+
+            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+        fi
+    fi
+
+    # Remove container
+    if [ "${skip_confirmations}" = "true" ]; then
+        REPLY='y'
+    else
+        read -p "Really remove container ${name} (y/n)? " -n 1 -r
+        echo
+    fi
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        docker rm -f ${DOCKER_PREFIX}${name}
+    fi
     ;;
 
 list)
@@ -120,8 +218,8 @@ upgrade-pojdectl-ng)
 
 Usage:
 
-    apply <name> <startPort>
-    remove <name>
+    apply <name> <startPort> [-fur]
+    remove <name> [-fcptu]
     list
 
     start <name>
