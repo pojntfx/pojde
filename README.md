@@ -6,7 +6,7 @@
 
 🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. While it has reached feature parity, UX needs improvement. 🚧
 
-`pojde` is a headless development environment with web access for all components, which can be installed, configured and managed using `pojdectl`, it's management tool.
+`pojde-ng` is a headless development environment with web access for all components, which can be installed, configured and managed using `pojdectl-ng`, it's management tool.
 
 - Based on Debian
 - Interactive configuration
@@ -20,17 +20,19 @@
 
 First, [install Docker](https://docs.docker.com/get-docker/). Afterwards, paste the following into your terminal and follow the instructions:
 
+First, add `pojdectl-ng` to your `PATH`:
+
 ```shell
-. <(curl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl) apply
+. <(curl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng) upgrade-pojdectl-ng
 ```
 
-To add `pojdectl` to your path or to update it, paste the following:
+Now, create an instance:
 
-```sql
-. <(curl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl) update-pojdectl
+```shell
+pojdectl-ng apply my-pojdectl 8000
 ```
 
-Both work on Linux, macOS and Windows (through WSL).
+Works on Linux, macOS and Windows (through WSL).
 
 ## Usage
 
