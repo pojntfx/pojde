@@ -8,8 +8,15 @@ SCRIPTS="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git
 CONFIRMATION_PREFIX="This could lead to data loss. Really"
 
 # Shows pojdectl-ng usage information.
-function print_help() {
-    [[ ! "$1" =~ -h|--help ]] && printf "Unknown command or argument \"$1\".\n\n"
+print_help() {
+    case "$1" in
+    "-h" | "--help")
+        :
+        ;;
+    *)
+        printf "Unknown command or argument \"${arg}\".\n\n"
+        ;;
+    esac
 
     echo "pojdectl-ng is the management tool for pojde-ng.
 
@@ -45,12 +52,12 @@ For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
 }
 
 # Asks the user to re-apply their instance.
-function print_please_reapply() {
+print_please_reapply() {
     echo 'Please run "pojdectl-ng apply" again to re-initialize.'
 }
 
 # Gets a summary of the exposed ports for an instance.
-function get_port_summary() {
+get_port_summary() {
     start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
     end_port=$((${start_port} + 4))
     ssh_port=$((${start_port} + 22))
@@ -59,7 +66,13 @@ function get_port_summary() {
 }
 
 # Checks if the users has passed -h or --help and if they have done so, display the usage information.
-for arg in $@; do [[ "$arg" =~ -h|--help ]] && print_help ${arg}; done
+for arg in $@; do
+    case $arg in
+    -h | --help)
+        print_help ${arg}
+        ;;
+    esac
+done
 
 # Handle the main commands
 case $1 in
@@ -382,17 +395,29 @@ forward)
     for arg; do
         if [ "$i" -gt 2 ]; then
             # Get the host and client parts
-            IFS=':' read -a arg_parts <<<"${arg}"
+            arg_parts=""
+            IFS=':'
+            ni=0
+            for arg_part in $arg; do
+                if [ "$ni" = 0 ]; then
+                    arg_parts="${arg_parts} ${arg_part}"
+                    outputStatus="${outputStatus}${name}:${arg_part} -> "
+                else
+                    arg_parts="${arg_parts}:localhost:${arg_part}"
+                    outputStatus="${outputStatus}localhost:${arg_part}\n"
+                fi
 
-            sshArgs="${sshArgs} -L ${arg_parts[0]}:localhost:${arg_parts[1]}"
-            outputStatus="${outputStatus}${name}:${arg_parts[1]} -> localhost:${arg_parts[0]}\n"
+                ni=$(($ni + 1))
+            done
+
+            sshArgs="${sshArgs} -L ${arg_parts}}"
         fi
 
         i=$(($i + 1))
     done
 
     # Forward in the background
-    nohup ssh -f -p ${sshPort} root@localhost ${sshArgs} -N &>/dev/null
+    nohup ssh -f -p ${sshPort} root@localhost ${sshArgs} -N >/dev/null 2>&1 &
 
     # Show the newly forwarded ports
     printf "${outputStatus}"
