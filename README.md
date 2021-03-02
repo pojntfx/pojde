@@ -4,7 +4,7 @@
 
 ## Overview
 
-🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. While it has reached feature parity, UX needs improvement. 🚧
+🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. While it has reached feature parity, documentation needs improvement. 🚧
 
 `pojde-ng` is a headless development environment with web access for all components, which can be installed, configured and managed using `pojdectl-ng`, it's management tool.
 
@@ -18,27 +18,23 @@
 
 ## Installation
 
-First, [install Docker](https://docs.docker.com/get-docker/). Afterwards, paste the following into your terminal and follow the instructions:
-
-First, add `pojdectl-ng` to your `PATH`:
+First, [install Docker](https://docs.docker.com/get-docker/). Afterwards, paste the following into your terminal to add `pojdectl-ng` to your `PATH`:
 
 ```shell
-. <(curl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng) upgrade-pojdectl-ng
+curl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng | bash -s -- upgrade-pojdectl-ng
 ```
 
-Now, create an instance:
+Next, paste the following and follow the instructions:
 
 ```shell
-pojdectl-ng apply my-pojde-ng 8000
+pojdectl-ng apply my-pojde-ng 18000
 ```
 
 Works on Linux, macOS and Windows (through WSL).
 
 ## Usage
 
-### Services
-
-After [installation & configuration](#Installation), the following services should be available:
+After [installation](#Installation), the following services should be available:
 
 - [Cockpit](https://cockpit-project.org/), a general management interface for pojde and the container. Disabled if on host system without systemd.
 - [code-server](https://github.com/cdr/code-server), VSCode in the browser
@@ -46,7 +42,7 @@ After [installation & configuration](#Installation), the following services shou
 - [noVNC](https://novnc.com/info.html), which gives you graphical access to pojde
 - [Jupyter Lab](http://jupyterlab.io/), an interactive development environment
 
-Before accessing them, add the CA certificate to your system; we've created video tutorials for it. The interactive configuration should have prompted you to download yours; you can re-download it by running `pojdectl apply` again:
+Before accessing them, add the CA certificate to your system; we've created video tutorials for it. The interactive configuration should have prompted you to download yours; you can re-download it by running the `pojdectl-ng apply` command from above again:
 
 - [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
 - [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
@@ -70,30 +66,6 @@ $ ssh -p 18022 root@MY_IP
 
 > Can't access via SSH? Try again with `ssh -oPubkeyAcceptedKeyTypes=+rsa-sha2-512` (see [this issue](https://bugzilla.redhat.com/show_bug.cgi?id=1881301) for more details).
 
-### Accessing other Services
-
-If you want to access any other services running in the container from your host, use SSH forwarding. To for example expose a web server running on port `1234` in the container to your host, run:
-
-```shell
-$ ssh -L localhost:1234:localhost:1234 -p 18022 root@MY_IP
-```
-
-### Updating pojdectl
-
-To update `pojdectl-ng`, run:
-
-```shell
-$ pojdectl-ng update-pojdectl-ng
-```
-
-### Updating pojde
-
-To update `pojde` or to change it's configuration, run:
-
-```shell
-$ pojdectl-ng apply
-```
-
 ## Command Reference
 
 ```shell
@@ -104,7 +76,7 @@ Modification Commands:
 apply <name> <startPort>            Create or upgrade an instance.
     [-f]orce                            Skip confirmation prompts.
     [-u]pgrade                          Pull latest image.
-    [-r]recreat                         Re-create the container.
+    [-r]recreate                        Re-create the container.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
     [-c]ustomization                    Remove customizations.

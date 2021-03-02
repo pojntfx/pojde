@@ -24,7 +24,7 @@ Modification Commands:
 apply <name> <startPort>            Create or upgrade an instance.
     [-f]orce                            Skip confirmation prompts.
     [-u]pgrade                          Pull latest image.
-    [-r]recreat                         Re-create the container.
+    [-r]recreate                        Re-create the container.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
     [-c]ustomization                    Remove customizations.
