@@ -34,6 +34,14 @@ function print_please_reapply() {
     echo 'Please run "pojdectl-ng apply" again to re-initialize.'
 }
 
+function get_port_summary() {
+    start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
+    end_port=$((${start_port} + 4))
+    ssh_port=$((${start_port} + 22))
+
+    echo "${start_port}-${end_port},${ssh_port}"
+}
+
 for arg in $@; do [[ "$arg" =~ -h|--help ]] && print_help ${arg}; done
 
 case $1 in
@@ -263,10 +271,12 @@ remove)
     ;;
 
 list)
-    container_id=$(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
-    if [ -n "${container_id}" ]; then
-        docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }} ({{ .State.Status }})" ${container_id}
-    fi
+    container_ids=$(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
+
+    printf "NAME\t\tSTATE\t\tPORTS\n"
+    for container_id in $container_ids; do
+        printf "$(docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }}" ${container_id})\t\t$(docker inspect -f "{{ .State.Status }}" ${container_id})\t\t$(get_port_summary ${container_id})\n"
+    done
     ;;
 
 start)
