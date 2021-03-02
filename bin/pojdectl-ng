@@ -2,6 +2,7 @@
 
 DOCKER_PREFIX=pojde-ng-
 SCRIPTS="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
+CONFIRMATION_PREFIX="This could lead to data loss. Really"
 
 function print_help() {
     [[ ! "$1" =~ -h|--help ]] && printf "Unknown command or argument \"$1\".\n\n"
@@ -14,9 +15,9 @@ Usage:
     remove <name> [-fcptu]
     list
 
-    start <name>
-    stop <name>
-    restart <name>
+    start [name...]
+    stop [name...]
+    restart [name...]
     logs <name>
 
     enter <name>
@@ -27,6 +28,10 @@ Usage:
 For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
 
     exit 0
+}
+
+function print_please_reapply() {
+    echo 'Please run "pojdectl-ng apply" again to re-initialize.'
 }
 
 for arg in $@; do [[ "$arg" =~ -h|--help ]] && print_help ${arg}; done
@@ -100,7 +105,7 @@ apply)
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
-            read -p "Really re-create container for ${name} (y/n)? " -n 1 -r
+            read -p "${CONFIRMATION_PREFIX} re-create container for ${name} (y/n)? " -n 1 -r
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -192,7 +197,7 @@ remove)
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
-            read -p "Really remove customizations from ${name} (y/n)? " -n 1 -r
+            read -p "${CONFIRMATION_PREFIX} remove customizations from ${name} (y/n)? " -n 1 -r
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -200,7 +205,7 @@ remove)
                 docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
             done
 
-            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+            print_please_reapply
         fi
     fi
 
@@ -208,13 +213,13 @@ remove)
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
-            read -p "Really remove preferences from ${name} (y/n)? " -n 1 -r
+            read -p "${CONFIRMATION_PREFIX} remove preferences from ${name} (y/n)? " -n 1 -r
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             docker volume rm ${DOCKER_PREFIX}${name}-preferences
 
-            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+            print_please_reapply
         fi
     fi
 
@@ -222,13 +227,13 @@ remove)
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
-            read -p "Really remove CA from ${name} (y/n)? " -n 1 -r
+            read -p "${CONFIRMATION_PREFIX} remove CA from ${name} (y/n)? " -n 1 -r
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             docker volume rm ${DOCKER_PREFIX}${name}-ca
 
-            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+            print_please_reapply
         fi
     fi
 
@@ -236,20 +241,20 @@ remove)
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
-            read -p "Really remove user data from ${name} (y/n)? " -n 1 -r
+            read -p "${CONFIRMATION_PREFIX} remove user data from ${name} (y/n)? " -n 1 -r
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
 
-            echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+            print_please_reapply
         fi
     fi
 
     if [ "${skip_confirmations}" = "true" ]; then
         REPLY='y'
     else
-        read -p "Really remove container ${name} (y/n)? " -n 1 -r
+        read -p "${CONFIRMATION_PREFIX} remove container ${name} (y/n)? " -n 1 -r
         echo
     fi
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -265,21 +270,36 @@ list)
     ;;
 
 start)
-    name=$2
+    i=1
+    for arg; do
+        if [ "$i" -gt 1 ]; then
+            docker start ${DOCKER_PREFIX}${arg}
+        fi
 
-    docker start ${DOCKER_PREFIX}$2
+        i=$(($i + 1))
+    done
     ;;
 
 stop)
-    name=$2
+    i=1
+    for arg; do
+        if [ "$i" -gt 1 ]; then
+            docker stop ${DOCKER_PREFIX}${arg}
+        fi
 
-    docker stop ${DOCKER_PREFIX}$2
+        i=$(($i + 1))
+    done
     ;;
 
 restart)
-    name=$2
+    i=1
+    for arg; do
+        if [ "$i" -gt 1 ]; then
+            docker restart ${DOCKER_PREFIX}${arg}
+        fi
 
-    docker restart ${DOCKER_PREFIX}$2
+        i=$(($i + 1))
+    done
     ;;
 
 logs)
