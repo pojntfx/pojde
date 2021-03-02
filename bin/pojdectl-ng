@@ -12,7 +12,7 @@ function print_help() {
 Usage:
 
     apply <name> <startPort> [-fur]
-    remove <name> [-fcptu]
+    remove [name...] [-fcptu]
     list
 
     start [name...]
@@ -148,7 +148,7 @@ apply)
     ;;
 
 remove)
-    name=""
+    names=""
     skip_confirmations=false
     remove_customizations=false
     remove_preferences=false
@@ -159,12 +159,6 @@ remove)
         i=$((${i} + 1))
 
         if [ "$i" = "0" ]; then
-            continue
-        fi
-
-        if [ "$i" = "1" ]; then
-            name=${arg}
-
             continue
         fi
 
@@ -198,76 +192,78 @@ remove)
             continue
         fi
 
-        print_help ${arg}
+        names="${names} ${arg}"
     done
 
-    if [ "${remove_customizations}" = "true" ]; then
+    for name in $names; do
+        if [ "${remove_customizations}" = "true" ]; then
+            if [ "${skip_confirmations}" = "true" ]; then
+                REPLY='y'
+            else
+                read -p "${CONFIRMATION_PREFIX} remove customizations from ${name} (y/n)? " -n 1 -r
+                echo
+            fi
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                for script in $SCRIPTS; do
+                    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
+                done
+
+                print_please_reapply
+            fi
+        fi
+
+        if [ "${remove_preferences}" = "true" ]; then
+            if [ "${skip_confirmations}" = "true" ]; then
+                REPLY='y'
+            else
+                read -p "${CONFIRMATION_PREFIX} remove preferences from ${name} (y/n)? " -n 1 -r
+                echo
+            fi
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                docker volume rm ${DOCKER_PREFIX}${name}-preferences
+
+                print_please_reapply
+            fi
+        fi
+
+        if [ "${remove_ca}" = "true" ]; then
+            if [ "${skip_confirmations}" = "true" ]; then
+                REPLY='y'
+            else
+                read -p "${CONFIRMATION_PREFIX} remove CA from ${name} (y/n)? " -n 1 -r
+                echo
+            fi
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                docker volume rm ${DOCKER_PREFIX}${name}-ca
+
+                print_please_reapply
+            fi
+        fi
+
+        if [ "${remove_user_data}" = "true" ]; then
+            if [ "${skip_confirmations}" = "true" ]; then
+                REPLY='y'
+            else
+                read -p "${CONFIRMATION_PREFIX} remove user data from ${name} (y/n)? " -n 1 -r
+                echo
+            fi
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
+
+                print_please_reapply
+            fi
+        fi
+
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
-            read -p "${CONFIRMATION_PREFIX} remove customizations from ${name} (y/n)? " -n 1 -r
+            read -p "${CONFIRMATION_PREFIX} remove container ${name} (y/n)? " -n 1 -r
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            for script in $SCRIPTS; do
-                docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
-            done
-
-            print_please_reapply
+            docker rm -f ${DOCKER_PREFIX}${name}
         fi
-    fi
-
-    if [ "${remove_preferences}" = "true" ]; then
-        if [ "${skip_confirmations}" = "true" ]; then
-            REPLY='y'
-        else
-            read -p "${CONFIRMATION_PREFIX} remove preferences from ${name} (y/n)? " -n 1 -r
-            echo
-        fi
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker volume rm ${DOCKER_PREFIX}${name}-preferences
-
-            print_please_reapply
-        fi
-    fi
-
-    if [ "${remove_ca}" = "true" ]; then
-        if [ "${skip_confirmations}" = "true" ]; then
-            REPLY='y'
-        else
-            read -p "${CONFIRMATION_PREFIX} remove CA from ${name} (y/n)? " -n 1 -r
-            echo
-        fi
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker volume rm ${DOCKER_PREFIX}${name}-ca
-
-            print_please_reapply
-        fi
-    fi
-
-    if [ "${remove_user_data}" = "true" ]; then
-        if [ "${skip_confirmations}" = "true" ]; then
-            REPLY='y'
-        else
-            read -p "${CONFIRMATION_PREFIX} remove user data from ${name} (y/n)? " -n 1 -r
-            echo
-        fi
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
-
-            print_please_reapply
-        fi
-    fi
-
-    if [ "${skip_confirmations}" = "true" ]; then
-        REPLY='y'
-    else
-        read -p "${CONFIRMATION_PREFIX} remove container ${name} (y/n)? " -n 1 -r
-        echo
-    fi
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        docker rm -f ${DOCKER_PREFIX}${name}
-    fi
+    done
     ;;
 
 list)
