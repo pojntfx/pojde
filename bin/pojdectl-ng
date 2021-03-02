@@ -74,8 +74,10 @@ forward)
 
     i=1
     for arg; do
-        if [ $i -gt 2 ] >=; then
-            sshArgs="${sshArgs} -L localhost:${arg}"
+        if [ "$i" -gt 2 ]; then
+            IFS=':' read -a arg_parts <<<"${arg}"
+
+            sshArgs="${sshArgs} -L ${arg_parts[0]}:localhost:${arg_parts[1]}"
         fi
 
         i=$((i + 1))
