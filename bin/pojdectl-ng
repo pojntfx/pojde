@@ -43,7 +43,62 @@ list)
     docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }} ({{ .State.Status }})" $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
     ;;
 
+start)
+    name=$2
+
+    docker start ${DOCKER_PREFIX}$2
+    ;;
+
+stop)
+    name=$2
+
+    docker stop ${DOCKER_PREFIX}$2
+    ;;
+
+restart)
+    name=$2
+
+    docker restart ${DOCKER_PREFIX}$2
+    ;;
+
+enter)
+    name=$2
+
+    docker exec -it ${DOCKER_PREFIX}$2 bash
+    ;;
+
+forward)
+    name=$2
+    sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
+    sshArgs=""
+
+    i=1
+    for arg; do
+        if [ $i -gt 2 ] >=; then
+            sshArgs="${sshArgs} -L localhost:${arg}"
+        fi
+
+        i=$((i + 1))
+    done
+
+    ssh ${sshArgs} -p ${sshPort} root@localhost
+    ;;
+
 *)
-    echo "pojdectl-ng is the management tool for pojde-ng."
+    echo "pojdectl-ng is the management tool for pojde-ng.
+
+Usage:
+
+    apply <name> <startPort>
+    remove <name>
+    list
+    
+    start <name>
+    stop <name>
+    restart <name>
+    
+    enter <name>
+    forward <name> [localPort:remotePort...]
+"
     ;;
 esac
