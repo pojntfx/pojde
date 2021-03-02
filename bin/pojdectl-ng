@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# Prefix for all objects in the Docker daemon.
 DOCKER_PREFIX=pojde-ng-
+# Scripts to run to apply/refresh instances. Order matters.
 SCRIPTS="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
+# Prefix to display before destructive operations.
 CONFIRMATION_PREFIX="This could lead to data loss. Really"
 
+# Shows pojdectl-ng usage information.
 function print_help() {
     [[ ! "$1" =~ -h|--help ]] && printf "Unknown command or argument \"$1\".\n\n"
 
@@ -40,10 +44,12 @@ For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
     exit 0
 }
 
+# Asks the user to re-apply their instance.
 function print_please_reapply() {
     echo 'Please run "pojdectl-ng apply" again to re-initialize.'
 }
 
+# Gets a summary of the exposed ports for an instance.
 function get_port_summary() {
     start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
     end_port=$((${start_port} + 4))
@@ -52,10 +58,14 @@ function get_port_summary() {
     echo "${start_port}-${end_port},${ssh_port}"
 }
 
+# Checks if the users has passed -h or --help and if they have done so, display the usage information.
 for arg in $@; do [[ "$arg" =~ -h|--help ]] && print_help ${arg}; done
 
+# Handle the main commands
 case $1 in
+# Create or upgrade an instance.
 apply)
+    # Read configuration from arguments
     name=""
     start_port=""
     end_port=""
@@ -106,6 +116,7 @@ apply)
         print_help ${arg}
     done
 
+    # Adjust Docker arguments if host system uses OpenRC
     docker_flags=""
     docker_args=""
     docker_image="pojntfx/pojde-ng:latest"
@@ -115,10 +126,12 @@ apply)
         export docker_image="pojntfx/pojde-ng:latest-openrc"
     fi
 
+    # Pull the latest image
     if [ "${pull_latest_image}" = "true" ]; then
         docker pull ${docker_image}
     fi
 
+    # Re-create the container
     if [ "${recreate_container}" = "true" ]; then
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
@@ -131,6 +144,7 @@ apply)
         fi
     fi
 
+    # Create the container if it doesn't already exist
     if [ ! -n "$(docker ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
         docker run \
             -d \
@@ -150,14 +164,20 @@ apply)
             ${docker_flags} \
             ${docker_image} \
             ${docker_args}
+    # If the container does already exist, start it
+    else
+        docker start ${DOCKER_PREFIX}${name}
     fi
 
+    # Run the upgrade hooks of the scripts
     for script in $SCRIPTS; do
         docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
     done
     ;;
 
+# Remove instance(s).
 remove)
+    # Read configuration from arguments
     names=""
     skip_confirmations=false
     remove_customizations=false
@@ -205,7 +225,9 @@ remove)
         names="${names} ${arg}"
     done
 
+    # Enable multiple names
     for name in $names; do
+        # Remove customizations
         if [ "${remove_customizations}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
                 REPLY='y'
@@ -222,6 +244,7 @@ remove)
             fi
         fi
 
+        # Remove preferences
         if [ "${remove_preferences}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
                 REPLY='y'
@@ -236,6 +259,7 @@ remove)
             fi
         fi
 
+        # Remove CA
         if [ "${remove_ca}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
                 REPLY='y'
@@ -250,6 +274,7 @@ remove)
             fi
         fi
 
+        # Remove user data
         if [ "${remove_user_data}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
                 REPLY='y'
@@ -264,6 +289,7 @@ remove)
             fi
         fi
 
+        # Remove container
         if [ "${skip_confirmations}" = "true" ]; then
             REPLY='y'
         else
@@ -276,15 +302,20 @@ remove)
     done
     ;;
 
+# List all instances.
 list)
+    # Get the current containers' IDs
     container_ids=$(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
 
+    # Add a header to the output
     printf "NAME\t\tSTATE\t\tPORTS\n"
+    # For each container, show the name, state and exposed ports
     for container_id in $container_ids; do
         printf "$(docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }}" ${container_id})\t\t$(docker inspect -f "{{ .State.Status }}" ${container_id})\t\t$(get_port_summary ${container_id})\n"
     done
     ;;
 
+# Start instance(s).
 start)
     i=1
     for arg; do
@@ -296,6 +327,7 @@ start)
     done
     ;;
 
+# Stop instance(s).
 stop)
     i=1
     for arg; do
@@ -307,6 +339,7 @@ stop)
     done
     ;;
 
+# Restart instance(s).
 restart)
     i=1
     for arg; do
@@ -318,9 +351,11 @@ restart)
     done
     ;;
 
+# Get the logs of an instance.
 logs)
     name=$2
 
+    # If container uses systemd, tail from journalctl, else tail OpenRC output
     if [ -n "$(docker exec -it ${DOCKER_PREFIX}${name} which systemctl)" ]; then
         docker exec -it ${DOCKER_PREFIX}${name} journalctl -f
     else
@@ -328,14 +363,17 @@ logs)
     fi
     ;;
 
+# Get a shell in an instance.
 enter)
     name=$2
 
     docker exec -it ${DOCKER_PREFIX}$2 bash
     ;;
 
+# Forward port(s) from an instance.
 forward)
     name=$2
+    # Get the exposed SSH port
     sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
     sshArgs=""
     outputStatus=""
@@ -343,6 +381,7 @@ forward)
     i=1
     for arg; do
         if [ "$i" -gt 2 ]; then
+            # Get the host and client parts
             IFS=':' read -a arg_parts <<<"${arg}"
 
             sshArgs="${sshArgs} -L ${arg_parts[0]}:localhost:${arg_parts[1]}"
@@ -352,13 +391,18 @@ forward)
         i=$(($i + 1))
     done
 
+    # Forward in the background
     nohup ssh -f -p ${sshPort} root@localhost ${sshArgs} -N &>/dev/null
 
+    # Show the newly forwarded ports
     printf "${outputStatus}"
     ;;
 
+# Upgrade this tool.
 upgrade-pojdectl-ng)
+    # Fetch the latest version from GitHub
     sudo curl -L -o /usr/local/bin/pojdectl-ng https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng
+    # Make it executable
     sudo chmod +x /usr/local/bin/pojdectl-ng
     ;;
 
