@@ -10,6 +10,15 @@ apply)
     end_port=$((${start_port} + 4))
     ssh_port=$((${start_port} + 22))
 
+    docker_flags=""
+    docker_args=""
+    docker_image="pojntfx/pojde-ng:latest"
+    if [ ! -n "$(which systemctl)" ]; then
+        export docker_flags="-e POJDE_NG_OPENRC=true"
+        export docker_args="/sbin/openrc-init"
+        export docker_image="pojntfx/pojde-ng:latest-openrc"
+    fi
+
     docker run \
         -d \
         --name ${DOCKER_PREFIX}${name} \
@@ -25,11 +34,12 @@ apply)
         -p ${start_port}-${end_port}:8000-8004 \
         -p ${ssh_port}:8022 \
         --restart always \
-        pojntfx/pojde-ng:latest \
-        /lib/systemd/systemd
+        ${docker_flags} \
+        ${docker_image} \
+        ${docker_args}
 
     for script in $SCRIPTS; do
-        docker exec -it ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
+        docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
     done
     ;;
 
@@ -61,6 +71,16 @@ restart)
     docker restart ${DOCKER_PREFIX}$2
     ;;
 
+logs)
+    name=$2
+
+    if [ -n "$(docker exec -it ${DOCKER_PREFIX}${name} which systemctl)" ]; then
+        docker exec -it ${DOCKER_PREFIX}${name} journalctl -f
+    else
+        docker logs -f ${DOCKER_PREFIX}${name}
+    fi
+    ;;
+
 enter)
     name=$2
 
@@ -90,6 +110,11 @@ forward)
     printf "${outputStatus}"
     ;;
 
+upgrade-pojdectl-ng)
+    sudo curl -L -o /usr/local/bin/pojdectl-ng https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng
+    sudo chmod +x /usr/local/bin/pojdectl-ng
+    ;;
+
 *)
     echo "pojdectl-ng is the management tool for pojde-ng.
 
@@ -98,13 +123,16 @@ Usage:
     apply <name> <startPort>
     remove <name>
     list
-    
+
     start <name>
     stop <name>
     restart <name>
-    
+    logs <name>
+
     enter <name>
     forward <name> [localPort:remotePort...]
+
+    upgrade-pojdectl-ng
 "
     ;;
 esac
