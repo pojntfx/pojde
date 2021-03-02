@@ -71,6 +71,7 @@ forward)
     name=$2
     sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
     sshArgs=""
+    outputStatus=""
 
     i=1
     for arg; do
@@ -78,12 +79,15 @@ forward)
             IFS=':' read -a arg_parts <<<"${arg}"
 
             sshArgs="${sshArgs} -L ${arg_parts[0]}:localhost:${arg_parts[1]}"
+            outputStatus="${outputStatus}${name}:${arg_parts[1]} -> localhost:${arg_parts[0]}\n"
         fi
 
         i=$((i + 1))
     done
 
     nohup ssh -f -p ${sshPort} root@localhost ${sshArgs} -N &>/dev/null
+
+    printf "${outputStatus}"
     ;;
 
 *)
