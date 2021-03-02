@@ -58,11 +58,15 @@ print_please_reapply() {
 
 # Gets a summary of the exposed ports for an instance.
 get_port_summary() {
-    start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
-    end_port=$((${start_port} + 4))
-    ssh_port=$((${start_port} + 22))
+    if [ "$(docker inspect -f '{{ .State.Status }}' $1)" = 'running' ]; then
+        start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
+        end_port=$((${start_port} + 4))
+        ssh_port=$((${start_port} + 22))
 
-    echo "${start_port}-${end_port},${ssh_port}"
+        echo "${start_port}-${end_port},${ssh_port}"
+    else
+        echo "-"
+    fi
 }
 
 # Checks if the users has passed -h or --help and if they have done so, display the usage information.

@@ -29,7 +29,7 @@ First, add `pojdectl-ng` to your `PATH`:
 Now, create an instance:
 
 ```shell
-pojdectl-ng apply my-pojdectl 8000
+pojdectl-ng apply my-pojde-ng 8000
 ```
 
 Works on Linux, macOS and Windows (through WSL).
@@ -80,10 +80,10 @@ $ ssh -L localhost:1234:localhost:1234 -p 18022 root@MY_IP
 
 ### Updating pojdectl
 
-To update `pojdectl`, run:
+To update `pojdectl-ng`, run:
 
 ```shell
-$ pojdectl update-pojdectl
+$ pojdectl-ng update-pojdectl-ng
 ```
 
 ### Updating pojde
@@ -91,7 +91,7 @@ $ pojdectl update-pojdectl
 To update `pojde` or to change it's configuration, run:
 
 ```shell
-$ pojdectl apply
+$ pojdectl-ng apply
 ```
 
 ## Command Reference
