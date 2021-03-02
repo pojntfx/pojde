@@ -95,25 +95,34 @@ $ pojdectl apply
 ## Command Reference
 
 ```shell
-$ pojdectl --help
-pojdectl is the management tool for pojde.
+$ pojdectl-ng --help
+pojdectl-ng is the management tool for pojde-ng.
 
-Usage:
+Modification Commands:
+apply <name> <startPort>            Create or upgrade an instance.
+    [-f]orce                            Skip confirmation prompts.
+    [-u]pgrade                          Pull latest image.
+    [-r]recreat                         Re-create the container.
+remove [name...]                    Remove instances(s).
+    [-f]orce                            Skip confirmation prompts.
+    [-c]ustomization                    Remove customizations.
+    [-p]references                      Remove preferences.
+    [-s]ecurity                         Remove CA.
+    [-u]ser data                        Remove user data.
+list                                List all instances.
 
-    apply [-l]:         Reconfigures the container. -l disables fetching the latest image.
-    start:              Starts the container
-    stop:               Stops the container
-    restart:            Restarts the container
-    status:             Shows whether the container is running
-    info:               Shows overview of the container
-    inspect:            Shows details about the container
-    remove [-f]:        Removes the container, but keeps configurations, home directories, preferences & CA
-    refresh [-f] [-l]:  Wipes service configurations, but keeps home directories, preferences & CA. -l disables fetching the latest image.
-    reset [-f] [-l]:    Wipes home directories, but keeps preferences & CA. -l disables fetching the latest image.
-    purge [-f]:         Wipes everything
-    logs:               Shows the system logs
-    enter:              Opens a shell in the container
-    update-pojdectl:    Updates pojdectl
+Lifecycle Commands:
+start [name...]                     Start instance(s).
+stop [name...]                      Stop instance(s).
+restart [name...]                   Restart instance(s).
+
+Utility Commands:
+logs <name>                         Get the logs of an instance.
+enter <name>                        Get a shell in an instance.
+forward <name> [local:remote...]    Forward port(s) from an instance.
+
+Miscellaneous Commands:
+upgrade-pojdectl-ng                 Upgrade this tool.
 
 For more information, please visit https://github.com/pojntfx/pojde-ng#Usage.
 ```

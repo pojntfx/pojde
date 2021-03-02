@@ -9,21 +9,31 @@ function print_help() {
 
     echo "pojdectl-ng is the management tool for pojde-ng.
 
-Usage:
+Modification Commands:
+apply <name> <startPort>            Create or upgrade an instance.
+    [-f]orce                            Skip confirmation prompts.
+    [-u]pgrade                          Pull latest image.
+    [-r]recreat                         Re-create the container.
+remove [name...]                    Remove instances(s).
+    [-f]orce                            Skip confirmation prompts.
+    [-c]ustomization                    Remove customizations.
+    [-p]references                      Remove preferences.
+    [-s]ecurity                         Remove CA.
+    [-u]ser data                        Remove user data.
+list                                List all instances.
 
-    apply <name> <startPort> [-fur]
-    remove [name...] [-fcptu]
-    list
+Lifecycle Commands:
+start [name...]                     Start instance(s).
+stop [name...]                      Stop instance(s).
+restart [name...]                   Restart instance(s).
 
-    start [name...]
-    stop [name...]
-    restart [name...]
-    logs <name>
+Utility Commands:
+logs <name>                         Get the logs of an instance.
+enter <name>                        Get a shell in an instance.
+forward <name> [local:remote...]    Forward port(s) from an instance.
 
-    enter <name>
-    forward <name> [localPort:remotePort...]
-
-    upgrade-pojdectl-ng
+Miscellaneous Commands:
+upgrade-pojdectl-ng                 Upgrade this tool.
 
 For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
 
@@ -180,7 +190,7 @@ remove)
             continue
         fi
 
-        if [ "${arg}" = "-t" ]; then
+        if [ "${arg}" = "-s" ]; then
             remove_ca=true
 
             continue
