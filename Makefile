@@ -15,10 +15,10 @@ build-openrc: pre
 	docker build --build-arg POJDE_NG_OPENRC=true -t pojntfx/pojde-ng:latest-openrc .
 
 link: pre
-	sudo ln -sf "$(shell pwd)/bin/pojdectl" /usr/bin/pojdectl
+	sudo ln -sf "$(shell pwd)/bin/pojdectl-ng" /usr/local/bin/pojdectl-ng
 
 install:
-	sudo install bin/pojdectl /usr/bin
+	sudo install bin/pojdectl-ng /usr/local/bin
 
 uninstall:
-	sudo rm /usr/bin/pojdectl
+	sudo rm /usr/local/bin/pojdectl

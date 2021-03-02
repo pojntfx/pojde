@@ -51,7 +51,7 @@ RUN ./webwormhole.sh
 COPY build/clean.sh .
 RUN ./clean.sh
 
-# Add `pojdectl`
+# Add `pojdectl-ng`
 COPY bin/* /usr/bin/
 
 # Clean up
