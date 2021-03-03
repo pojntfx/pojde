@@ -83,6 +83,8 @@ remove [name...]                    Remove instances(s).
     [-p]references                      Remove preferences.
     [-s]ecurity                         Remove CA.
     [-u]ser data                        Remove user data.
+    [-d]eb cache                        Remove .deb cache.
+    [-a]ll                              Remove everything.
 list                                List all instances.
 
 Lifecycle Commands:
