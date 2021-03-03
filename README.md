@@ -71,6 +71,9 @@ $ ssh -p 18022 root@MY_IP
 ```shell
 $ pojdectl-ng --help
 pojdectl-ng is the management tool for pojde-ng.
+Global Flags:
+[-n]ode <user@host:port>            Remote host to execute on.
+                                    If not specified, execute locally.
 
 Modification Commands:
 apply <name> <startPort>            Create or upgrade an instance.
