@@ -31,7 +31,8 @@ remove [name...]                    Remove instances(s).
     [-p]references                      Remove preferences.
     [-s]ecurity                         Remove CA.
     [-u]ser data                        Remove user data.
-    [-a]pt cache                        Remove APT's cache.
+    [-d]eb cache                        Remove .deb cache.
+    [-a]ll                              Remove everything.
 list                                List all instances.
 
 Lifecycle Commands:
@@ -99,20 +100,6 @@ apply)
             continue
         fi
 
-        if [ "$i" = "1" ]; then
-            name=${arg}
-
-            continue
-        fi
-
-        if [ "$i" = "2" ]; then
-            start_port=${arg}
-            end_port=$((${start_port} + 4))
-            ssh_port=$((${start_port} + 22))
-
-            continue
-        fi
-
         if [ "${arg}" = "-f" ]; then
             skip_confirmations=true
 
@@ -127,6 +114,20 @@ apply)
 
         if [ "${arg}" = "-r" ]; then
             recreate_container=true
+
+            continue
+        fi
+
+        if [ "$i" = "1" ]; then
+            name=${arg}
+
+            continue
+        fi
+
+        if [ "$i" = "2" ]; then
+            start_port=${arg}
+            end_port=$((${start_port} + 4))
+            ssh_port=$((${start_port} + 22))
 
             continue
         fi
@@ -213,7 +214,7 @@ remove)
     remove_preferences=false
     remove_ca=false
     remove_user_data=false
-    remove_apt_cache=false
+    remove_deb_cache=false
     i=-1
     for arg; do
         i=$((${i} + 1))
@@ -252,8 +253,17 @@ remove)
             continue
         fi
 
+        if [ "${arg}" = "-d" ]; then
+            remove_deb_cache=true
+
+            continue
+        fi
+
         if [ "${arg}" = "-a" ]; then
-            remove_apt_cache=true
+            remove_customizations=true
+            remove_preferences=true
+            remove_user_data=true
+            remove_deb_cache=true
 
             continue
         fi
@@ -336,12 +346,12 @@ remove)
             fi
         fi
 
-        # Remove APT's cache
-        if [ "${remove_apt_cache}" = "true" ]; then
+        # Remove .deb cache
+        if [ "${remove_deb_cache}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
                 REPLY='y'
             else
-                read -p "${CONFIRMATION_PREFIX} remove APT's cache from ${name} (y/n)? " -n 1 -r
+                read -p "${CONFIRMATION_PREFIX} remove .deb cache from ${name} (y/n)? " -n 1 -r
                 echo
             fi
             if [[ $REPLY =~ ^[Yy]$ ]]; then
