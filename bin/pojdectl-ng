@@ -2,6 +2,8 @@
 
 # Prefix for all objects in the Docker daemon.
 DOCKER_PREFIX=pojde-ng-
+# Name of the CA
+CA_VOLUME_NAME=${DOCKER_PREFIX}ca
 # Scripts to run to apply/refresh instances. Order matters. "parameters" is run before all others.
 SCRIPTS="user apt code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
 # Prefix to display before destructive operations.
@@ -47,6 +49,7 @@ forward <name> [local:remote...]    Forward port(s) from an instance.
 
 Miscellaneous Commands:
 upgrade-pojdectl-ng                 Upgrade this tool.
+reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
 
@@ -174,7 +177,7 @@ apply)
             -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
             -v /var/run/docker.sock:/var/run/docker.sock:z \
             -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde-ng/preferences:z \
-            -v ${DOCKER_PREFIX}${name}-ca:/opt/pojde-ng/ca:z \
+            -v ${CA_VOLUME_NAME}:/opt/pojde-ng/ca:z \
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
             -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
             -v ${DOCKER_PREFIX}${name}-apt-cache:/var/cache/apt/archives:z \
@@ -212,7 +215,6 @@ remove)
     skip_confirmations=false
     remove_customizations=false
     remove_preferences=false
-    remove_ca=false
     remove_user_data=false
     remove_deb_cache=false
     i=-1
@@ -237,12 +239,6 @@ remove)
 
         if [ "${arg}" = "-p" ]; then
             remove_preferences=true
-
-            continue
-        fi
-
-        if [ "${arg}" = "-s" ]; then
-            remove_ca=true
 
             continue
         fi
@@ -316,21 +312,6 @@ remove)
             fi
         fi
 
-        # Remove CA
-        if [ "${remove_ca}" = "true" ]; then
-            if [ "${skip_confirmations}" = "true" ]; then
-                REPLY='y'
-            else
-                read -p "${CONFIRMATION_PREFIX} remove CA from ${name} (y/n)? " -n 1 -r
-                echo
-            fi
-            if [[ $REPLY =~ ^[Yy]$ ]]; then
-                docker volume rm ${DOCKER_PREFIX}${name}-ca
-
-                print_please_reapply
-            fi
-        fi
-
         # Remove user data
         if [ "${remove_user_data}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
@@ -367,7 +348,7 @@ list)
     container_ids=$(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
 
     # Add a header to the output
-    printf "NAME\t\tSTATE\t\tPORTS\n"
+    printf "NAME\t\t\tSTATE\t\tPORTS\n"
     # For each container, show the name, state and exposed ports
     for container_id in $container_ids; do
         printf "$(docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }}" ${container_id})\t\t$(docker inspect -f "{{ .State.Status }}" ${container_id})\t\t$(get_port_summary ${container_id})\n"
@@ -475,6 +456,21 @@ upgrade-pojdectl-ng)
     sudo curl -L -o /usr/local/bin/pojdectl-ng https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng
     # Make it executable
     sudo chmod +x /usr/local/bin/pojdectl-ng
+    ;;
+
+# Reset the CA.
+reset-ca)
+    if [ "${1}" = "-f" ]; then
+        REPLY='y'
+    else
+        read -p "${CONFIRMATION_PREFIX} reset the CA on all containers? This will require re-initialization of all instances. (y/n)" -n 1 -r
+        echo
+    fi
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        docker volume rm ${CA_VOLUME_NAME}
+
+        echo "Please run \"pojdectl-ng apply\" again for all instances to re-initialize; if you don't do so, you'll loose secure access to them."
+    fi
     ;;
 
 *)

@@ -99,6 +99,7 @@ forward <name> [local:remote...]    Forward port(s) from an instance.
 
 Miscellaneous Commands:
 upgrade-pojdectl-ng                 Upgrade this tool.
+reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde-ng#Usage.
 ```
