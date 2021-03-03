@@ -13,7 +13,7 @@ if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
 #!/sbin/openrc-run                                                                                                                                                                                                    
 name=\$RC_SVCNAME
 command="/usr/bin/sudo"
-command_args='-u \$(cat /opt/pojde-ng/user/user) bash -i -c "/usr/local/bin/jupyter-lab --ip 127.0.0.1 --allow-root --port 38004 --no-browser --notebook-dir /home/\$(cat /opt/pojde-ng/user/user)/Notebooks"'
+command_args='-u \$(cat /opt/pojde-ng/user/user) bash -i -c "cd /home/\$(cat /opt/pojde-ng/user/user) && /usr/local/bin/jupyter-lab --ip 127.0.0.1 --allow-root --port 38004 --no-browser --notebook-dir /home/\$(cat /opt/pojde-ng/user/user)/Notebooks"'
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
@@ -27,6 +27,7 @@ Description=Jupyter Lab
 [Service]
 Type=simple
 ExecStart=/bin/bash -i -c "/usr/local/bin/jupyter-lab --ip 127.0.0.1 --port 38004 --no-browser --notebook-dir /home/%i/Notebooks"
+WorkingDirectory=/home/%i
 Restart=always
 User=%i
 
