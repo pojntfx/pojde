@@ -55,6 +55,7 @@ function upgrade() {
         tool.vim Vim $(${POJDE_NG_MODULE_VIM_ENABLED} && echo on || echo off)
         tool.devops "QEMU, Docker and Kubernetes" $(${POJDE_NG_MODULE_DEVOPS_ENABLED} && echo on || echo off)
         tool.techdocs "Technical Documentation" $(${POJDE_NG_MODULE_TECHDOCS_ENABLED} && echo on || echo off)
+        tool.latex "Full LaTeX Support" $(${POJDE_NG_MODULE_LATEX_ENABLED} && echo on || echo off)
         tool.webdev "Web Development" $(${POJDE_NG_MODULE_WEBDEV_ENABLED} && echo on || echo off)
         tool.extensions "Common VSCode Extensions" $(${POJDE_NG_MODULE_EXTENSIONS_ENABLED} && echo on || echo off)
         tool.clis "Common CLIs" $(${POJDE_NG_MODULE_CLIS_ENABLED} && echo on || echo off)
@@ -82,6 +83,7 @@ function upgrade() {
     echo export "'"POJDE_NG_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_DEVOPS_ENABLED=$([[ "$selected_modules" == *"tool.devops "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_TECHDOCS_ENABLED=$([[ "$selected_modules" == *"tool.techdocs "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+    echo export "'"POJDE_NG_MODULE_LATEX_ENABLED=$([[ "$selected_modules" == *"tool.latex "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_WEBDEV_ENABLED=$([[ "$selected_modules" == *"tool.webdev "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_EXTENSIONS_ENABLED=$([[ "$selected_modules" == *"tool.extensions "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
     echo export "'"POJDE_NG_MODULE_CLIS_ENABLED=$([[ "$selected_modules" == *"tool.clis "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
