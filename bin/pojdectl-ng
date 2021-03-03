@@ -3,7 +3,7 @@
 # Prefix for all objects in the Docker daemon.
 DOCKER_PREFIX=pojde-ng-
 # Scripts to run to apply/refresh instances. Order matters.
-SCRIPTS="parameters user code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
+SCRIPTS="parameters user apt code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
 # Prefix to display before destructive operations.
 CONFIRMATION_PREFIX="This could lead to data loss. Really"
 
@@ -31,6 +31,7 @@ remove [name...]                    Remove instances(s).
     [-p]references                      Remove preferences.
     [-s]ecurity                         Remove CA.
     [-u]ser data                        Remove user data.
+    [-a]pt cache                        Remove APT's cache.
 list                                List all instances.
 
 Lifecycle Commands:
@@ -175,6 +176,7 @@ apply)
             -v ${DOCKER_PREFIX}${name}-ca:/opt/pojde-ng/ca:z \
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
             -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
+            -v ${DOCKER_PREFIX}${name}-apt-cache:/var/cache/apt/archives:z \
             -p ${start_port}-${end_port}:8000-8004 \
             -p ${ssh_port}:8022 \
             --restart always \
@@ -201,6 +203,7 @@ remove)
     remove_preferences=false
     remove_ca=false
     remove_user_data=false
+    remove_apt_cache=false
     i=-1
     for arg; do
         i=$((${i} + 1))
@@ -235,6 +238,12 @@ remove)
 
         if [ "${arg}" = "-u" ]; then
             remove_user_data=true
+
+            continue
+        fi
+
+        if [ "${arg}" = "-a" ]; then
+            remove_apt_cache=true
 
             continue
         fi
@@ -314,6 +323,19 @@ remove)
                 docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
 
                 print_please_reapply
+            fi
+        fi
+
+        # Remove APT's cache
+        if [ "${remove_apt_cache}" = "true" ]; then
+            if [ "${skip_confirmations}" = "true" ]; then
+                REPLY='y'
+            else
+                read -p "${CONFIRMATION_PREFIX} remove APT's cache from ${name} (y/n)? " -n 1 -r
+                echo
+            fi
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                docker volume rm ${DOCKER_PREFIX}${name}-apt-cache
             fi
         fi
     done
