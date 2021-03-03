@@ -2,8 +2,8 @@
 
 # Root script
 function as_root() {
-    # Install texlive-full and pandoc
-    apt install -y texlive-full pandoc plantuml gnuplot
+    # Install texlive-base and pandoc
+    apt install -y texlive-base pandoc plantuml gnuplot
 }
 
 # User script
