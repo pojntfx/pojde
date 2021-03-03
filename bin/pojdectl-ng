@@ -157,7 +157,7 @@ apply)
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker rm -f ${DOCKER_PREFIX}${name}-preferences
+            docker rm -f ${DOCKER_PREFIX}${name}
         fi
     fi
 
@@ -244,6 +244,17 @@ remove)
 
     # Enable multiple names
     for name in $names; do
+        # Remove container
+        if [ "${skip_confirmations}" = "true" ]; then
+            REPLY='y'
+        else
+            read -p "${CONFIRMATION_PREFIX} remove container ${name} (y/n)? " -n 1 -r
+            echo
+        fi
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            docker rm -f ${DOCKER_PREFIX}${name}
+        fi
+
         # Remove customizations
         if [ "${remove_customizations}" = "true" ]; then
             if [ "${skip_confirmations}" = "true" ]; then
@@ -304,17 +315,6 @@ remove)
 
                 print_please_reapply
             fi
-        fi
-
-        # Remove container
-        if [ "${skip_confirmations}" = "true" ]; then
-            REPLY='y'
-        else
-            read -p "${CONFIRMATION_PREFIX} remove container ${name} (y/n)? " -n 1 -r
-            echo
-        fi
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker rm -f ${DOCKER_PREFIX}${name}
         fi
     done
     ;;
