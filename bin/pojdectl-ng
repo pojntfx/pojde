@@ -21,6 +21,9 @@ print_help() {
     esac
 
     echo "pojdectl-ng is the management tool for pojde-ng.
+Global Flags:
+[-n]ode <user@host:port>            Remote host to execute on.
+                                    If not specified, execute locally.
 
 Modification Commands:
 apply <name> <startPort>            Create or upgrade an instance.
@@ -75,13 +78,70 @@ get_port_summary() {
 }
 
 # Checks if the users has passed -h or --help and if they have done so, display the usage information.
+# Also check for the -n flag and set env variables accordingly
+run_remotely=false
+run_remotely_args=false
 for arg in $@; do
     case $arg in
     -h | --help)
         print_help ${arg}
         ;;
+
+    -n)
+        run_remotely=true
+        ;;
+
+    *)
+        if [ "${run_remotely}" = "true" ]; then
+            if [ "${run_remotely_args}" = "false" ]; then
+                run_remotely_args="${arg}"
+            fi
+        fi
+        ;;
     esac
 done
+
+# Run remotely if wanted
+if [ "${run_remotely}" = "true" ]; then
+    # Split host and port args
+    host=""
+    port=""
+    IFS=":"
+    i=0
+    for part in ${run_remotely_args}; do
+        if [ "$i" = "0" ]; then
+            host="${part}"
+        else
+            port="${part}"
+        fi
+
+        i=$(($i + 1))
+    done
+    IFS=" "
+
+    # Exit if Docker is not installed on the remote host
+    docker_is_installed=$(if [ -x "$(ssh -p ${port} ${host} command -v docker)" ]; then echo true; else echo false; fi)
+    if [ "${docker_is_installed}" = "false" ]; then
+        echo "Docker is not installed on remote host ${host}:${port}. Please install Docker there before continuing."
+
+        exit 1
+    fi
+
+    # Install pojdectl-ng if not already installed on remote host
+    is_already_installed=$(if [ -x "$(ssh -p ${port} ${host} command -v pojdectl-ng)" ]; then echo true; else echo false; fi)
+    if [ "${is_already_installed}" = "false" ]; then
+        scp -P ${port} $(which pojdectl-ng) ${host}:/usr/local/bin
+    fi
+
+    # Strip the `-n` flag from the remote command
+    remote_command="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
+
+    # Run the command remotely
+    ssh -p ${port} ${host} pojdectl-ng $remote_command
+
+    # Don't continue with local execution
+    exit 0
+fi
 
 # Handle the main commands
 case $1 in
@@ -411,6 +471,7 @@ enter)
     ;;
 
 # Forward port(s) from an instance.
+# TODO: Run this on the local host even if -n is specified
 forward)
     name=$2
     # Get the exposed SSH port
