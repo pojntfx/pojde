@@ -407,10 +407,10 @@ list)
     container_ids=$(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
 
     # Add a header to the output
-    printf "NAME\t\t\tSTATE\t\tPORTS\n"
+    printf "%-30s %-10s %-15s\n" "NAME" "STATUS" "PORTS"
     # For each container, show the name, state and exposed ports
     for container_id in $container_ids; do
-        printf "$(docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }}" ${container_id})\t\t$(docker inspect -f "{{ .State.Status }}" ${container_id})\t\t$(get_port_summary ${container_id})\n"
+        printf "%-30s %-10s %-15s\n" "$(docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }}" ${container_id})" "$(docker inspect -f "{{ .State.Status }}" ${container_id})" "$(get_port_summary ${container_id})"
     done
     ;;
 
