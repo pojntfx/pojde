@@ -8,6 +8,20 @@ function as_root() {
     # Install Node (required for the drivers)
     curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
     apt install -y nodejs build-essential
+
+    # Download the SQL Jupyter Kernel (see https://github.com/pojntfx/xeus-sql-binaries#installation)
+
+    # Fetch the xeus-sql binary package
+    curl -L -o /tmp/xeus-sql.tar.gz https://github.com/pojntfx/xeus-sql-binaries/releases/download/latest/xeus-sql.$(uname -m).tar.gz
+
+    # Extract the package to /usr/local/xeus-sql
+    XEUS_PREFIX=/usr/local/xeus-sql
+    mkdir -p ${XEUS_PREFIX}
+    tar -C ${XEUS_PREFIX} -xzf /tmp/xeus-sql.tar.gz
+    rm /tmp/xeus-sql.tar.gz
+
+    # Install the kernel
+    jupyter kernelspec install ${XEUS_PREFIX}/share/jupyter/kernels/xsql --sys-prefix
 }
 
 # User script
