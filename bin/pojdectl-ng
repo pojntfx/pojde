@@ -102,7 +102,7 @@ for arg in $@; do
 done
 
 # Run remotely if wanted
-if [ "${run_remotely}" = "true" ] && [ "$1" != "forward" ]; then
+if [ "${run_remotely}" = "true" ]; then
     # Split host and port args
     host=""
     port=""
@@ -136,11 +136,14 @@ if [ "${run_remotely}" = "true" ] && [ "$1" != "forward" ]; then
     # Strip the `-n` flag from the remote command
     remote_command="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
 
-    # Run the command remotely
-    ssh -tt -p ${port} ${host} pojdectl-ng $remote_command
+    # The `forward` commadn requires advanced steps here
+    if [ "$1" != "forward" ]; then
+        # Run the command remotely
+        ssh -tt -p ${port} ${host} pojdectl-ng $remote_command
 
-    # Don't continue with local execution
-    exit 0
+        # Don't continue with local execution
+        exit 0
+    fi
 fi
 
 # Handle the main commands
@@ -472,49 +475,73 @@ enter)
 
 # Forward port(s) from an instance.
 forward)
-    name=$2
-    # Get the exposed SSH port
-    sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
-    sshArgs=""
-    outputStatus=""
+    if [ "${run_remotely}" = "true" ]; then
+        # Get the ports to which it will be forwarded on the remote host
+        ports_to_forward=""
+        IFS=" "
+        for arg in $remote_command; do
+            local_port=$(echo $arg | grep -Po '^\d+')
 
-    # Strip the `-n` flag if a remote command was specified
-    stripped_commands="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
+            if [ ! -z "${local_port}" ]; then
+                ports_to_forward="${ports_to_forward} -L ${local_port}:localhost:${local_port}"
+            fi
+        done
 
-    i=1
-    for arg in $stripped_commands; do
-        if [ "$i" -gt 2 ]; then
-            # Get the host and client parts
-            arg_parts=""
-            IFS=':'
-            ni=0
-            for arg_part in $arg; do
-                if [ "$ni" = 0 ]; then
-                    arg_parts="${arg_parts} ${arg_part}"
-                    outputStatus="${outputStatus}${name}:${arg_part} -> "
-                else
-                    arg_parts="${arg_parts}:localhost:${arg_part}"
-                    outputStatus="${outputStatus}localhost:${arg_part}\n"
-                fi
+        # Script to run remotely and locally
+        exec_line_remote="pojdectl-ng ${remote_command}"
+        exec_line_local="ssh -f -p ${port} ${host} ${ports_to_forward}"
 
-                ni=$(($ni + 1))
-            done
+        # Forward from the container on the remote host to the remote host
+        ssh -tt -p ${port} ${host} $exec_line_remote # Ensures that we can accept fingerprints, but exits immediately
+        ssh -p ${port} ${host} $exec_line_remote     # Does the actual forwarding
 
-            IFS=" "
-            sshArgs="${sshArgs} -L ${arg_parts}"
-        fi
+        # Forward the forwarded ports to the local host
+        nohup $exec_line_local -N >/dev/null 2>&1 &
+    else
+        name=$2
+        # Get the exposed SSH port
+        sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
+        sshArgs=""
+        outputStatus=""
 
-        i=$(($i + 1))
-    done
+        # Strip the `-n` flag if a remote command was specified
+        stripped_commands="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
 
-    # Show the newly forwarded ports
-    printf "${outputStatus}"
+        i=1
+        for arg in $stripped_commands; do
+            if [ "$i" -gt 2 ]; then
+                # Get the host and client parts
+                arg_parts=""
+                IFS=':'
+                ni=0
+                for arg_part in $arg; do
+                    if [ "$ni" = 0 ]; then
+                        arg_parts="${arg_parts} ${arg_part}"
+                        outputStatus="${outputStatus}${name}:${arg_part} -> "
+                    else
+                        arg_parts="${arg_parts}:localhost:${arg_part}"
+                        outputStatus="${outputStatus}localhost:${arg_part}\n"
+                    fi
 
-    # Allow accepting fingerprints
-    ssh -p ${sshPort} root@localhost "exit 0"
+                    ni=$(($ni + 1))
+                done
 
-    # Forward in the background
-    nohup ssh -f -p ${sshPort} ${sshArgs} root@localhost -N >/dev/null 2>&1 &
+                IFS=" "
+                sshArgs="${sshArgs} -L ${arg_parts}"
+            fi
+
+            i=$(($i + 1))
+        done
+
+        # Show the newly forwarded ports
+        printf "${outputStatus}"
+
+        # Allow accepting fingerprints
+        ssh -p ${sshPort} root@localhost "exit 0"
+
+        # Forward in the background
+        nohup ssh -f -p ${sshPort} ${sshArgs} root@localhost -N >/dev/null 2>&1 &
+    fi
     ;;
 
 # Upgrade this tool.
