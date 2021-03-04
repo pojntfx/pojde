@@ -6,12 +6,17 @@
 
 🚧 This project is still a work-in-progress! 🚧
 
-pojde Next Generation is a distributed multi-tenant development environment with web access to all components. **Develop from any device with a browser!**
+pojde Next Generation is a distributed multi-tenant development environment with web access to all components.
 
-- Supports multitenancy
-- Fully containerized
-- Small base image with optional modules for languages and tools
-- Runs on Intel/AMD and ARM
+It strives to be ...
+
+- **Open**: Free/libre and open source software under the AGPL-3.0 license
+- **Versatile:** Supports multiple isolated instances on one host (for multi-user or multi-usecase support)
+- **Fast:** Small base image with optional modules for languages and tools
+- **Portable:** Runs on both Intel/AMD and ARM and requires Docker as the only dependency
+- **Lean**: Built on projects like [code-server](https://github.com/cdr/code-server) and [Jupyter Lab](http://jupyterlab.io/)
+
+With pojde Next Generation, you can **develop from any device with a browser!**
 
 ## Installation
 
@@ -25,7 +30,7 @@ Works on Linux, macOS and Windows (WSL2).
 
 ## Usage
 
-pojde Next Generation is supports running many isolated instances on host, where the host can either be your local machine, a Raspberry Pi or a cloud server. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) on the host that you wish to run the instance on.
+pojde Next Generation is supports running many isolated instances on host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) on the host that you wish to run the instance on.
 
 To create your first instance, use `pojdectl-ng apply`:
 
@@ -39,7 +44,7 @@ Now follow the instructions. `pojdectl-ng apply` will ask you to download the CA
 - [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
 - [Trusting self signed SSL certificates (Chrome on Windows)](https://www.youtube.com/watch?v=gyQ9IIxE3vc)
 
-Note that you'll have to select the CA certificate you've downloaded in the step before, not download the certificate as described in the videos.
+Note that you'll have to **select the CA certificate you've downloaded in the step before**, not download the certificate as described in the videos.
 
 Once you've done so, list your instances with `pojdectl-ng list`:
 
@@ -49,7 +54,7 @@ NAME                           STATUS     PORTS
 my-first-instance              running    5000-5005
 ```
 
-As you can see, our first instance (`my-first-instance`) is running and has exposed ports 5000 through 5005. This port range has been selected when we ran `pojdectl-ng apply` above. You can now access the services (replace `localhost` with your remote host's IP if you deployed to a remove host):
+As you can see, our first instance (`my-first-instance`) is running and has exposed ports **5000** through **5005**. This port range has been selected when we ran `pojdectl-ng apply` above. You can now access the services (replace `localhost` with your remote host's IP or domain if you deployed to a remote host):
 
 | Service                                           | Address                 | Description                            |
 | ------------------------------------------------- | ----------------------- | -------------------------------------- |
