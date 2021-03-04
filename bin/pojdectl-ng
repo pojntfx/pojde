@@ -498,7 +498,14 @@ forward)
         # Forward the forwarded ports to the local host
         nohup $exec_line_local -N >/dev/null 2>&1 &
     else
+        # Check if the container exists and exit if it does not
         name=$2
+        if [ ! -n "$(docker ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
+            echo "Instance ${DOCKER_PREFIX}${name} could not be found, exiting."
+
+            exit 1
+        fi
+
         # Get the exposed SSH port
         sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
         sshArgs=""
