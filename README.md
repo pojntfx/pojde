@@ -13,7 +13,7 @@ pojde Next Generation is a distributed multi-tenant development environment with
 It strives to be ...
 
 - **Open**: Free/libre and open source software under the AGPL-3.0 license
-- **Versatile:** Supports multiple isolated instances on one host (for multi-user or multi-usecase support)
+- **Versatile:** Supports multiple isolated instances on one host (for multi-user and/or multi-usecase support)
 - **Fast:** Minimal base image with optional modules for languages and tools
 - **Portable:** Runs on both Intel/AMD and ARM and requires Docker as the only dependency
 - **Lean**: Built on projects like [code-server](https://github.com/cdr/code-server) and [JupyterLab](http://jupyterlab.io/)
@@ -32,7 +32,7 @@ Works on Linux, macOS and Windows (WSL2).
 
 ## Usage
 
-pojde Next Generation is supports running many isolated instances on host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) on the host that you wish to run the instance on.
+pojde Next Generation supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) on the host that you wish to run the instance on.
 
 To create your first instance, use `pojdectl-ng apply`:
 
