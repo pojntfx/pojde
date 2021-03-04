@@ -76,6 +76,40 @@ This, for example, forwards port `1234` in the instance to port `4200` on the lo
 
 **🚀 That's it!** We hope you enjoy using pojde Next Generation.
 
+## Modules
+
+pojde Next Generation is based on a minimal base image; additional functionality can be added by enabling any of the following modules when running `pojdectl-ng apply`:
+
+## Language Modules
+
+- **C/C++**: GCC, GDB, CMake, the C/C++ VSCode extensions and C++ Jupyter kernel
+- **Go**: Go, TinyGo, the Go/TinyGo VSCode extensions and Go Jupyter kernel
+- **Python**: Python, pip, the Python VSCode extensions and Python Jupyter kernel
+- **Rust**: Rust, Cargo, the Rust VSCode extensions and Rust Jupyter kernel
+- **JavaScript**: Node, the JavaScript VSCode extensions and JavaScript Jupyter kernel
+- **Ruby**: Ruby, the Ruby VSCode extensions and Ruby Jupyter kernel
+- **C#**: Mono, .NET, the C# VSCode extensions and C#/F#/PowerShell Jupyter kernels
+- **Java**: Java, Maven, Gradle, the Java VSCode extensions and Java Jupyter kernel
+- **Julia**: Julia, the Julia VSCode extensions and Julia Jupyter kernel
+- **Octave**: Octave, the Octave VSCode extensions and Octave Jupyter kernel
+- **R**: R, the R VSCode extensions and R Jupyter kernel
+- **SQL**: SQLite, MariaDB, PostgreSQL, the SQL VSCode extensions and SQL Jupyter kernel
+- **Bash**: Bash, the Bash VSCode extensions and Bash Jupyter kernel
+
+## Tool Modules
+
+- **Vim**: Vim and the VSCodeVim extension
+- **QEMU, Docker and Kubernetes**: `kubectl`, `helm`, `k9s`, `skaffold`, `k3d` and more DevOps tools
+- **Technical Documentation**: `pandoc`, `plantuml`, `gnuplot`, media and Markdown/LaTeX support for VSCode
+- **Full LaTeX Support**: Full TeX Live installation
+- **Web Development**: Protobuf, GraphQL, OpenAPI, browser debugging and more VSCode extensions
+- **Common VSCode Extensions**: Prettier, GitLens, Git Graph and test explorer VSCode extensions
+- **Common CLIs**: `tmux`, `jq`, `htop` etc.
+- **Networking**: Wireshark, `nmap`, `iperf3` etc.
+- **Browsers and Mail (TUI)**: `lynx`, `links`, `aerc` etc.
+- **Browsers and Mail (GUI)**: Chromium, Firefox, GNOME Web and Thunderbird
+- **Multimedia**: `ffmpeg`, Handbrake, `youtube-dl` etc.
+
 ## Reference
 
 ```shell
