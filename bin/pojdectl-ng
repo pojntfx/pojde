@@ -102,7 +102,7 @@ for arg in $@; do
 done
 
 # Run remotely if wanted
-if [ "${run_remotely}" = "true" ]; then
+if [ "${run_remotely}" = "true" ] && [ "$1" != "forward" ]; then
     # Split host and port args
     host=""
     port=""
@@ -137,7 +137,7 @@ if [ "${run_remotely}" = "true" ]; then
     remote_command="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
 
     # Run the command remotely
-    ssh -p ${port} ${host} pojdectl-ng $remote_command
+    ssh -tt -p ${port} ${host} pojdectl-ng $remote_command
 
     # Don't continue with local execution
     exit 0
@@ -471,7 +471,6 @@ enter)
     ;;
 
 # Forward port(s) from an instance.
-# TODO: Run this on the local host even if -n is specified
 forward)
     name=$2
     # Get the exposed SSH port
@@ -479,8 +478,11 @@ forward)
     sshArgs=""
     outputStatus=""
 
+    # Strip the `-n` flag if a remote command was specified
+    stripped_commands="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
+
     i=1
-    for arg; do
+    for arg in $stripped_commands; do
         if [ "$i" -gt 2 ]; then
             # Get the host and client parts
             arg_parts=""
@@ -498,17 +500,21 @@ forward)
                 ni=$(($ni + 1))
             done
 
-            sshArgs="${sshArgs} -L ${arg_parts}}"
+            IFS=" "
+            sshArgs="${sshArgs} -L ${arg_parts}"
         fi
 
         i=$(($i + 1))
     done
 
-    # Forward in the background
-    nohup ssh -f -p ${sshPort} root@localhost ${sshArgs} -N >/dev/null 2>&1 &
-
     # Show the newly forwarded ports
     printf "${outputStatus}"
+
+    # Allow accepting fingerprints
+    ssh -p ${sshPort} root@localhost "exit 0"
+
+    # Forward in the background
+    nohup ssh -f -p ${sshPort} ${sshArgs} root@localhost -N >/dev/null 2>&1 &
     ;;
 
 # Upgrade this tool.
