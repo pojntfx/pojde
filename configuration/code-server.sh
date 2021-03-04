@@ -180,7 +180,8 @@ EOT
 {
   "editor.autoSave": "on",
   "keyboard.dispatch": "keyCode",
-  "sqltools.useNodeRuntime": true
+  "sqltools.useNodeRuntime": true,
+  "git.pullTags": false
 }
 EOT
 
