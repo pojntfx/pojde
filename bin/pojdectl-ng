@@ -30,6 +30,7 @@ apply <name> <startPort>            Create or upgrade an instance.
     [-f]orce                            Skip confirmation prompts.
     [-u]pgrade                          Pull latest image.
     [-r]recreate                        Re-create the container.
+    [-i]solate                          Block Docker daemon access.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
     [-c]ustomization                    Remove customizations.
@@ -157,6 +158,7 @@ apply)
     skip_confirmations=false
     pull_latest_image=false
     recreate_container=false
+    isolate=false
     i=-1
     for arg; do
         i=$((${i} + 1))
@@ -183,6 +185,12 @@ apply)
             continue
         fi
 
+        if [ "${arg}" = "-i" ]; then
+            isolate=true
+
+            continue
+        fi
+
         if [ "$i" = "1" ]; then
             name=${arg}
 
@@ -204,14 +212,20 @@ apply)
     docker_args=""
     docker_image="pojntfx/pojde-ng:latest"
     if [ ! -n "$(which systemctl)" ]; then
-        export docker_flags="-e POJDE_NG_OPENRC=true"
-        export docker_args="/sbin/openrc-init"
-        export docker_image="pojntfx/pojde-ng:latest-openrc"
+        docker_flags="-e POJDE_NG_OPENRC=true"
+        docker_args="/sbin/openrc-init"
+        docker_image="pojntfx/pojde-ng:latest-openrc"
     fi
 
     # Pull the latest image
     if [ "${pull_latest_image}" = "true" ]; then
         docker pull ${docker_image}
+    fi
+
+    # Enable Docker daemon access
+    docker_create_flags=""
+    if [ "${isolate}" = "false" ]; then
+        docker_create_flags="-v /var/run/docker.sock:/var/run/docker.sock:z"
     fi
 
     # Re-create the container
@@ -229,14 +243,13 @@ apply)
 
     # Create the container if it doesn't already exist
     if [ ! -n "$(docker ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
-        docker run \
+        docker run ${docker_create_flags} \
             -d \
             --name ${DOCKER_PREFIX}${name} \
             --tmpfs /tmp:exec \
             --tmpfs /run:exec \
             --tmpfs /run/lock:exec \
             -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
-            -v /var/run/docker.sock:/var/run/docker.sock:z \
             -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde-ng/preferences:z \
             -v ${CA_VOLUME_NAME}:/opt/pojde-ng/ca:z \
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \

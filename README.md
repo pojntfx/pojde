@@ -12,7 +12,7 @@ It strives to be ...
 
 - **Open**: Free/libre and open source software under the AGPL-3.0 license
 - **Versatile:** Supports multiple isolated instances on one host (for multi-user or multi-usecase support)
-- **Fast:** Small base image with optional modules for languages and tools
+- **Fast:** Minimal base image with optional modules for languages and tools
 - **Portable:** Runs on both Intel/AMD and ARM and requires Docker as the only dependency
 - **Lean**: Built on projects like [code-server](https://github.com/cdr/code-server) and [Jupyter Lab](http://jupyterlab.io/)
 
@@ -88,6 +88,7 @@ apply <name> <startPort>            Create or upgrade an instance.
     [-f]orce                            Skip confirmation prompts.
     [-u]pgrade                          Pull latest image.
     [-r]recreate                        Re-create the container.
+    [-i]solate                          Block Docker daemon access.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
     [-c]ustomization                    Remove customizations.
