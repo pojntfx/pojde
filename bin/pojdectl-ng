@@ -70,7 +70,7 @@ get_port_summary() {
         start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
         end_port=$((${start_port} + 5))
 
-        echo "${start_port}-${end_port},${ssh_port}"
+        echo "${start_port}-${end_port}"
     else
         echo "-"
     fi
