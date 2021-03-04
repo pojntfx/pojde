@@ -3,11 +3,11 @@
 # Install pip
 apt install -y python3-pip libffi-dev
 
-# Install Node (Jupyter Lab extensions depend on it)
+# Install Node (JupyterLab extensions depend on it)
 curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 apt install -y nodejs build-essential
 
-# Install Jupyter Lab
+# Install JupyterLab
 pip3 install jupyterlab
 
 # Create services
@@ -26,7 +26,7 @@ else
     # Create systemd service with the listen port set to 38004
     cat <<EOT >/usr/lib/systemd/system/jupyter-lab@.service
 [Unit]
-Description=Jupyter Lab
+Description=JupyterLab
 
 [Service]
 Type=simple

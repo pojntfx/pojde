@@ -2,6 +2,8 @@
 
 [![Docker CI](https://github.com/pojntfx/pojde-ng/actions/workflows/docker.yaml/badge.svg)](https://github.com/pojntfx/pojde-ng/actions/workflows/docker.yaml)
 
+![Demo Video](./assets/demo.gif)
+
 ## Overview
 
 🚧 This project is still a work-in-progress! 🚧
@@ -14,7 +16,7 @@ It strives to be ...
 - **Versatile:** Supports multiple isolated instances on one host (for multi-user or multi-usecase support)
 - **Fast:** Minimal base image with optional modules for languages and tools
 - **Portable:** Runs on both Intel/AMD and ARM and requires Docker as the only dependency
-- **Lean**: Built on projects like [code-server](https://github.com/cdr/code-server) and [Jupyter Lab](http://jupyterlab.io/)
+- **Lean**: Built on projects like [code-server](https://github.com/cdr/code-server) and [JupyterLab](http://jupyterlab.io/)
 
 With pojde Next Generation, you can **develop from any device with a browser!**
 
@@ -62,7 +64,7 @@ As you can see, our first instance (`my-first-instance`) is running and has expo
 | [code-server](https://github.com/cdr/code-server) | https://localhost:5001/ | VSCode in the browser                  |
 | [ttyd](https://tsl0922.github.io/ttyd/)           | https://localhost:5002/ | Shell access from the browser          |
 | [noVNC](https://novnc.com/info.html)              | https://localhost:5003/ | Graphical access from the browser      |
-| [Jupyter Lab](http://jupyterlab.io/)              | https://localhost:5004/ | An interactive development environment |
+| [JupyterLab](http://jupyterlab.io/)               | https://localhost:5004/ | An interactive development environment |
 
 Additionally, there is a SSH server running on port `5005` which you can use to forward ports with `pojdectl-ng forward`:
 
