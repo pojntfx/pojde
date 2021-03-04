@@ -1,76 +1,79 @@
-# pojde Next Generation
+# pojde Next Generation (pojde-ng)
 
 [![Docker CI](https://github.com/pojntfx/pojde-ng/actions/workflows/docker.yaml/badge.svg)](https://github.com/pojntfx/pojde-ng/actions/workflows/docker.yaml)
 
 ## Overview
 
-🚧 This project is WIP. Please use the [original pojde](https://github.com/pojntfx/pojde) until this reaches a stable level. While it has reached feature parity, documentation needs improvement. 🚧
+🚧 This project is still a work-in-progress! 🚧
 
-`pojde-ng` is a headless development environment with web access for all components, which can be installed, configured and managed using `pojdectl-ng`, it's management tool.
+pojde Next Generation is a distributed multi-tenant development environment with web access to all components. **Develop from any device with a browser!**
 
-- Based on Debian
-- Interactive configuration
-- Monolithic base image with optional modules for programming languages (and their VSCode/Jupyter Lab extensions), browsers, CLIs etc.
-- <1 GB base image size (<3 minutes to download on DSL or <15 seconds to download on Gigabit)
-- <1 minute installation time
-- Runs on both `amd64` and `arm64` processors
-- Includes multiple services; see [Usage](#usage)
+- Supports multitenancy
+- Fully containerized
+- Small base image with optional modules for languages and tools
+- Runs on Intel/AMD and ARM
 
 ## Installation
 
-First, [install Docker](https://docs.docker.com/get-docker/). Afterwards, paste the following into your terminal to add `pojdectl-ng` to your `PATH`:
+To install `pojdectl-ng`, the management tool for pojde Next Generation, paste the following into your terminal:
 
 ```shell
 curl https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng | bash -s -- upgrade-pojdectl-ng
 ```
 
-Next, paste the following and follow the instructions:
-
-```shell
-pojdectl-ng apply my-pojde-ng 18000
-```
-
-Works on Linux, macOS and Windows (through WSL).
+Works on Linux, macOS and Windows (WSL2).
 
 ## Usage
 
-After [installation](#Installation), the following services should be available:
+pojde Next Generation is supports running many isolated instances on host, where the host can either be your local machine, a Raspberry Pi or a cloud server. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) on the host that you wish to run the instance on.
 
-- [Cockpit](https://cockpit-project.org/), a general management interface for pojde and the container. Disabled if on host system without systemd.
-- [code-server](https://github.com/cdr/code-server), VSCode in the browser
-- [ttyd](https://tsl0922.github.io/ttyd/), which gives you shell access to pojde
-- [noVNC](https://novnc.com/info.html), which gives you graphical access to pojde
-- [Jupyter Lab](http://jupyterlab.io/), an interactive development environment
+To create your first instance, use `pojdectl-ng apply`:
 
-Before accessing them, add the CA certificate to your system; we've created video tutorials for it. The interactive configuration should have prompted you to download yours; you can re-download it by running the `pojdectl-ng apply` command from above again:
+```shell
+$ pojdectl-ng apply my-first-instance 5000 # Append `-n root@your-ip:ssh-port` to create the instance on a remote host instead
+```
+
+Now follow the instructions. `pojdectl-ng apply` will ask you to download the CA certificate to your system, which you should do when creating the first instance; future instances will share this certificate. To trust the CA certificate, follow the videos we've created for you:
 
 - [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
 - [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
 - [Trusting self signed SSL certificates (Chrome on Windows)](https://www.youtube.com/watch?v=gyQ9IIxE3vc)
 
-After adding the CA certificate, you can access the services at the following addresses; substitute `MY_IP` with your chosen domain or IP address:
+Note that you'll have to select the CA certificate you've downloaded in the step before, not download the certificate as described in the videos.
 
-| Service     | Address               |
-| ----------- | --------------------- |
-| Cockpit     | `https://MY_IP:18000` |
-| code-server | `https://MY_IP:18001` |
-| ttyd        | `https://MY_IP:18002` |
-| noVNC       | `https://MY_IP:18003` |
-| Jupyter Lab | `https://MY_IP:18004` |
-
-Additionally, a SSH server is running inside the container; you can SSH into the container like so:
+Once you've done so, list your instances with `pojdectl-ng list`:
 
 ```shell
-$ ssh -p 18005 root@MY_IP
+$ pojdectl-ng list # Append `-n root@your-ip:ssh-port` to list the instances on a remote host instead
+NAME                           STATUS     PORTS
+my-first-instance              running    5000-5005
 ```
 
-> Can't access via SSH? Try again with `ssh -oPubkeyAcceptedKeyTypes=+rsa-sha2-512` (see [this issue](https://bugzilla.redhat.com/show_bug.cgi?id=1881301) for more details).
+As you can see, our first instance (`my-first-instance`) is running and has exposed ports 5000 through 5005. This port range has been selected when we ran `pojdectl-ng apply` above. You can now access the services (replace `localhost` with your remote host's IP if you deployed to a remove host):
 
-## Command Reference
+| Service                                           | Address                 | Description                            |
+| ------------------------------------------------- | ----------------------- | -------------------------------------- |
+| [Cockpit](https://cockpit-project.org/)           | https://localhost:5000/ | A general management interface         |
+| [code-server](https://github.com/cdr/code-server) | https://localhost:5001/ | VSCode in the browser                  |
+| [ttyd](https://tsl0922.github.io/ttyd/)           | https://localhost:5002/ | Shell access from the browser          |
+| [noVNC](https://novnc.com/info.html)              | https://localhost:5003/ | Graphical access from the browser      |
+| [Jupyter Lab](http://jupyterlab.io/)              | https://localhost:5004/ | An interactive development environment |
+
+Additionally, there is a SSH server running on port `5005` which you can use to forward ports with `pojdectl-ng forward`:
+
+```shell
+$ pojdectl-ng forward my-first-instance 4200:1234 4201:1235 # Append `-n root@your-ip:ssh-port` to also forward from the remote host to the local host
+```
+
+This, for example, forwards port `1234` in the instance to port `4200` on the local host and port `1235` to port `4201`.
+
+**🚀 That's it!** We hope you enjoy using pojde Next Generation.
+
+## Reference
 
 ```shell
 $ pojdectl-ng --help
-pojdectl-ng is the management tool for pojde-ng.
+pojdectl-ng is the management tool for pojde Next Generation.
 Global Flags:
 [-n]ode <user@host:port>            Remote host to execute on.
                                     If not specified, execute locally.

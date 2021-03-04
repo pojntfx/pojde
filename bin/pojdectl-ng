@@ -20,7 +20,7 @@ print_help() {
         ;;
     esac
 
-    echo "pojdectl-ng is the management tool for pojde-ng.
+    echo "pojdectl-ng is the management tool for pojde Next Generation.
 Global Flags:
 [-n]ode <user@host:port>            Remote host to execute on.
                                     If not specified, execute locally.
