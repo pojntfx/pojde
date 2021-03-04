@@ -316,7 +316,6 @@ remove)
         fi
 
         if [ "${arg}" = "-a" ]; then
-            remove_customizations=true
             remove_preferences=true
             remove_user_data=true
             remove_deb_cache=true
