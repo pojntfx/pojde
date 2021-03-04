@@ -15,7 +15,7 @@ function upgrade() {
     echo 'c.NotebookApp.allow_remote_access = True' >>$CONFIG_FILE
     echo "c.NotebookApp.allow_origin = '*'" >>$CONFIG_FILE
 
-    # Copy Jupyter Lab assets to home directory and fix permissions
+    # Copy JupyterLab assets to home directory and fix permissions
     if [ ! -d "/home/${POJDE_NG_USERNAME}/.jupyter/lab" ]; then
         mkdir -p /home/${POJDE_NG_USERNAME}/.jupyter/lab
         cp -rf /usr/local/share/jupyter/lab/* /home/${POJDE_NG_USERNAME}/.jupyter/lab
