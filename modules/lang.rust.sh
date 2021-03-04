@@ -25,7 +25,7 @@ function as_user() {
     code-server --force --install-extension 'vadimcn.vscode-lldb'
     code-server --force --install-extension 'Swellaby.vscode-rust-test-adapter'
 
-    # Download the Go Jupyter Kernel (see https://github.com/google/evcxr/blob/master/evcxr_jupyter/README.md#linux-debianubuntu)
+    # Download the Rust Jupyter Kernel (see https://github.com/google/evcxr/blob/master/evcxr_jupyter/README.md#linux-debianubuntu)
     rustup component add rust-src
     cargo install evcxr_jupyter
     evcxr_jupyter --install
