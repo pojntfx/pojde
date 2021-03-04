@@ -68,8 +68,7 @@ print_please_reapply() {
 get_port_summary() {
     if [ "$(docker inspect -f '{{ .State.Status }}' $1)" = 'running' ]; then
         start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
-        end_port=$((${start_port} + 4))
-        ssh_port=$((${start_port} + 22))
+        end_port=$((${start_port} + 5))
 
         echo "${start_port}-${end_port},${ssh_port}"
     else
@@ -192,8 +191,7 @@ apply)
 
         if [ "$i" = "2" ]; then
             start_port=${arg}
-            end_port=$((${start_port} + 4))
-            ssh_port=$((${start_port} + 22))
+            end_port=$((${start_port} + 5))
 
             continue
         fi
@@ -244,8 +242,7 @@ apply)
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
             -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
             -v ${DOCKER_PREFIX}${name}-apt-cache:/var/cache/apt/archives:z \
-            -p ${start_port}-${end_port}:8000-8004 \
-            -p ${ssh_port}:8022 \
+            -p ${start_port}-${end_port}:8000-8005 \
             --restart always \
             ${docker_flags} \
             ${docker_image} \
@@ -507,7 +504,7 @@ forward)
         fi
 
         # Get the exposed SSH port
-        sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8022/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
+        sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8005/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
         sshArgs=""
         outputStatus=""
 

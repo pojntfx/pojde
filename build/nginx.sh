@@ -45,10 +45,10 @@ done
 cat <<EOT >/etc/nginx/modules-enabled/pojde-ng.conf
 stream {
     upstream ssh {
-        server localhost:38022;
+        server localhost:38005;
     }
     server {
-        listen 8022;
+        listen 8005;
         proxy_pass ssh;
     }
 }

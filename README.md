@@ -61,7 +61,7 @@ After adding the CA certificate, you can access the services at the following ad
 Additionally, a SSH server is running inside the container; you can SSH into the container like so:
 
 ```shell
-$ ssh -p 18022 root@MY_IP
+$ ssh -p 18005 root@MY_IP
 ```
 
 > Can't access via SSH? Try again with `ssh -oPubkeyAcceptedKeyTypes=+rsa-sha2-512` (see [this issue](https://bugzilla.redhat.com/show_bug.cgi?id=1881301) for more details).
