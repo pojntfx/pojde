@@ -82,7 +82,7 @@ pojde Next Generation is based on a minimal base image; additional functionality
 
 ## Language Modules
 
-- **C/C++**: GCC, GDB, CMake, the C/C++ VSCode extensions and C++ Jupyter kernel
+- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" width="25">/<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" width="25"> **C/C++**: GCC, GDB, CMake, the C/C++ VSCode extensions and C++ Jupyter kernel
 - **Go**: Go, TinyGo, the Go/TinyGo VSCode extensions and Go Jupyter kernel
 - **Python**: Python, pip, the Python VSCode extensions and Python Jupyter kernel
 - **Rust**: Rust, Cargo, the Rust VSCode extensions and Rust Jupyter kernel
