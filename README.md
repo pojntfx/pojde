@@ -1,6 +1,9 @@
 # pojde Next Generation (pojde-ng)
 
 [![Docker CI](https://github.com/pojntfx/pojde-ng/actions/workflows/docker.yaml/badge.svg)](https://github.com/pojntfx/pojde-ng/actions/workflows/docker.yaml)
+![Chrome Support](https://img.shields.io/badge/Chrome-Latest%20version-%234285F4?logo=google-chrome)
+![Firefox Support](https://img.shields.io/badge/Firefox-Latest%20version-%23FF7139?logo=firefox-browser)
+![Safari Support](https://img.shields.io/badge/Safari-Latest%20version-%23000000?logo=safari)
 
 ![Demo Video](./assets/demo.gif)
 
