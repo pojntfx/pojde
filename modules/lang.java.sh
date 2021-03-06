@@ -3,7 +3,7 @@
 # Root script
 function as_root() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Install Java, Maven and Gradle
     apt install -y default-jre default-jdk maven gradle

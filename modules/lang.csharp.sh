@@ -3,14 +3,14 @@
 # Root script
 function as_root() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Install C#
-    DOTNET_ROOT=/home/${POJDE_NG_USERNAME}/.dotnet
+    DOTNET_ROOT=/home/${POJDE_USERNAME}/.dotnet
     curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir ${DOTNET_ROOT}
 
     # Fix permissions
-    chown -R ${POJDE_NG_USERNAME} ${DOTNET_ROOT}
+    chown -R ${POJDE_USERNAME} ${DOTNET_ROOT}
 
     # Add C# tools to PATH using profile
     CONFIG_FILE=/etc/profile.d/csharp.sh
@@ -23,22 +23,22 @@ EOT
 
     # Add C# tools to both .bashrcs
     echo ". ${CONFIG_FILE}" >>/root/.bashrc
-    echo ". ${CONFIG_FILE}" >>/home/${POJDE_NG_USERNAME}/.bashrc
+    echo ". ${CONFIG_FILE}" >>/home/${POJDE_USERNAME}/.bashrc
 
     # Restart JupyterLab and code-server (so that the new PATH is re-read)
-    if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    if [ "${POJDE_OPENRC}" = 'true' ]; then
         rc-service jupyter-lab restart
         rc-service code-server restart
     else
-        systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
-        systemctl restart "code-server@${POJDE_NG_USERNAME}"
+        systemctl restart "jupyter-lab@${POJDE_USERNAME}"
+        systemctl restart "code-server@${POJDE_USERNAME}"
     fi
 }
 
 # User script
 function as_user() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery

@@ -3,18 +3,18 @@
 # Upgrade script
 function upgrade() {
   # Read configuration file
-  . /opt/pojde-ng/preferences/preferences.sh
+  . /opt/pojde/preferences/preferences.sh
 
   # Change the password to the new value
-  CONFIG_FILE=/opt/pojde-ng/code-server/code-server.yaml
+  CONFIG_FILE=/opt/pojde/code-server/code-server.yaml
   cat <<EOT >$CONFIG_FILE
 bind-addr: 127.0.0.1:38001
 auth: password
-password: "${POJDE_NG_PASSWORD}"
+password: "${POJDE_PASSWORD}"
 EOT
 
   # Create the config dir
-  CONFIG_DIR=/home/${POJDE_NG_USERNAME}/.local/share/code-server/User/
+  CONFIG_DIR=/home/${POJDE_USERNAME}/.local/share/code-server/User/
   mkdir -p ${CONFIG_DIR}
 
   # Add web-optimized shortcuts
@@ -186,23 +186,23 @@ EOT
 EOT
 
   # Fix permissions for user
-  chown -R ${POJDE_NG_USERNAME} /home/${POJDE_NG_USERNAME}/.local/
+  chown -R ${POJDE_USERNAME} /home/${POJDE_USERNAME}/.local/
 
   # Enable & restart the services
-  if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+  if [ "${POJDE_OPENRC}" = 'true' ]; then
     rc-service code-server restart
     rc-update add code-server default
   else
-    systemctl enable "code-server@${POJDE_NG_USERNAME}"
-    systemctl restart "code-server@${POJDE_NG_USERNAME}"
+    systemctl enable "code-server@${POJDE_USERNAME}"
+    systemctl restart "code-server@${POJDE_USERNAME}"
   fi
 }
 
 # Refresh script
 function refresh() {
   # Read configuration file
-  . /opt/pojde-ng/preferences/preferences.sh
+  . /opt/pojde/preferences/preferences.sh
 
   # Remove extensions
-  rm -rf /home/${POJDE_NG_USERNAME}/.local/share/code-server/extensions/*
+  rm -rf /home/${POJDE_USERNAME}/.local/share/code-server/extensions/*
 }

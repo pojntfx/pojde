@@ -3,7 +3,7 @@
 # Root script
 function as_root() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Fetch Julia binary package
     JULIA_MAJOR_VERSION=1.5
@@ -29,15 +29,15 @@ EOT
 
     # Add Julia to both .bashrcs
     echo ". ${CONFIG_FILE}" >>/root/.bashrc
-    echo ". ${CONFIG_FILE}" >>/home/${POJDE_NG_USERNAME}/.bashrc
+    echo ". ${CONFIG_FILE}" >>/home/${POJDE_USERNAME}/.bashrc
 
     # Restart JupyterLab and code-server (so that the new PATH is re-read)
-    if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    if [ "${POJDE_OPENRC}" = 'true' ]; then
         rc-service jupyter-lab restart
         rc-service code-server restart
     else
-        systemctl restart "jupyter-lab@${POJDE_NG_USERNAME}"
-        systemctl restart "code-server@${POJDE_NG_USERNAME}"
+        systemctl restart "jupyter-lab@${POJDE_USERNAME}"
+        systemctl restart "code-server@${POJDE_USERNAME}"
     fi
 }
 

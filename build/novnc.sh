@@ -4,7 +4,7 @@
 apt install -y xvfb x11vnc novnc net-tools
 
 # Install desktop
-if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+if [ "${POJDE_OPENRC}" = 'true' ]; then
     # Install fluxbox & matchbox-keyboard (XFCE4 & Onboard require systemd)
     apt install -y fluxbox x11-xserver-utils matchbox-keyboard
 else
@@ -19,13 +19,13 @@ x11vnc -storepasswd changeme /etc/vncsecret
 RESOLUTION="1280x720x24"
 
 # Create services
-if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+if [ "${POJDE_OPENRC}" = 'true' ]; then
     # Create OpenRC service for Xvfb
     cat <<EOT >/etc/init.d/xvfb
 #!/sbin/openrc-run                                                                                                                                                                                                    
 name=\$RC_SVCNAME
 command="/usr/bin/sudo"
-command_args="-u \$(cat /opt/pojde-ng/user/user) /usr/bin/Xvfb :1 -screen 0 ${RESOLUTION} +iglx"
+command_args="-u \$(cat /opt/pojde/user/user) /usr/bin/Xvfb :1 -screen 0 ${RESOLUTION} +iglx"
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
@@ -36,7 +36,7 @@ EOT
 #!/sbin/openrc-run                                                                                                                                                                                                    
 name=\$RC_SVCNAME
 command="/usr/bin/sudo"
-command_args='-u \$(cat /opt/pojde-ng/user/user) sh -c "cd /home/\$(cat /opt/pojde-ng/user/user) && DISPLAY=:1 /usr/bin/startfluxbox"'
+command_args='-u \$(cat /opt/pojde/user/user) sh -c "cd /home/\$(cat /opt/pojde/user/user) && DISPLAY=:1 /usr/bin/startfluxbox"'
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
@@ -47,7 +47,7 @@ EOT
 #!/sbin/openrc-run                                                                                                                                                                                                    
 name=\$RC_SVCNAME
 command="/usr/bin/sudo"
-command_args="-u \$(cat /opt/pojde-ng/user/user) /usr/bin/x11vnc -display :1 -rfbauth /etc/vncsecret@\$(cat /opt/pojde-ng/user/user) -forever"
+command_args="-u \$(cat /opt/pojde/user/user) /usr/bin/x11vnc -display :1 -rfbauth /etc/vncsecret@\$(cat /opt/pojde/user/user) -forever"
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
@@ -58,7 +58,7 @@ EOT
 #!/sbin/openrc-run                                                                                                                                                                                                    
 name=\$RC_SVCNAME
 command="/usr/bin/sudo"
-command_args="-u \$(cat /opt/pojde-ng/user/user) /usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 38003"
+command_args="-u \$(cat /opt/pojde/user/user) /usr/share/novnc/utils/launch.sh --vnc localhost:5900 --listen 38003"
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT

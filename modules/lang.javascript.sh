@@ -3,7 +3,7 @@
 # Root script
 function as_root() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Install Node
     curl -fsSL https://deb.nodesource.com/setup_14.x | bash -

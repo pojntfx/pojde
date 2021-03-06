@@ -3,7 +3,7 @@
 # Root script
 function as_root() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Fetch Go binary package
     GO_VERSION=1.16
@@ -40,13 +40,13 @@ EOT
 
     # Add Go and TinyGo to both .bashrcs
     echo ". ${CONFIG_FILE}" >>/root/.bashrc
-    echo ". ${CONFIG_FILE}" >>/home/${POJDE_NG_USERNAME}/.bashrc
+    echo ". ${CONFIG_FILE}" >>/home/${POJDE_USERNAME}/.bashrc
 }
 
 # User script
 function as_user() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
@@ -66,8 +66,8 @@ function as_user() {
     # Download the Go Jupyter Kernel (see https://github.com/gopherdata/gophernotes)
     GOPHER_NOTES_VERSION=0.7.1
     env GO111MODULE=on go get github.com/gopherdata/gophernotes
-    mkdir -p /home/${POJDE_NG_USERNAME}/.local/share/jupyter/kernels/gophernotes
-    cd /home/${POJDE_NG_USERNAME}/.local/share/jupyter/kernels/gophernotes
+    mkdir -p /home/${POJDE_USERNAME}/.local/share/jupyter/kernels/gophernotes
+    cd /home/${POJDE_USERNAME}/.local/share/jupyter/kernels/gophernotes
     cp -rf "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v${GOPHER_NOTES_VERSION}/kernel/* "."
     chmod +w ./kernel.json # in case copied kernel.json has no write permission
     sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" <kernel.json.in >kernel.json

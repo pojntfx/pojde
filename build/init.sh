@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configure the init system
-if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+if [ "${POJDE_OPENRC}" = 'true' ]; then
     # Install OpenRC
     apt install -y openrc
 

@@ -9,11 +9,11 @@ function as_root() {
 # User script
 function as_user() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Install Rust
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    . /home/${POJDE_NG_USERNAME}/.cargo/env
+    . /home/${POJDE_USERNAME}/.cargo/env
 
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
