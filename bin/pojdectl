@@ -468,10 +468,10 @@ logs)
     name=$2
 
     # If container uses systemd, tail from journalctl, else tail OpenRC output
-    if [ -n "$(docker exec -it ${DOCKER_PREFIX}${name} which systemctl)" ]; then
-        docker exec -it ${DOCKER_PREFIX}${name} journalctl -f
-    else
+    if [ -n "$(docker exec -it ${DOCKER_PREFIX}${name} which rc-service)" ]; then
         docker logs -f ${DOCKER_PREFIX}${name}
+    else
+        docker exec -it ${DOCKER_PREFIX}${name} journalctl -f
     fi
     ;;
 
