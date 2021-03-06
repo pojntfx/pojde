@@ -43,6 +43,7 @@ $ pojdectl apply my-first-instance 5000 # Append `-n root@your-ip:ssh-port` to c
 
 Now follow the instructions. `pojdectl apply` will ask you to download the CA certificate to your system, which you should do when creating the first instance; future instances will share this certificate. To trust the CA certificate, follow the videos we've created for you:
 
+- [Trusting self-signed CA certificates (system-wide on Fedora)](https://www.youtube.com/watch?v=qefr7MU-H-s)
 - [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
 - [Trusting self-signed SSL certificates (Chrome on macOS)](https://www.youtube.com/watch?v=_PJc7RcMnw8)
 - [Trusting self signed SSL certificates (Chrome on Windows)](https://www.youtube.com/watch?v=gyQ9IIxE3vc)
