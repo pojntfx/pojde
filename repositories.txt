@@ -1,0 +1,5 @@
+@retromain http://dl-cdn.alpinelinux.org/alpine/v3.12/main
+@retrocommunity http://dl-cdn.alpinelinux.org/alpine/v3.12/community
+http://dl-cdn.alpinelinux.org/alpine/edge/main
+http://dl-cdn.alpinelinux.org/alpine/edge/community
+http://dl-cdn.alpinelinux.org/alpine/edge/testing
