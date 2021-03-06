@@ -17,7 +17,7 @@ function as_root() {
 # User script
 function as_user() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery

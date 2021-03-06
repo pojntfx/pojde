@@ -3,7 +3,7 @@
 # Root script
 function as_root() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Install clangd, cmake and gdb
     apt install -y clangd-8 cmake gdb
@@ -31,7 +31,7 @@ function as_root() {
 # User script
 function as_user() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery

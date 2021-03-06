@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit if not on systemd
-if [ "${POJDE_NG_OPENRC}" = 'true' ]; then exit 0; fi
+if [ "${POJDE_OPENRC}" = 'true' ]; then exit 0; fi
 
 # Install Cockpit
 apt install -y cockpit

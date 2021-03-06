@@ -11,13 +11,13 @@ apt install -y nodejs build-essential
 pip3 install jupyterlab
 
 # Create services
-if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+if [ "${POJDE_OPENRC}" = 'true' ]; then
     # Create OpenRC service with the listen port set to 38004
     cat <<EOT >/etc/init.d/jupyter-lab
 #!/sbin/openrc-run                                                                                                                                                                                                    
 name=\$RC_SVCNAME
 command="/usr/bin/sudo"
-command_args='-u \$(cat /opt/pojde-ng/user/user) bash -i -c "cd /home/\$(cat /opt/pojde-ng/user/user) && /usr/local/bin/jupyter-lab --ip 127.0.0.1 --allow-root --port 38004 --no-browser --notebook-dir /home/\$(cat /opt/pojde-ng/user/user)/Notebooks"'
+command_args='-u \$(cat /opt/pojde/user/user) bash -i -c "cd /home/\$(cat /opt/pojde/user/user) && /usr/local/bin/jupyter-lab --ip 127.0.0.1 --allow-root --port 38004 --no-browser --notebook-dir /home/\$(cat /opt/pojde/user/user)/Notebooks"'
 pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT

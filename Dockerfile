@@ -1,15 +1,15 @@
 FROM debian:10
 
 # Choose init system
-ARG POJDE_NG_OPENRC='false'
-ENV POJDE_NG_OPENRC ${POJDE_NG_OPENRC}
+ARG POJDE_OPENRC='false'
+ENV POJDE_OPENRC ${POJDE_OPENRC}
 
 # Disable interactive prompts
 ENV DEBIAN_FRONTEND noninteractive
 
 # Setup environment
-RUN mkdir -p /opt/pojde-ng/build
-WORKDIR /opt/pojde-ng/build
+RUN mkdir -p /opt/pojde/build
+WORKDIR /opt/pojde/build
 
 # Run build scripts
 COPY build/repositories.sh .
@@ -51,23 +51,23 @@ RUN ./webwormhole.sh
 COPY build/clean.sh .
 RUN ./clean.sh
 
-# Add `pojdectl-ng`
+# Add `pojdectl`
 COPY bin/* /usr/bin/
 
 # Clean up
-RUN rm -rf /opt/pojde-ng/build
+RUN rm -rf /opt/pojde/build
 
 # Create preferences & CA directories
-RUN mkdir -p /opt/pojde-ng/preferences
-RUN mkdir -p /opt/pojde-ng/ca
+RUN mkdir -p /opt/pojde/preferences
+RUN mkdir -p /opt/pojde/ca
 
 # Add configuration scripts
-RUN mkdir -p /opt/pojde-ng/configuration
-COPY configuration/* /opt/pojde-ng/configuration/
+RUN mkdir -p /opt/pojde/configuration
+COPY configuration/* /opt/pojde/configuration/
 
 # Add module scripts
-RUN mkdir -p /opt/pojde-ng/modules
-COPY modules/* /opt/pojde-ng/modules/
+RUN mkdir -p /opt/pojde/modules
+COPY modules/* /opt/pojde/modules/
 
 # Go back to home dir
 WORKDIR /root

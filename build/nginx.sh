@@ -4,7 +4,7 @@
 apt install -y nginx
 
 # Add map for WebSocket upgrades
-cat <<EOT >/etc/nginx/conf.d/pojde-ng.conf
+cat <<EOT >/etc/nginx/conf.d/pojde.conf
 map \$http_upgrade \$connection_upgrade {
     default upgrade;
     '' close;
@@ -12,7 +12,7 @@ map \$http_upgrade \$connection_upgrade {
 EOT
 
 # Create server blocks for ports 8000-8004
-# `# %POJDE_NG_CERTIFICATES%` is a template slot and will be replaced with a proper SSL configuration
+# `# %POJDE_CERTIFICATES%` is a template slot and will be replaced with a proper SSL configuration
 ports=(
     8000
     8001
@@ -22,10 +22,10 @@ ports=(
 )
 
 for port in "${ports[@]}"; do
-    cat <<EOT >>/etc/nginx/conf.d/pojde-ng.conf
+    cat <<EOT >>/etc/nginx/conf.d/pojde.conf
 server {
     listen ${port};
-    # %POJDE_NG_CERTIFICATES%
+    # %POJDE_CERTIFICATES%
 
     location / {
         proxy_pass http://localhost:3${port};
@@ -42,7 +42,7 @@ EOT
 done
 
 # Add block for SSH
-cat <<EOT >/etc/nginx/modules-enabled/pojde-ng.conf
+cat <<EOT >/etc/nginx/modules-enabled/pojde.conf
 stream {
     upstream ssh {
         server localhost:38005;

@@ -3,29 +3,29 @@
 # Upgrade script
 function upgrade() {
     # Read configuration file
-    . /opt/pojde-ng/preferences/preferences.sh
+    . /opt/pojde/preferences/preferences.sh
 
     # Set new root password
-    echo "root:${POJDE_NG_ROOT_PASSWORD}" | chpasswd
+    echo "root:${POJDE_ROOT_PASSWORD}" | chpasswd
 
     # Create new user and add them to the wheel group
     addgroup --system wheel
-    useradd -m "${POJDE_NG_USERNAME}"
+    useradd -m "${POJDE_USERNAME}"
     sed -i 's/#auth required pam_wheel.so/auth required pam_wheel.so/g' /etc/pam.d/su
-    adduser "${POJDE_NG_USERNAME}" wheel
-    adduser "${POJDE_NG_USERNAME}" sudo
+    adduser "${POJDE_USERNAME}" wheel
+    adduser "${POJDE_USERNAME}" sudo
 
     # Change the password for the new user
-    echo "${POJDE_NG_USERNAME}:${POJDE_NG_PASSWORD}" | chpasswd
+    echo "${POJDE_USERNAME}:${POJDE_PASSWORD}" | chpasswd
 
     # Use bash as the default shell for the new user
-    chsh -s /bin/bash "${POJDE_NG_USERNAME}"
+    chsh -s /bin/bash "${POJDE_USERNAME}"
 
-    if [ "${POJDE_NG_OPENRC}" = 'true' ]; then
+    if [ "${POJDE_OPENRC}" = 'true' ]; then
         # Persist the username for OpenRC services
-        mkdir -p /opt/pojde-ng/user
-        CONFIG_FILE=/opt/pojde-ng/user/user
-        echo "${POJDE_NG_USERNAME}" >$CONFIG_FILE
+        mkdir -p /opt/pojde/user
+        CONFIG_FILE=/opt/pojde/user/user
+        echo "${POJDE_USERNAME}" >$CONFIG_FILE
     fi
 }
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prefix for all objects in the Docker daemon.
-DOCKER_PREFIX=pojde-ng-
+DOCKER_PREFIX=pojde-
 # Name of the CA
 CA_VOLUME_NAME=${DOCKER_PREFIX}ca
 # Scripts to run to apply/refresh instances. Order matters. "parameters" is run before all others.
@@ -9,7 +9,7 @@ SCRIPTS="user apt code-server ttyd novnc jupyter-lab nginx docker ssh git module
 # Prefix to display before destructive operations.
 CONFIRMATION_PREFIX="This could lead to data loss. Really"
 
-# Shows pojdectl-ng usage information.
+# Shows pojdectl usage information.
 print_help() {
     case "$1" in
     "-h" | "--help")
@@ -20,7 +20,7 @@ print_help() {
         ;;
     esac
 
-    echo "pojdectl-ng is the management tool for pojde Next Generation.
+    echo "pojdectl is the management tool for pojde.
 Global Flags:
 [-n]ode <user@host:port>            Remote host to execute on.
                                     If not specified, execute locally.
@@ -52,17 +52,17 @@ enter <name>                        Get a shell in an instance.
 forward <name> [local:remote...]    Forward port(s) from an instance.
 
 Miscellaneous Commands:
-upgrade-pojdectl-ng                 Upgrade this tool.
+upgrade-pojdectl                 Upgrade this tool.
 reset-ca [-f]orce                   Reset the CA.
 
-For more information, please visit https://github.com/pojntfx/pojde-ng#Usage."
+For more information, please visit https://github.com/pojntfx/pojde#Usage."
 
     exit 0
 }
 
 # Asks the user to re-apply their instance.
 print_please_reapply() {
-    echo 'Please run "pojdectl-ng apply" again to re-initialize.'
+    echo 'Please run "pojdectl apply" again to re-initialize.'
 }
 
 # Gets a summary of the exposed ports for an instance.
@@ -127,10 +127,10 @@ if [ "${run_remotely}" = "true" ]; then
         exit 1
     fi
 
-    # Install pojdectl-ng if not already installed on remote host
-    is_already_installed=$(if [ -x "$(ssh -p ${port} ${host} command -v pojdectl-ng)" ]; then echo true; else echo false; fi)
+    # Install pojdectl if not already installed on remote host
+    is_already_installed=$(if [ -x "$(ssh -p ${port} ${host} command -v pojdectl)" ]; then echo true; else echo false; fi)
     if [ "${is_already_installed}" = "false" ]; then
-        scp -P ${port} $(which pojdectl-ng) ${host}:/usr/local/bin
+        scp -P ${port} $(which pojdectl) ${host}:/usr/local/bin
     fi
 
     # Strip the `-n` flag from the remote command
@@ -139,7 +139,7 @@ if [ "${run_remotely}" = "true" ]; then
     # The `forward` commadn requires advanced steps here
     if [ "$1" != "forward" ]; then
         # Run the command remotely
-        ssh -tt -p ${port} ${host} pojdectl-ng $remote_command
+        ssh -tt -p ${port} ${host} pojdectl $remote_command
 
         # Don't continue with local execution
         exit 0
@@ -210,11 +210,11 @@ apply)
     # Adjust Docker arguments if host system uses OpenRC
     docker_flags=""
     docker_args=""
-    docker_image="pojntfx/pojde-ng:latest"
+    docker_image="pojntfx/pojde:latest"
     if [ ! -n "$(which systemctl)" ]; then
-        docker_flags="-e POJDE_NG_OPENRC=true"
+        docker_flags="-e POJDE_OPENRC=true"
         docker_args="/sbin/openrc-init"
-        docker_image="pojntfx/pojde-ng:latest-openrc"
+        docker_image="pojntfx/pojde:latest-openrc"
     fi
 
     # Pull the latest image
@@ -250,8 +250,8 @@ apply)
             --tmpfs /run:exec \
             --tmpfs /run/lock:exec \
             -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
-            -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde-ng/preferences:z \
-            -v ${CA_VOLUME_NAME}:/opt/pojde-ng/ca:z \
+            -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde/preferences:z \
+            -v ${CA_VOLUME_NAME}:/opt/pojde/ca:z \
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
             -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
             -v ${DOCKER_PREFIX}${name}-apt-cache:/var/cache/apt/archives:z \
@@ -266,7 +266,7 @@ apply)
     fi
 
     # Ask for parameters
-    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c "/opt/pojde-ng/configuration/parameters.sh"
+    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c "/opt/pojde/configuration/parameters.sh"
 
     # Exit if aborted
     if [ "$?" != "0" ]; then
@@ -277,7 +277,7 @@ apply)
 
     # Run the upgrade hooks of the scripts
     for script in $SCRIPTS; do
-        docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && upgrade"
+        docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde/configuration/${script}.sh && upgrade"
     done
     ;;
 
@@ -362,7 +362,7 @@ remove)
             fi
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 for script in $SCRIPTS; do
-                    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde-ng/configuration/${script}.sh && refresh"
+                    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde/configuration/${script}.sh && refresh"
                 done
 
                 print_please_reapply
@@ -497,7 +497,7 @@ forward)
         done
 
         # Script to run remotely and locally
-        exec_line_remote="pojdectl-ng ${remote_command}"
+        exec_line_remote="pojdectl ${remote_command}"
         exec_line_local="ssh -f -p ${port} ${host} ${ports_to_forward}"
 
         # Forward from the container on the remote host to the remote host
@@ -561,11 +561,11 @@ forward)
     ;;
 
 # Upgrade this tool.
-upgrade-pojdectl-ng)
+upgrade-pojdectl)
     # Fetch the latest version from GitHub
-    sudo curl -L -o /usr/local/bin/pojdectl-ng https://raw.githubusercontent.com/pojntfx/pojde-ng/main/bin/pojdectl-ng
+    sudo curl -L -o /usr/local/bin/pojdectl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl
     # Make it executable
-    sudo chmod +x /usr/local/bin/pojdectl-ng
+    sudo chmod +x /usr/local/bin/pojdectl
     ;;
 
 # Reset the CA.
@@ -579,7 +579,7 @@ reset-ca)
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         docker volume rm ${CA_VOLUME_NAME}
 
-        echo "Please run \"pojdectl-ng apply\" again for all instances to re-initialize; if you don't do so, you'll loose secure access to them."
+        echo "Please run \"pojdectl apply\" again for all instances to re-initialize; if you don't do so, you'll loose secure access to them."
     fi
     ;;
 
