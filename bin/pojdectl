@@ -8,6 +8,8 @@ CA_VOLUME_NAME=${DOCKER_PREFIX}ca
 SCRIPTS="user apt code-server ttyd novnc jupyter-lab nginx docker ssh git modules webwormhole clean"
 # Prefix to display before destructive operations.
 CONFIRMATION_PREFIX="This could lead to data loss. Really"
+# Global SSH flags for dropbear compatibility
+SSH_FLAGS="-oPubkeyAcceptedKeyTypes=+rsa-sha2-512"
 
 # Shows pojdectl usage information.
 print_help() {
@@ -120,7 +122,7 @@ if [ "${run_remotely}" = "true" ]; then
     IFS=" "
 
     # Exit if Docker is not installed on the remote host
-    docker_is_installed=$(if [ -x "$(ssh -p ${port} ${host} command -v docker)" ]; then echo true; else echo false; fi)
+    docker_is_installed=$(if [ -x "$(ssh ${SSH_FLAGS} -p ${port} ${host} command -v docker)" ]; then echo true; else echo false; fi)
     if [ "${docker_is_installed}" = "false" ]; then
         echo "Docker is not installed on remote host ${host}:${port}. Please install Docker there before continuing."
 
@@ -128,7 +130,7 @@ if [ "${run_remotely}" = "true" ]; then
     fi
 
     # Install pojdectl if not already installed on remote host
-    is_already_installed=$(if [ -x "$(ssh -p ${port} ${host} command -v pojdectl)" ]; then echo true; else echo false; fi)
+    is_already_installed=$(if [ -x "$(ssh ${SSH_FLAGS} -p ${port} ${host} command -v pojdectl)" ]; then echo true; else echo false; fi)
     if [ "${is_already_installed}" = "false" ]; then
         scp -P ${port} $(which pojdectl) ${host}:/usr/local/bin
     fi
@@ -139,7 +141,7 @@ if [ "${run_remotely}" = "true" ]; then
     # The `forward` commadn requires advanced steps here
     if [ "$1" != "forward" ]; then
         # Run the command remotely
-        ssh -tt -p ${port} ${host} pojdectl $remote_command
+        ssh ${SSH_FLAGS} -tt -p ${port} ${host} pojdectl $remote_command
 
         # Don't continue with local execution
         exit 0
@@ -498,11 +500,11 @@ forward)
 
         # Script to run remotely and locally
         exec_line_remote="pojdectl ${remote_command}"
-        exec_line_local="ssh -f -p ${port} ${host} ${ports_to_forward}"
+        exec_line_local="ssh ${SSH_FLAGS} -f -p ${port} ${host} ${ports_to_forward}"
 
         # Forward from the container on the remote host to the remote host
-        ssh -tt -p ${port} ${host} $exec_line_remote # Ensures that we can accept fingerprints, but exits immediately
-        ssh -p ${port} ${host} $exec_line_remote     # Does the actual forwarding
+        ssh ${SSH_FLAGS} -tt -p ${port} ${host} $exec_line_remote # Ensures that we can accept fingerprints, but exits immediately
+        ssh ${SSH_FLAGS} -p ${port} ${host} $exec_line_remote     # Does the actual forwarding
 
         # Forward the forwarded ports to the local host
         nohup $exec_line_local -N >/dev/null 2>&1 &
@@ -553,10 +555,10 @@ forward)
         printf "${outputStatus}"
 
         # Allow accepting fingerprints
-        ssh -p ${sshPort} root@localhost "exit 0"
+        ssh ${SSH_FLAGS} -p ${sshPort} root@localhost "exit 0"
 
         # Forward in the background
-        nohup ssh -f -p ${sshPort} ${sshArgs} root@localhost -N >/dev/null 2>&1 &
+        nohup ssh ${SSH_FLAGS} -f -p ${sshPort} ${sshArgs} root@localhost -N >/dev/null 2>&1 &
     fi
     ;;
 
