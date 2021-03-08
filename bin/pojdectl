@@ -52,7 +52,7 @@ enter <name>                        Get a shell in an instance.
 forward <name> [local:remote...]    Forward port(s) from an instance.
 
 Miscellaneous Commands:
-upgrade-pojdectl                 Upgrade this tool.
+upgrade-pojdectl                    Upgrade this tool.
 reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde#Usage."
