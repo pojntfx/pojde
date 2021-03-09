@@ -7,7 +7,7 @@ function as_root() {
     apt install -y nodejs
 
     # Install networking tools available from Debian repos
-    apt install -y iproute2 wireshark tshark iftop iotop nmap iperf3
+    apt install -y iproute2 wireshark tshark iftop iotop nmap iperf3 dnsutils
 
     # Install networking tools available from pip
     pip3 install speedtest-cli
