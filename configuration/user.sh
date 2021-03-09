@@ -21,6 +21,11 @@ function upgrade() {
     # Use bash as the default shell for the new user
     chsh -s /bin/bash "${POJDE_USERNAME}"
 
+    # Set up transfer directory
+    mkdir -p /home/${POJDE_USERNAME}/Documents
+    ln -sf /transfer /home/${POJDE_USERNAME}/Documents
+    chown -R ${POJDE_USERNAME} /home/${POJDE_USERNAME}/Documents
+
     if [ "${POJDE_OPENRC}" = 'true' ]; then
         # Persist the username for OpenRC services
         mkdir -p /opt/pojde/user

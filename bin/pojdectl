@@ -39,6 +39,7 @@ remove [name...]                    Remove instances(s).
     [-p]references                      Remove preferences.
     [-s]ecurity                         Remove CA.
     [-u]ser data                        Remove user data.
+    [-t]ransfer                         Remove transfer data.
     [-d]eb cache                        Remove .deb cache.
     [-a]ll                              Remove everything.
 list                                List all instances.
@@ -257,6 +258,7 @@ apply)
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
             -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
             -v ${DOCKER_PREFIX}${name}-apt-cache:/var/cache/apt/archives:z \
+            -v ${HOME}/Documents/pojde/${name}:/transfer:z \
             -p ${start_port}-${end_port}:8000-8005 \
             --restart always \
             ${docker_flags} \
@@ -291,6 +293,7 @@ remove)
     remove_customizations=false
     remove_preferences=false
     remove_user_data=false
+    remove_transfer_data=false
     remove_deb_cache=false
     i=-1
     for arg; do
@@ -320,6 +323,12 @@ remove)
 
         if [ "${arg}" = "-u" ]; then
             remove_user_data=true
+
+            continue
+        fi
+
+        if [ "${arg}" = "-t" ]; then
+            remove_transfer_data=true
 
             continue
         fi
@@ -398,6 +407,19 @@ remove)
                 docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
 
                 print_please_reapply
+            fi
+        fi
+
+        # Remove transfer data
+        if [ "${remove_transfer_data}" = "true" ]; then
+            if [ "${skip_confirmations}" = "true" ]; then
+                REPLY='y'
+            else
+                read -p "${CONFIRMATION_PREFIX} remove transfer data from ${name} (y/n)? " -n 1 -r
+                echo
+            fi
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                rm -rf ${HOME}/Documents/pojde/${name}
             fi
         fi
 
