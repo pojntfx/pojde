@@ -2,8 +2,8 @@
 
 # Configure the init system
 if [ "${POJDE_OPENRC}" = 'true' ]; then
-    # Install OpenRC
-    apt install -y openrc
+    # Install OpenRC and syslog-ng
+    apt install -y openrc syslog-ng
 
     # Enable running in Docker (adapted from https://github.com/pojntfx/alpine-openrc/blob/main/Dockerfile.edge)
     sed -i 's/^\(tty\d\:\:\)/#\1/g' /etc/inittab
@@ -18,6 +18,12 @@ if [ "${POJDE_OPENRC}" = 'true' ]; then
 
     # Remove unnecessary services
     rm -f /etc/init.d/{hwdrivers,modules,modules-load,modloop,cryptdisks,cryptdisks-early,hwclock.sh,keyboard-setup.sh,procps,udev}
+
+    # D-Bus breaks login on OpenRC, so disable it
+    rc-update del dbus default
+
+    # Add syslog-ng as a journalctl replacement
+    rc-update add syslog-ng default
 
     # Remove cgroup support
     sed -i 's/\tcgroup_add_service/\t#cgroup_add_service/g' /lib/rc/sh/openrc-run.sh
