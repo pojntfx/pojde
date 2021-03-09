@@ -6,11 +6,11 @@ function as_root() {
     . /opt/pojde/preferences/preferences.sh
 
     # Fetch Go binary package
-    GO_VERSION=1.16
+    VERSION=1.16
     if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/go.tar.gz https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz
+        curl -L -o /tmp/go.tar.gz https://golang.org/dl/go${VERSION}.linux-amd64.tar.gz
     else
-        curl -L -o /tmp/go.tar.gz https://golang.org/dl/go${GO_VERSION}.linux-arm64.tar.gz
+        curl -L -o /tmp/go.tar.gz https://golang.org/dl/go${VERSION}.linux-arm64.tar.gz
     fi
 
     # Extract the package to /usr/local
@@ -20,11 +20,11 @@ function as_root() {
     rm /tmp/go.tar.gz
 
     # Fetch TinyGo binary package
-    TINYGO_VERSION=0.16.0
+    VERSION=0.17.0
     if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/tinygo_${TINYGO_VERSION}_amd64.deb
+        curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${VERSION}/tinygo_${VERSION}_amd64.deb
     else
-        curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/tinygo_${TINYGO_VERSION}_arm.deb
+        curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${VERSION}/tinygo_${VERSION}_arm.deb
     fi
 
     # Install the TinyGo binary package
@@ -57,11 +57,11 @@ function as_user() {
     code-server --force --install-extension 'ethan-reesor.vscode-go-test-adapter'
 
     # Install the TinyGo VSCode extension
-    VSIX_VERSION=0.2.0
-    VSIX_FILE=/tmp/tinygo.vsix
-    curl -L -o ${VSIX_FILE} https://github.com/tinygo-org/vscode-tinygo/releases/download/${VSIX_VERSION}/vscode-tinygo-${VSIX_VERSION}.vsix
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.2.0
+    FILE=/tmp/tinygo.vsix
+    curl -L -o ${FILE} https://github.com/tinygo-org/vscode-tinygo/releases/download/${VERSION}/vscode-tinygo-${VERSION}.vsix
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
     # Download the Go Jupyter Kernel (see https://github.com/gopherdata/gophernotes)
     GOPHER_NOTES_VERSION=0.7.1

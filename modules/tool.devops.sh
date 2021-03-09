@@ -14,11 +14,11 @@ function as_root() {
     apt install -y kubectl helm
 
     # Install k9s
-    K9S_VERSION=0.24.2
+    VERSION=0.24.2
     if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_x86_64.tar.gz
+        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_Linux_x86_64.tar.gz
     else
-        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_arm64.tar.gz
+        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_Linux_arm64.tar.gz
     fi
     tar -C /usr/local/bin -xzf /tmp/k9s.tar.gz k9s
     chmod +x /usr/local/bin/k9s
@@ -49,9 +49,9 @@ function as_user() {
     code-server --force --install-extension 'ms-kubernetes-tools.vscode-kubernetes-tools'
     code-server --force --install-extension 'ms-azuretools.vscode-docker'
 
-    VSIX_VERSION=0.0.10
-    VSIX_FILE=/tmp/vscode-k3d.vsix
-    curl -L -o ${VSIX_FILE} https://github.com/inercia/vscode-k3d/releases/download/v${VSIX_VERSION}/vscode-k3d.vsix
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.0.10
+    FILE=/tmp/vscode-k3d.vsix
+    curl -L -o ${FILE} https://github.com/inercia/vscode-k3d/releases/download/v${VERSION}/vscode-k3d.vsix
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 }

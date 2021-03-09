@@ -13,23 +13,23 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the Octave VSCode extensions
-    VSIX_VERSION=0.2.12
-    VSIX_FILE=/tmp/octave-hacking.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/apjanke/vsextensions/octave-hacking/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.2.12
+    FILE=/tmp/octave-hacking.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/apjanke/vsextensions/octave-hacking/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
-    VSIX_VERSION=0.0.3
-    VSIX_FILE=/tmp/octave.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/toasty-technologies/vsextensions/octave/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.0.3
+    FILE=/tmp/octave.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/toasty-technologies/vsextensions/octave/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
-    VSIX_VERSION=0.4.9
-    VSIX_FILE=/tmp/octave-debugger.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/paulosilva/vsextensions/vsc-octave-debugger/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.4.9
+    FILE=/tmp/octave-debugger.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/paulosilva/vsextensions/vsc-octave-debugger/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
     # Download the Octave Jupyter Kernel (see https://github.com/calysto/octave_kernel#installation)
     pip3 install octave_kernel

@@ -32,27 +32,27 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the SQL VSCode extensions
-    VSIX_VERSION=0.23.0
-    VSIX_FILE=/tmp/sqltools.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.23.0
+    FILE=/tmp/sqltools.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
-    VSIX_VERSION=0.2.0
-    VSIX_FILE=/tmp/sqltools-driver-sqlite.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.2.0
+    FILE=/tmp/sqltools-driver-sqlite.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
-    VSIX_VERSION=0.2.0
-    VSIX_FILE=/tmp/sqltools-driver-mysql.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.2.0
+    FILE=/tmp/sqltools-driver-mysql.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
-    VSIX_VERSION=0.2.0
-    VSIX_FILE=/tmp/sqltools-driver-pg.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.2.0
+    FILE=/tmp/sqltools-driver-pg.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 }
