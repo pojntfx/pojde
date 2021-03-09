@@ -9,8 +9,15 @@ function as_root() {
     curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
     apt install -y nodejs build-essential
 
-    # Install Yarn and the IJavaScript kernel (see https://github.com/n-riesco/ijavascript#installation)
-    npm install -g --unsafe-perm ijavascript yarn
+    # Install Yarn, Jest and the IJavaScript kernel (see https://github.com/n-riesco/ijavascript#installation)
+    npm install -g --unsafe-perm yarn jest ijavascript
+
+    # Restart code-server (so that the new PATH for Jest is re-read)
+    if [ "${POJDE_OPENRC}" = 'true' ]; then
+        rc-service code-server restart
+    else
+        systemctl restart "code-server@${POJDE_USERNAME}"
+    fi
 }
 
 # User script

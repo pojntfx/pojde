@@ -5,19 +5,24 @@ if [ "${POJDE_OPENRC}" = 'true' ]; then
     # Install OpenRC
     apt install -y openrc
 
-    # Enable running in Docker (see https://github.com/pojntfx/alpine-openrc/blob/main/Dockerfile.edge)
+    # Enable running in Docker (adapted from https://github.com/pojntfx/alpine-openrc/blob/main/Dockerfile.edge)
     sed -i 's/^\(tty\d\:\:\)/#\1/g' /etc/inittab
-    sed -i -e 's/#rc_sys=".*"/rc_sys="docker"/g' -e 's/#rc_env_allow=".*"/rc_env_allow="\*"/g' -e 's/#rc_crashed_stop=.*/rc_crashed_stop=NO/g' -e 's/#rc_crashed_start=.*/rc_crashed_start=YES/g' -e 's/#rc_provide=".*"/rc_provide="loopback net"/g' /etc/rc.conf
+    sed -i \
+        -e 's/#rc_sys=".*"/rc_sys="docker"/g' \
+        -e 's/#rc_env_allow=".*"/rc_env_allow="\*"/g' \
+        -e 's/#rc_crashed_stop=.*/rc_crashed_stop=NO/g' \
+        -e 's/#rc_crashed_start=.*/rc_crashed_start=YES/g' \
+        -e 's/#rc_provide=".*"/rc_provide="loopback net"/g' \
+        -e 's/#rc_controller_cgroups=".*"/rc_controller_cgroups="NO"/g' \
+        /etc/rc.conf
 
-    rm -f /etc/init.d/hwdrivers \
-        /etc/init.d/hwclock \
-        /etc/init.d/hwdrivers \
-        /etc/init.d/modules \
-        /etc/init.d/modules-load \
-        /etc/init.d/modloop
+    # Remove unnecessary services
+    rm -f /etc/init.d/{hwdrivers,modules,modules-load,modloop,cryptdisks,cryptdisks-early,hwclock.sh,keyboard-setup.sh,procps,udev}
 
+    # Remove cgroup support
     sed -i 's/\tcgroup_add_service/\t#cgroup_add_service/g' /lib/rc/sh/openrc-run.sh
     sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
+    rm /lib/rc/sh/rc-cgroup.sh
 else
     # Install systemd
     apt install -y systemd systemd-sysv
