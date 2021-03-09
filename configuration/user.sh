@@ -22,9 +22,9 @@ function upgrade() {
     chsh -s /bin/bash "${POJDE_USERNAME}"
 
     # Set up transfer directory
-    mkdir -p /home/${POJDE_USERNAME}/Documents
+    rm -rf /home/${POJDE_USERNAME}/Documents
     ln -sf /transfer /home/${POJDE_USERNAME}/Documents
-    chown -R ${POJDE_USERNAME} /home/${POJDE_USERNAME}/Documents
+    chown -R ${POJDE_USERNAME} /transfer
 
     if [ "${POJDE_OPENRC}" = 'true' ]; then
         # Persist the username for OpenRC services
