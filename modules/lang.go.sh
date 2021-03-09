@@ -35,6 +35,7 @@ function as_root() {
     cat <<EOT >$CONFIG_FILE
 export PATH=\$PATH:/usr/local/go/bin
 export PATH=\$PATH:/usr/local/tinygo/bin
+export PATH=\$PATH:/home/${POJDE_USERNAME}/go/bin
 EOT
     chmod +x ${CONFIG_FILE}
 
