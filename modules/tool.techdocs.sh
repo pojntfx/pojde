@@ -21,9 +21,9 @@ function as_user() {
     code-server --force --install-extension 'hediet.vscode-drawio'
     code-server --force --install-extension 'jock.svg'
 
-    VSIX_VERSION=1.0.0
-    VSIX_FILE=/tmp/pdf.vsix
-    curl -L -o ${VSIX_FILE} https://github.com/tomoki1207/vscode-pdfviewer/releases/download/v${VSIX_VERSION}/pdf-${VSIX_VERSION}.vsix
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=1.0.0
+    FILE=/tmp/pdf.vsix
+    curl -L -o ${FILE} https://github.com/tomoki1207/vscode-pdfviewer/releases/download/v${VERSION}/pdf-${VERSION}.vsix
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 }

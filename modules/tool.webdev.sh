@@ -22,11 +22,11 @@ function as_user() {
     code-server --force --install-extension 'arcanis.vscode-zipfs'
     code-server --force --install-extension 'deerawan.vscode-faker'
 
-    VSIX_VERSION=0.2.83
-    VSIX_FILE=/tmp/web-accessibility.vsix
-    curl --compressed -L -o ${VSIX_FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/MaxvanderSchee/vsextensions/web-accessibility/${VSIX_VERSION}/vspackage
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.2.83
+    FILE=/tmp/web-accessibility.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/MaxvanderSchee/vsextensions/web-accessibility/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 
     # Install wasmer
     curl https://get.wasmer.io -sSfL | sh

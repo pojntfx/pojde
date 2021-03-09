@@ -44,9 +44,9 @@ function as_user() {
     code-server --force --install-extension 'ms-vscode.cmake-tools'
 
     # Install cmake-format VSCode extension
-    VSIX_VERSION=0.6.13
-    VSIX_FILE=/tmp/cmake-format.vsix
-    curl -L -o ${VSIX_FILE} https://github.com/cheshirekow/cmake_format/releases/download/v${VSIX_VERSION}/cmake-format-${VSIX_VERSION}.vsix
-    code-server --force --install-extension ${VSIX_FILE}
-    rm ${VSIX_FILE}
+    VERSION=0.6.13
+    FILE=/tmp/cmake-format.vsix
+    curl -L -o ${FILE} https://github.com/cheshirekow/cmake_format/releases/download/v${VERSION}/cmake-format-${VERSION}.vsix
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 }
