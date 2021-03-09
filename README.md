@@ -127,7 +127,7 @@ Modification Commands:
 apply <name> <startPort>            Create or upgrade an instance.
     [-f]orce                            Skip confirmation prompts.
     [-u]pgrade                          Pull latest image.
-    [-r]recreate                        Re-create the container.
+    [-r]ecreate                         Re-create the container.
     [-i]solate                          Block Docker daemon access.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
@@ -135,6 +135,7 @@ remove [name...]                    Remove instances(s).
     [-p]references                      Remove preferences.
     [-s]ecurity                         Remove CA.
     [-u]ser data                        Remove user data.
+    [-t]ransfer                         Remove transfer data.
     [-d]eb cache                        Remove .deb cache.
     [-a]ll                              Remove everything.
 list                                List all instances.
@@ -150,7 +151,7 @@ enter <name>                        Get a shell in an instance.
 forward <name> [local:remote...]    Forward port(s) from an instance.
 
 Miscellaneous Commands:
-upgrade-pojdectl                 Upgrade this tool.
+upgrade-pojdectl                    Upgrade this tool.
 reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde#Usage.
