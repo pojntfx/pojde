@@ -11,12 +11,6 @@ function upgrade() {
 
     # Fix access from VSCode (FIXME: This should be more fine-grained)
     chmod 777 /var/run/docker.sock
-}
-
-# Refresh script
-function refresh() {
-    # Read configuration file
-    . /opt/pojde/preferences/preferences.sh
 
     # Add docker-pojde-volume-setup command, which enables using volumes
     CONFIG_FILE=/etc/profile.d/docker.sh
@@ -31,5 +25,9 @@ EOT
     # Add docker-pojde-volume-setup command to both .bashrcs
     echo ". ${CONFIG_FILE}" >>/root/.bashrc
     echo ". ${CONFIG_FILE}" >>/home/${POJDE_USERNAME}/.bashrc
+}
+
+# Refresh script
+function refresh() {
     :
 }
