@@ -157,6 +157,11 @@ reset-ca [-f]orce                   Reset the CA.
 For more information, please visit https://github.com/pojntfx/pojde#Usage.
 ```
 
+## Further Resources
+
+- [Enabling IPv6 on Docker](https://gist.github.com/pojntfx/2f6a7b7db484ef5f3ac143edb5fd4618)
+- [Adding own root CA certificates on iOS](<https://support.apple.com/en-us/HT204477#:~:text=If%20you%20want%20to%20turn,Mobile%20Device%20Management%20(MDM).>)
+
 ## License
 
 pojde (c) 2021 Felix Pojtinger and contributors

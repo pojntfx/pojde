@@ -25,6 +25,7 @@ for port in "${ports[@]}"; do
     cat <<EOT >>/etc/nginx/conf.d/pojde.conf
 server {
     listen ${port};
+    listen [::]:${port};
     # %POJDE_CERTIFICATES%
 
     location / {
