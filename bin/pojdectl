@@ -50,9 +50,9 @@ stop [name...]                      Stop instance(s).
 restart [name...]                   Restart instance(s).
 
 Utility Commands:
-logs <name>                         Get the logs of an instance.
-enter <name>                        Get a shell in an instance.
-forward <name> [local:remote...]    Forward port(s) from an instance.
+logs <name>                                 Get the logs of an instance.
+enter <name>                                Get a shell in an instance.
+forward <name> [lhost:lport:rhost:rport...] Forward port(s) from an instance.
 
 Miscellaneous Commands:
 upgrade-pojdectl                    Upgrade this tool.
@@ -144,7 +144,7 @@ if [ "${run_remotely}" = "true" ]; then
     # Strip the `-n` flag from the remote command
     remote_command="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
 
-    # The `forward` commadn requires advanced steps here
+    # The `forward` command requires advanced steps here
     if [ "$1" != "forward" ]; then
         # Run the command remotely
         ssh ${SSH_FLAGS} -tt -p ${port} ${host} pojdectl $remote_command
@@ -513,80 +513,73 @@ enter)
 
 # Forward port(s) from an instance.
 forward)
-    if [ "${run_remotely}" = "true" ]; then
-        # Get the ports to which it will be forwarded on the remote host
-        ports_to_forward=""
-        IFS=" "
-        for arg in $remote_command; do
-            local_port=$(echo $arg | grep -Po '^\d+')
+    name=$2
 
-            if [ ! -z "${local_port}" ]; then
-                ports_to_forward="${ports_to_forward} -L ${local_port}:localhost:${local_port}"
-            fi
+    # Strip the `-n` flag if a remote command was specified
+    forwardingSpecs="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
+
+    # Construct the forwarding flags
+    forwardingFlags=""
+    i=1
+    for forwardingSpec in $forwardingSpecs; do
+        if [ "$i" -gt 2 ]; then
+            forwardingFlags="${forwardingFlags} -L ${forwardingSpec}"
+        fi
+
+        i=$(($i + 1))
+    done
+
+    # Make the port of the SSH server to forward from locally available
+    if [ "${run_remotely}" = "true" ]; then
+        # Allow accepting fingerprints
+        ssh ${SSH_FLAGS} -tt -p ${port} "${host}" "exit 0"
+
+        # Check if the container exists and exit if it does not
+        if [ ! -n "$(ssh ${SSH_FLAGS} -p ${port} "${host}" "docker ps -q -a -f name=${DOCKER_PREFIX}${name}")" ]; then
+            echo "Instance ${DOCKER_PREFIX}${name} could not be found, exiting."
+
+            exit 1
+        fi
+
+        # Get the container's SSH port
+        remoteSSHPort=$(ssh ${SSH_FLAGS} -p ${port} "${host}" "docker inspect -f '{{ (index (index .NetworkSettings.Ports \"8005/tcp\") 0).HostPort }}' ${DOCKER_PREFIX}${name}")
+
+        # Get a random local port
+        check="do while"
+        while [[ ! -z $check ]]; do
+            containerSSHPort=$(((RANDOM % 60000) + 1025))
+            check=$(ss -ap | grep $containerSSHPort)
         done
 
-        # Script to run remotely and locally
-        exec_line_remote="pojdectl ${remote_command}"
-        exec_line_local="ssh ${SSH_FLAGS} -f -p ${port} ${host} ${ports_to_forward}"
-
-        # Forward from the container on the remote host to the remote host
-        ssh ${SSH_FLAGS} -tt -p ${port} ${host} $exec_line_remote # Ensures that we can accept fingerprints, but exits immediately
-        ssh ${SSH_FLAGS} -p ${port} ${host} $exec_line_remote     # Does the actual forwarding
-
-        # Forward the forwarded ports to the local host
-        nohup $exec_line_local -N >/dev/null 2>&1 &
+        # Forward the container's SSH port to the random local port
+        nohup ssh ${SSH_FLAGS} -p ${port} -f -L 127.0.0.1:${containerSSHPort}:127.0.0.1:${remoteSSHPort} "${host}" -N >/dev/null 2>&1 &
+        sshServerPID=$!
     else
         # Check if the container exists and exit if it does not
-        name=$2
         if [ ! -n "$(docker ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
             echo "Instance ${DOCKER_PREFIX}${name} could not be found, exiting."
 
             exit 1
         fi
 
-        # Get the exposed SSH port
-        sshPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8005/tcp") 0).HostPort }}' $(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}${name}.*"))
-        sshArgs=""
-        outputStatus=""
-
-        # Strip the `-n` flag if a remote command was specified
-        stripped_commands="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
-
-        i=1
-        for arg in $stripped_commands; do
-            if [ "$i" -gt 2 ]; then
-                # Get the host and client parts
-                arg_parts=""
-                IFS=':'
-                ni=0
-                for arg_part in $arg; do
-                    if [ "$ni" = 0 ]; then
-                        arg_parts="${arg_parts} ${arg_part}"
-                        outputStatus="${outputStatus}${name}:${arg_part} -> "
-                    else
-                        arg_parts="${arg_parts}:localhost:${arg_part}"
-                        outputStatus="${outputStatus}localhost:${arg_part}\n"
-                    fi
-
-                    ni=$(($ni + 1))
-                done
-
-                IFS=" "
-                sshArgs="${sshArgs} -L ${arg_parts}"
-            fi
-
-            i=$(($i + 1))
-        done
-
-        # Show the newly forwarded ports
-        printf "${outputStatus}"
-
-        # Allow accepting fingerprints
-        ssh ${SSH_FLAGS} -p ${sshPort} root@localhost "exit 0"
-
-        # Forward in the background
-        nohup ssh ${SSH_FLAGS} -f -p ${sshPort} ${sshArgs} root@localhost -N >/dev/null 2>&1 &
+        # Get the container's SSH port
+        containerSSHPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8005/tcp") 0).HostPort }}' ${DOCKER_PREFIX}${name})
     fi
+
+    # Wait till forwarding is set up
+    while ! nc -z 127.0.0.1 ${containerSSHPort}; do
+        sleep 0.1
+    done
+
+    # Allow accepting fingerprints
+    ssh ${SSH_FLAGS} -tt -p ${containerSSHPort} root@127.0.0.1 "exit 0"
+
+    # Forward the ports
+    nohup ssh ${SSH_FLAGS} -f -p ${containerSSHPort} ${forwardingFlags} root@127.0.0.1 -N >/dev/null 2>&1 &
+    forwardingPID=$!
+
+    # Print the forwarded ports
+    echo "${forwardingSpecs}"
     ;;
 
 # Upgrade this tool.
