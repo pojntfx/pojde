@@ -107,13 +107,18 @@ done
 # Run remotely if wanted
 if [ "${run_remotely}" = "true" ]; then
     # Split host and port args
+    length="$(echo ${run_remotely_args} | tr -cd ':' | wc -c)"
     host=""
     port=""
     IFS=":"
     i=0
     for part in ${run_remotely_args}; do
-        if [ "$i" = "0" ]; then
-            host="${part}"
+        if [ "$i" -lt "${length}" ]; then
+            if [ "$i" = "0" ]; then
+                host="${part}"
+            else
+                host="${host}:${part}"
+            fi
         else
             port="${part}"
         fi
