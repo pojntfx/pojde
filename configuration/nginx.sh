@@ -37,6 +37,7 @@ DNS.4 = ${POJDE_DOMAIN}")
 
     # Append `ssl` to the listen directives of the nginx config
     sed -i 's/\(listen [0-9][0-9][0-9][0-9]\);/\1 ssl;/g' /etc/nginx/conf.d/pojde.conf
+    sed -i 's/\(listen \[\:\:\]\:[0-9][0-9][0-9][0-9]\);/\1 ssl;/g' /etc/nginx/conf.d/pojde.conf
 
     # Add cert and key of the nginx config
     sed -i "s/# %POJDE_CERTIFICATES%/ssl_certificate server.crt;\n    ssl_certificate_key server.key;\n    server_name ${POJDE_DOMAIN};\n    error_page 497 https:\/\/\$host:\$server_port\$request_uri;/g" /etc/nginx/conf.d/pojde.conf
