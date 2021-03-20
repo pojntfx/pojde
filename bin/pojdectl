@@ -138,7 +138,7 @@ if [ "${run_remotely}" = "true" ]; then
     # Install pojdectl if not already installed on remote host
     is_already_installed=$(if [ -x "$(ssh ${SSH_FLAGS} -p ${port} ${host} command -v pojdectl)" ]; then echo true; else echo false; fi)
     if [ "${is_already_installed}" = "false" ]; then
-        scp ${SSH_FLAGS} -P ${port} $(which pojdectl) ${host}:/usr/local/bin
+        scp ${SSH_FLAGS} -P ${port} $(which pojdectl) "$(echo ${host} | sed 's/@\(.*\)/@[\1]/g'):/usr/local/bin"
     fi
 
     # Strip the `-n` flag from the remote command
