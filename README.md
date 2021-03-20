@@ -71,7 +71,7 @@ As you can see, our first instance (`my-first-instance`) is running and has expo
 Additionally, there is a SSH server running on port `5005` which you can use to forward ports with `pojdectl forward`:
 
 ```shell
-$ pojdectl forward my-first-instance 4200:1234 4201:1235 # Append `-n root@your-ip:ssh-port` to also forward from the remote host to the local host
+$ pojdectl forward my-first-instance 127.0.0.1:4200:127.0.0.1:1234 127.0.0.1:4201:127.0.0.1:1235 # Append `-n root@your-ip:ssh-port` to also forward from the remote host to the local host
 ```
 
 This, for example, forwards port `1234` in the instance to port `4200` on the local host and port `1235` to port `4201`.
@@ -146,9 +146,9 @@ stop [name...]                      Stop instance(s).
 restart [name...]                   Restart instance(s).
 
 Utility Commands:
-logs <name>                         Get the logs of an instance.
-enter <name>                        Get a shell in an instance.
-forward <name> [local:remote...]    Forward port(s) from an instance.
+logs <name>                                 Get the logs of an instance.
+enter <name>                                Get a shell in an instance.
+forward <name> [lhost:lport:rhost:rport...] Forward port(s) from an instance.
 
 Miscellaneous Commands:
 upgrade-pojdectl                    Upgrade this tool.
