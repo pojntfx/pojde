@@ -37,6 +37,12 @@ function as_user() {
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 
+    VERSION=1.18.2
+    FILE=/tmp/vscode-apollo.vsix
+    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/apollographql/vsextensions/vscode-apollo/${VERSION}/vspackage
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
+
     # Install wasmer
     curl https://get.wasmer.io -sSfL | sh
 }
