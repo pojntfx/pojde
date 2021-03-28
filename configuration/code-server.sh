@@ -171,6 +171,14 @@ EOT
   {
     "key": "ctrl+shift+c",
     "command": "-workbench.action.terminal.new"
+  },
+  {
+    "key": "alt+t",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "key": "ctrl+t",
+    "command": "-workbench.action.showAllSymbols"
   }
 ]
 EOT
