@@ -16,8 +16,8 @@ function upgrade() {
     CONFIG_FILE=/etc/profile.d/docker.sh
     cat <<EOT >$CONFIG_FILE
 function pojde-docker-env() {
-    container_name=\$(sudo docker inspect -f "{{.Name}}" \$(hostname))
-    export PWD="\$(sudo docker volume inspect -f {{.Mountpoint}} \${container_name}-home-user)\${PWD}/home"
+    container_name=\$(docker inspect -f "{{.Name}}" \$(hostname))
+    export PWD="\$(docker volume inspect -f {{.Mountpoint}} \${container_name##/}-home-user)\${PWD##/home}"
 }
 EOT
     chmod +x ${CONFIG_FILE}
