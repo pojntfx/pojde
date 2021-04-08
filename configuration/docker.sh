@@ -12,17 +12,17 @@ function upgrade() {
     # Fix access from VSCode (FIXME: This should be more fine-grained)
     chmod 777 /var/run/docker.sock
 
-    # Add docker-pojde-volume-setup command, which enables using volumes
+    # Add pojde-docker-env command, which enables using volumes
     CONFIG_FILE=/etc/profile.d/docker.sh
     cat <<EOT >$CONFIG_FILE
-function docker-pojde-volume-setup() {
-    container_name=\$(docker inspect -f "{{.Name}}" $(hostname))
-    export PWD="\$(docker volume inspect -f {{.Mountpoint}} \${container_name##/}-home-user)\${PWD##/home}"
+function pojde-docker-env() {
+    container_name=\$(sudo docker inspect -f "{{.Name}}" \$(hostname))
+    export PWD="\$(sudo docker volume inspect -f {{.Mountpoint}} \${container_name}-home-user)\${PWD}/home"
 }
 EOT
     chmod +x ${CONFIG_FILE}
 
-    # Add docker-pojde-volume-setup command to both .bashrcs
+    # Add pojde-docker-env command to both .bashrcs
     echo ". ${CONFIG_FILE}" >>/root/.bashrc
     echo ". ${CONFIG_FILE}" >>/home/${POJDE_USERNAME}/.bashrc
 }
