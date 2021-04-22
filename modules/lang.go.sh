@@ -65,11 +65,12 @@ function as_user() {
     rm ${FILE}
 
     # Download the Go Jupyter Kernel (see https://github.com/gopherdata/gophernotes)
-    GOPHER_NOTES_VERSION=0.7.1
-    env GO111MODULE=on go get github.com/gopherdata/gophernotes
-    mkdir -p /home/${POJDE_USERNAME}/.local/share/jupyter/kernels/gophernotes
-    cd /home/${POJDE_USERNAME}/.local/share/jupyter/kernels/gophernotes
-    cp -rf "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v${GOPHER_NOTES_VERSION}/kernel/* "."
+    env GO111MODULE=off go get -d -u github.com/gopherdata/gophernotes
+    cd "$(go env GOPATH)"/src/github.com/gopherdata/gophernotes
+    env GO111MODULE=on go install
+    mkdir -p ~/.local/share/jupyter/kernels/gophernotes
+    cp kernel/* ~/.local/share/jupyter/kernels/gophernotes
+    cd ~/.local/share/jupyter/kernels/gophernotes
     chmod +w ./kernel.json # in case copied kernel.json has no write permission
     sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" <kernel.json.in >kernel.json
 }
