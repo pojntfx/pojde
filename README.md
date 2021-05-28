@@ -33,7 +33,7 @@ Works on Linux, macOS and Windows (WSL2).
 
 ## Usage
 
-pojde supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) on the host that you wish to run the instance on.
+pojde supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) or [install Podman](https://podman.io/getting-started/installation) on the host that you wish to run the instance on. If you have SELinux enabled on your system, using Podman is the only supported option.
 
 To create your first instance, use `pojdectl apply`:
 
@@ -74,7 +74,7 @@ Additionally, there is a SSH server running on port `5005` which you can use to 
 $ pojdectl forward my-first-instance 127.0.0.1:4200:127.0.0.1:1234 127.0.0.1:4201:127.0.0.1:1235 # Append `-n root@your-ip:ssh-port` to also forward from the remote host to the local host
 ```
 
-This, for example, forwards port `1234` in the instance to port `4200` on the local host and port `1235` to port `4201`.
+This, for example, forwards remote port `1234` in the instance to local port `4200` and remote port `1235` to local port `4201`.
 
 **🚀 That's it!** We hope you enjoy using pojde.
 

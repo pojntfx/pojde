@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Podman detection (set by ensure_docker_or_podman)
+PODMAN=""
+# Docker alias command (set by ensure_docker_or_podman)
+DOCKER=""
 # Prefix for all objects in the Docker daemon.
 DOCKER_PREFIX=pojde-
 # Name of the CA
@@ -70,14 +74,57 @@ print_please_reapply() {
 
 # Gets a summary of the exposed ports for an instance.
 get_port_summary() {
-    if [ "$(docker inspect -f '{{ .State.Status }}' $1)" = 'running' ]; then
-        start_port="$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
+    if [ "$(${DOCKER} inspect -f '{{ .State.Status }}' $1)" = 'running' ]; then
+        start_port="$(${DOCKER} inspect -f '{{ (index (index .NetworkSettings.Ports "8000/tcp") 0).HostPort }}' $1)"
         end_port=$((${start_port} + 5))
 
         echo "${start_port}-${end_port}"
     else
         echo "-"
     fi
+}
+
+# Ensures that Docker or Podman are set up
+ensure_docker_or_podman() {
+    # Detect Podman
+    podman_installed=$(if [ "$(command -v podman)" ]; then echo true; else echo false; fi)
+    if [ "${podman_installed}" = "true" ]; then
+        # Check if podman-remote is installed
+        podman_remote_installed=$(if [ "$(command -v podman-remote)" ]; then echo true; else echo false; fi)
+        if [ "${podman_remote_installed}" = "true" ]; then
+            # Check if podman-remote is running
+            status="$(systemctl is-active podman.socket)"
+            if [ ! "${status}" = "active" ]; then
+                # podman-remote is not running; start it
+                sudo systemctl enable --now podman.socket
+            fi
+        else
+            echo "Podman is installed, but podman-remote is missing. Please install podman-remote before continuing."
+
+            exit 1
+        fi
+
+        # Alias Docker
+        PODMAN="true"
+        DOCKER="sudo podman"
+
+        return
+    fi
+
+    # Detect Docker
+    docker_installed=$(if [ "$(command -v docker)" ]; then echo true; else echo false; fi)
+    if [ "${docker_installed}" ]; then
+        # Alias Docker to itself
+        PODMAN="false"
+        DOCKER="docker"
+
+        return
+    fi
+
+    # Exit if neither Podman nor Docker are installed
+    echo "Neither Docker nor Podman are installed. Please install Docker or Podman before continuing."
+
+    exit 1
 }
 
 # Checks if the users has passed -h or --help and if they have done so, display the usage information.
@@ -127,10 +174,10 @@ if [ "${run_remotely}" = "true" ]; then
     done
     IFS=" "
 
-    # Exit if Docker is not installed on the remote host
-    docker_is_installed=$(if [ -x "$(ssh ${SSH_FLAGS} -p ${port} ${host} command -v docker)" ]; then echo true; else echo false; fi)
+    # Exit if neither Podman nor Docker are installed on the remote host
+    docker_is_installed=$(if [ -x "$(ssh ${SSH_FLAGS} -p ${port} ${host} command -v docker)" -o -x "$(ssh ${SSH_FLAGS} -p ${port} ${host} command -v podman)" ]; then echo true; else echo false; fi)
     if [ "${docker_is_installed}" = "false" ]; then
-        echo "Docker is not installed on remote host ${host}:${port}. Please install Docker there before continuing."
+        echo "Neither Docker nor Podman are installed on remote host ${host}:${port}. Please install Docker or Podman there before continuing."
 
         exit 1
     fi
@@ -152,6 +199,8 @@ if [ "${run_remotely}" = "true" ]; then
         # Don't continue with local execution
         exit 0
     fi
+else
+    ensure_docker_or_podman
 fi
 
 # Handle the main commands
@@ -227,13 +276,17 @@ apply)
 
     # Pull the latest image
     if [ "${pull_latest_image}" = "true" ]; then
-        docker pull ${docker_image}
+        ${DOCKER} pull ${docker_image}
     fi
 
     # Enable Docker daemon access
     docker_create_flags=""
     if [ "${isolate}" = "false" ]; then
         docker_create_flags="-v /var/run/docker.sock:/var/run/docker.sock:z"
+        # On podman, the podman-remote socket path is different and we have to disable SELinux confinement
+        if [ "${PODMAN}" = "true" ]; then
+            docker_create_flags="-v /run/podman/podman.sock:/var/run/docker.sock:z --security-opt label=disable"
+        fi
     fi
 
     # Re-create the container
@@ -245,19 +298,25 @@ apply)
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker rm -f ${DOCKER_PREFIX}${name}
+            ${DOCKER} rm -f ${DOCKER_PREFIX}${name}
         fi
     fi
 
     # Create the container if it doesn't already exist
-    if [ ! -n "$(docker ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
-        docker run ${docker_create_flags} \
+    if [ ! -n "$(${DOCKER} ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
+        # Add addtional flags for systemd compatibility (not needed on podman)
+        docker_systemd_flags="--tmpfs /tmp:exec --tmpfs /run:exec --tmpfs /run/lock:exec -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
+        if [ "${PODMAN}" = "true" ]; then
+            # Enable systemd to manipulate it's cgroups configuration
+            sudo setsebool -P container_manage_cgroup true
+
+            # Reset the systemd flags, they are not required with podman
+            docker_systemd_flags=""
+        fi
+
+        ${DOCKER} run ${docker_create_flags} ${docker_systemd_flags} \
             -d \
             --name ${DOCKER_PREFIX}${name} \
-            --tmpfs /tmp:exec \
-            --tmpfs /run:exec \
-            --tmpfs /run/lock:exec \
-            -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
             -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde/preferences:z \
             -v ${CA_VOLUME_NAME}:/opt/pojde/ca:z \
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
@@ -271,11 +330,11 @@ apply)
             ${docker_args}
     # If the container does already exist, start it
     else
-        docker start ${DOCKER_PREFIX}${name}
+        ${DOCKER} start ${DOCKER_PREFIX}${name}
     fi
 
     # Ask for parameters
-    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c "/opt/pojde/configuration/parameters.sh"
+    ${DOCKER} exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c "/opt/pojde/configuration/parameters.sh"
 
     # Exit if aborted
     if [ "$?" != "0" ]; then
@@ -286,7 +345,7 @@ apply)
 
     # Run the upgrade hooks of the scripts
     for script in $SCRIPTS; do
-        docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde/configuration/${script}.sh && upgrade"
+        ${DOCKER} exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde/configuration/${script}.sh && upgrade"
     done
     ;;
 
@@ -365,7 +424,7 @@ remove)
             echo
         fi
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            docker rm -f ${DOCKER_PREFIX}${name}
+            ${DOCKER} rm -f ${DOCKER_PREFIX}${name}
         fi
 
         # Remove customizations
@@ -378,7 +437,7 @@ remove)
             fi
             if [[ $REPLY =~ ^[Yy]$ ]]; then
                 for script in $SCRIPTS; do
-                    docker exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde/configuration/${script}.sh && refresh"
+                    ${DOCKER} exec -it ${docker_flags} ${DOCKER_PREFIX}${name} bash -c ". /opt/pojde/configuration/${script}.sh && refresh"
                 done
 
                 print_please_reapply
@@ -394,7 +453,7 @@ remove)
                 echo
             fi
             if [[ $REPLY =~ ^[Yy]$ ]]; then
-                docker volume rm ${DOCKER_PREFIX}${name}-preferences
+                ${DOCKER} volume rm ${DOCKER_PREFIX}${name}-preferences
 
                 print_please_reapply
             fi
@@ -409,7 +468,7 @@ remove)
                 echo
             fi
             if [[ $REPLY =~ ^[Yy]$ ]]; then
-                docker volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
+                ${DOCKER} volume rm ${DOCKER_PREFIX}${name}-home-root ${DOCKER_PREFIX}${name}-home-user
 
                 print_please_reapply
             fi
@@ -437,7 +496,7 @@ remove)
                 echo
             fi
             if [[ $REPLY =~ ^[Yy]$ ]]; then
-                docker volume rm ${DOCKER_PREFIX}${name}-apt-cache
+                ${DOCKER} volume rm ${DOCKER_PREFIX}${name}-apt-cache
             fi
         fi
     done
@@ -446,13 +505,20 @@ remove)
 # List all instances.
 list)
     # Get the current containers' IDs
-    container_ids=$(docker ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
+    container_ids=$(${DOCKER} ps -a --format '{{ .ID }}' -f "name=^${DOCKER_PREFIX}.*")
 
     # Add a header to the output
     printf "%-30s %-10s %-15s\n" "NAME" "STATUS" "PORTS"
+
+    # Get the name (differs on podman)
+    name="/${DOCKER_PREFIX}"
+    if [ "${PODMAN}" = "true" ]; then
+        name="${DOCKER_PREFIX}"
+    fi
+
     # For each container, show the name, state and exposed ports
     for container_id in $container_ids; do
-        printf "%-30s %-10s %-15s\n" "$(docker inspect -f "{{ index (split .Name \"/${DOCKER_PREFIX}\") 1 }}" ${container_id})" "$(docker inspect -f "{{ .State.Status }}" ${container_id})" "$(get_port_summary ${container_id})"
+        printf "%-30s %-10s %-15s\n" "$(${DOCKER} inspect -f "{{ index (split .Name \"${name}\") 1 }}" ${container_id})" "$(${DOCKER} inspect -f "{{ .State.Status }}" ${container_id})" "$(get_port_summary ${container_id})"
     done
     ;;
 
@@ -461,7 +527,7 @@ start)
     i=1
     for arg; do
         if [ "$i" -gt 1 ]; then
-            docker start ${DOCKER_PREFIX}${arg}
+            ${DOCKER} start ${DOCKER_PREFIX}${arg}
         fi
 
         i=$(($i + 1))
@@ -473,7 +539,7 @@ stop)
     i=1
     for arg; do
         if [ "$i" -gt 1 ]; then
-            docker stop ${DOCKER_PREFIX}${arg}
+            ${DOCKER} stop ${DOCKER_PREFIX}${arg}
         fi
 
         i=$(($i + 1))
@@ -485,7 +551,7 @@ restart)
     i=1
     for arg; do
         if [ "$i" -gt 1 ]; then
-            docker restart ${DOCKER_PREFIX}${arg}
+            ${DOCKER} restart ${DOCKER_PREFIX}${arg}
         fi
 
         i=$(($i + 1))
@@ -497,10 +563,10 @@ logs)
     name=$2
 
     # If container uses systemd, tail from journalctl, else tail OpenRC output
-    if [ ! -n "$(docker exec -it ${DOCKER_PREFIX}${name} sh -c 'if [ -d /run/systemd/system/ ]; then echo true; fi')" ]; then
-        docker exec -it ${DOCKER_PREFIX}${name} tail -f /var/log/messages
+    if [ ! -n "$(${DOCKER} exec -it ${DOCKER_PREFIX}${name} sh -c 'if [ -d /run/systemd/system/ ]; then echo true; fi')" ]; then
+        ${DOCKER} exec -it ${DOCKER_PREFIX}${name} tail -f /var/log/messages
     else
-        docker exec -it ${DOCKER_PREFIX}${name} journalctl -f
+        ${DOCKER} exec -it ${DOCKER_PREFIX}${name} journalctl -f
     fi
     ;;
 
@@ -508,7 +574,7 @@ logs)
 enter)
     name=$2
 
-    docker exec -it ${DOCKER_PREFIX}$2 bash
+    ${DOCKER} exec -it ${DOCKER_PREFIX}$2 bash
     ;;
 
 # Forward port(s) from an instance.
@@ -535,14 +601,14 @@ forward)
         ssh ${SSH_FLAGS} -tt -p ${port} "${host}" "exit 0"
 
         # Check if the container exists and exit if it does not
-        if [ ! -n "$(ssh ${SSH_FLAGS} -p ${port} "${host}" "docker ps -q -a -f name=${DOCKER_PREFIX}${name}")" ]; then
+        if [ ! -n "$(ssh ${SSH_FLAGS} -p ${port} "${host}" "${DOCKER} ps -q -a -f name=${DOCKER_PREFIX}${name}")" ]; then
             echo "Instance ${DOCKER_PREFIX}${name} could not be found, exiting."
 
             exit 1
         fi
 
         # Get the container's SSH port
-        remoteSSHPort=$(ssh ${SSH_FLAGS} -p ${port} "${host}" "docker inspect -f '{{ (index (index .NetworkSettings.Ports \"8005/tcp\") 0).HostPort }}' ${DOCKER_PREFIX}${name}")
+        remoteSSHPort=$(ssh ${SSH_FLAGS} -p ${port} "${host}" "${DOCKER} inspect -f '{{ (index (index .NetworkSettings.Ports \"8005/tcp\") 0).HostPort }}' ${DOCKER_PREFIX}${name}")
 
         # Get a random local port
         check="do while"
@@ -556,14 +622,14 @@ forward)
         sshServerPID=$!
     else
         # Check if the container exists and exit if it does not
-        if [ ! -n "$(docker ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
+        if [ ! -n "$(${DOCKER} ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
             echo "Instance ${DOCKER_PREFIX}${name} could not be found, exiting."
 
             exit 1
         fi
 
         # Get the container's SSH port
-        containerSSHPort=$(docker inspect -f '{{ (index (index .NetworkSettings.Ports "8005/tcp") 0).HostPort }}' ${DOCKER_PREFIX}${name})
+        containerSSHPort=$(${DOCKER} inspect -f '{{ (index (index .NetworkSettings.Ports "8005/tcp") 0).HostPort }}' ${DOCKER_PREFIX}${name})
     fi
 
     # Wait till forwarding is set up
@@ -599,7 +665,7 @@ reset-ca)
         echo
     fi
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        docker volume rm ${CA_VOLUME_NAME}
+        ${DOCKER} volume rm ${CA_VOLUME_NAME}
 
         echo "Please run \"pojdectl apply\" again for all instances to re-initialize; if you don't do so, you'll loose secure access to them."
     fi
