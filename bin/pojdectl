@@ -650,10 +650,17 @@ forward)
 
 # Upgrade this tool.
 upgrade-pojdectl)
-    # Fetch the latest version from GitHub
-    sudo curl -L -o /usr/local/bin/pojdectl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl
-    # Make it executable
-    sudo chmod +x /usr/local/bin/pojdectl
+    # Read the following lines into memory first so that replacing the script while it is running doesn't lead to issues
+    {
+        # Fetch the latest version from GitHub
+        sudo curl -L -o /usr/local/bin/pojdectl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl
+
+        # Make it executable
+        sudo chmod +x /usr/local/bin/pojdectl
+
+        # Exit to use the new script
+        exit
+    }
     ;;
 
 # Reset the CA.
