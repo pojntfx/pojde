@@ -33,7 +33,7 @@ Works on Linux, macOS and Windows (WSL2).
 
 ## Usage
 
-pojde supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) or [install Podman](https://podman.io/getting-started/installation) on the host that you wish to run the instance on. If you have SELinux enabled on your system, using Podman is the only supported option.
+pojde supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) or [install Podman](https://podman.io/getting-started/installation) on the host that you wish to run the instance on. If you have CGroups V2 enabled on your system (i.e. if you're using Fedora), please check out the [Docker, Podman and CGroups V2 FAQ](#docker-podman-and-cgroups-v2).
 
 To create your first instance, use `pojdectl apply`:
 
@@ -161,6 +161,22 @@ For more information, please visit https://github.com/pojntfx/pojde#Usage.
 
 - [Enabling IPv6 on Docker](https://gist.github.com/pojntfx/2f6a7b7db484ef5f3ac143edb5fd4618)
 - [Adding own root CA certificates on iOS](<https://support.apple.com/en-us/HT204477#:~:text=If%20you%20want%20to%20turn,Mobile%20Device%20Management%20(MDM).>)
+
+## Troubleshooting
+
+### Docker, Podman and CGroups V2
+
+The following combinations are known to work:
+
+- Podman and CGroups V2
+- Docker and CGroups V1
+
+Docker and CGroups V2 does not work, as running systemd inside the container is not yet supported properly. If you are using CGroups V2, i.e. if you're on Fedora, please use Podman. Alternatively, you can also enable CGroups V1 and use Docker:
+
+```shell
+$ sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+$ sudo reboot
+```
 
 ## License
 
