@@ -12,20 +12,74 @@ touch ${TMP_PREFERENCE_FILE}
 # If the preferences exist, . them
 . ${PREFERENCE_FILE}
 
-# Ask for new root password
-echo export "'"POJDE_ROOT_PASSWORD="$(dialog --stdout --nocancel --insecure --passwordbox "New root password:" 0 0 ${POJDE_ROOT_PASSWORD})""'" >${TMP_PREFERENCE_FILE}
+input_required() {
+    key="${1}"
+    prompt="${2}"
+    error_message="${3}"
+    boxtype="${4}"
 
-# Ask for new username and password
-echo export "'"POJDE_USERNAME="$(dialog --stdout --nocancel --inputbox "New user's username:" 0 0 ${POJDE_USERNAME})""'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_PASSWORD="$(dialog --stdout --nocancel --insecure --passwordbox "New user's password:" 0 0 ${POJDE_PASSWORD})""'" >>${TMP_PREFERENCE_FILE}
+    input=""
+    while [ "${input}" = "" ]; do
+        input=$(dialog --stdout --nocancel --insecure --${boxtype} "${prompt}" 0 0 "${!key}")
 
-# Ask for email and full name address (for Git)
-echo export "'"POJDE_EMAIL="$(dialog --stdout --nocancel --insecure --inputbox "Your email address (for Git):" 0 0 ${POJDE_EMAIL})""'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_FULL_NAME="$(dialog --stdout --nocancel --insecure --inputbox "Your full name (for Git):" 0 0 "${POJDE_FULL_NAME}")""'" >>${TMP_PREFERENCE_FILE}
+        if [ "${input}" = "" ]; then
+            dialog --msgbox "${error_message}" 0 0
 
-# Ask for IP domain
-echo export "'"POJDE_IP="$(dialog --stdout --nocancel --inputbox "IP address of this host:" 0 0 ${POJDE_IP})""'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_DOMAIN="$(dialog --stdout --nocancel --inputbox "Domain of this host:" 0 0 ${POJDE_DOMAIN})""'" >>${TMP_PREFERENCE_FILE}
+            continue
+        fi
+
+        echo export "'""${key}"="${input}""'" >>${TMP_PREFERENCE_FILE}
+    done
+}
+
+input_required_confirmed() {
+    key_1="${1}"
+    key_2="${2}"
+    prompt_1="${3}"
+    prompt_2="${4}"
+    error_message_1="${5}"
+    error_message_2="${6}"
+    retry_message="${7}"
+    boxtype="${8}"
+
+    while :; do
+        input_required "${key_1}" "${prompt_1}" "${error_message_1}" "${boxtype}"
+        new_value="${input}" # From input_required
+        input_required "${key_2}" "${prompt_2}" "${error_message_2}" "${boxtype}"
+        confirmed_new_value="${input}" # From input_required
+
+        if [ "${new_value}" = "${confirmed_new_value}" ]; then
+            break
+        fi
+
+        dialog --msgbox "${retry_message}" 0 0
+    done
+}
+
+# New root password
+input_required_confirmed \
+    "POJDE_ROOT_PASSWORD" "POJDE_ROOT_PASSWORD_CONFIRMATION" \
+    "New root password:" "Confirm new root password:" \
+    "Please enter a non-empty root password." "Please enter the root password." \
+    "The two passwords don't match, please try again." \
+    "passwordbox"
+
+# New username and password
+input_required "POJDE_USERNAME" "New user's username:" "Please enter a non-empty username." "inputbox"
+input_required_confirmed \
+    "POJDE_PASSWORD" "POJDE_PASSWORD_CONFIRMATION" \
+    "New user's password:" "Confirm new password:" \
+    "Please enter a non-empty password." "Please enter the password." \
+    "The two passwords don't match, please try again." \
+    "passwordbox"
+
+# Email and full name address (for Git)
+input_required "POJDE_EMAIL" "Your email address (for Git):" "Please enter a valid email address." "inputbox"
+input_required "POJDE_FULL_NAME" "Your full name (for Git):" "Please enter a valid name." "inputbox"
+
+# IP and domain
+input_required "POJDE_IP" "IP address of this host (this has to be a valid IP address):" "Please enter a valid IP address." "inputbox"
+input_required "POJDE_DOMAIN" "Domain of this host (this has to be a valid domain):" "Please enter a valid domain." "inputbox"
 
 # Ask for SSH key URL; get from GitHub by default
 if [ -z "${POJDE_SSH_KEY_URL}" ]; then
@@ -33,7 +87,7 @@ if [ -z "${POJDE_SSH_KEY_URL}" ]; then
 
     export POJDE_SSH_KEY_URL="https://github.com/${POJDE_USERNAME}.keys"
 fi
-echo export "'"POJDE_SSH_KEY_URL="$(dialog --stdout --nocancel --inputbox "Link to your SSH keys:" 0 0 ${POJDE_SSH_KEY_URL})""'" >>${TMP_PREFERENCE_FILE}
+input_required "POJDE_SSH_KEY_URL" "Link to your SSH keys:" "Please enter a valid URL." "inputbox"
 
 # Ask for module customization
 available_modules=(
