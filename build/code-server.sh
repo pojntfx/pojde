@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# Read versions
+. /opt/pojde/versions.sh
+
 # Run the official installation script
-curl -fsSL https://code-server.dev/install.sh | sh -s -
+VERSION="${CODE_SERVER_VERSION}"
+curl -fsSL https://code-server.dev/install.sh | sh -s - --version "${VERSION}"
 
 # Change the listen port to 38001
 mkdir -p /opt/pojde/code-server

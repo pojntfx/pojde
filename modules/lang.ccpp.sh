@@ -33,6 +33,9 @@ function as_user() {
     # Read configuration file
     . /opt/pojde/preferences/preferences.sh
 
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
@@ -44,7 +47,7 @@ function as_user() {
     code-server --force --install-extension 'ms-vscode.cmake-tools'
 
     # Install cmake-format VSCode extension
-    VERSION=0.6.13
+    VERSION="${CMAKE_FORMAT_EXTENSION_VERSION}"
     FILE=/tmp/cmake-format.vsix
     curl -L -o ${FILE} https://github.com/cheshirekow/cmake_format/releases/download/v${VERSION}/cmake-format-${VERSION}.vsix
     code-server --force --install-extension ${FILE}

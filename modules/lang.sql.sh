@@ -27,30 +27,33 @@ function as_root() {
 
 # User script
 function as_user() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the SQL VSCode extensions
-    VERSION=0.23.0
+    VERSION="${SQLTOOLS_EXTENSION_VERSION}"
     FILE=/tmp/sqltools.vsix
     curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/${VERSION}/vspackage
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 
-    VERSION=0.2.0
+    VERSION="${SQLTOOLS_EXTENSION_SQLITE_VERSION}"
     FILE=/tmp/sqltools-driver-sqlite.vsix
     curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/${VERSION}/vspackage
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 
-    VERSION=0.2.0
+    VERSION="${SQLTOOLS_EXTENSION_MYSQL_VERSION}"
     FILE=/tmp/sqltools-driver-mysql.vsix
     curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/${VERSION}/vspackage
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 
-    VERSION=0.2.0
+    VERSION="${SQLTOOLS_EXTENSION_PG_VERSION}"
     FILE=/tmp/sqltools-driver-pg.vsix
     curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/${VERSION}/vspackage
     code-server --force --install-extension ${FILE}

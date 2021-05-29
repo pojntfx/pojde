@@ -2,11 +2,14 @@
 
 # Root script
 function as_root() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # Install protoc
     apt install -y libprotobuf-dev protobuf-compiler
 
     # Install grpcurl
-    VERSION=1.8.0
+    VERSION="${GRPCURL_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
         curl -L -o /tmp/grpcurl.tar.gz https://github.com/fullstorydev/grpcurl/releases/download/v${VERSION}/grpcurl_${VERSION}_linux_x86_64.tar.gz
         tar -C /usr/local/bin -xzf /tmp/grpcurl.tar.gz grpcurl
@@ -17,6 +20,9 @@ function as_root() {
 
 # User script
 function as_user() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
@@ -31,13 +37,13 @@ function as_user() {
     code-server --force --install-extension 'arcanis.vscode-zipfs'
     code-server --force --install-extension 'deerawan.vscode-faker'
 
-    VERSION=0.2.83
+    VERSION="${WEB_ACCESSIBILITY_EXTENSION_VERSION}"
     FILE=/tmp/web-accessibility.vsix
     curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/MaxvanderSchee/vsextensions/web-accessibility/${VERSION}/vspackage
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 
-    VERSION=1.18.2
+    VERSION="${APOLLO_EXTENSION_VERSION}"
     FILE=/tmp/vscode-apollo.vsix
     curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/apollographql/vsextensions/vscode-apollo/${VERSION}/vspackage
     code-server --force --install-extension ${FILE}

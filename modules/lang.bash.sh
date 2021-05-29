@@ -8,12 +8,15 @@ function as_root() {
 
 # User script
 function as_user() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the Bash VSCode extensions
-    VERSION=7.0.1
+    VERSION="${SHELL_FORMAT_EXTENSION_VERSION}"
     FILE=/tmp/shell-format.vsix
     curl -L -o ${FILE} https://github.com/foxundermoon/vs-shell-format/releases/download/v${VERSION}/shell-format-${VERSION}.vsix
     code-server --force --install-extension ${FILE}
