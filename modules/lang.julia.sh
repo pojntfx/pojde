@@ -5,13 +5,16 @@ function as_root() {
     # Read configuration file
     . /opt/pojde/preferences/preferences.sh
 
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # Fetch Julia binary package
-    JULIA_MAJOR_VERSION=1.5
-    JULIA_MINOR_VERSION=3
+    MAJOR_VERSION="${JULIA_MAJOR_VERSION}"
+    MINOR_VERSION="${JULIA_MINOR_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/${JULIA_MAJOR_VERSION}/julia-${JULIA_MAJOR_VERSION}.${JULIA_MINOR_VERSION}-linux-x86_64.tar.gz
+        curl -L -o /tmp/julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/${MAJOR_VERSION}/julia-${MAJOR_VERSION}.${MINOR_VERSION}-linux-x86_64.tar.gz
     else
-        curl -L -o /tmp/julia.tar.gz https://julialang-s3.julialang.org/bin/linux/aarch64/${JULIA_MAJOR_VERSION}/julia-${JULIA_MAJOR_VERSION}.${JULIA_MINOR_VERSION}-linux-aarch64.tar.gz
+        curl -L -o /tmp/julia.tar.gz https://julialang-s3.julialang.org/bin/linux/aarch64/${MAJOR_VERSION}/julia-${MAJOR_VERSION}.${MINOR_VERSION}-linux-aarch64.tar.gz
     fi
 
     # Extract the package to /usr/local
@@ -23,7 +26,7 @@ function as_root() {
     # Add Julia to PATH using profile
     CONFIG_FILE=/etc/profile.d/julia.sh
     cat <<EOT >$CONFIG_FILE
-export PATH=\$PATH:/usr/local/julia-${JULIA_MAJOR_VERSION}.${JULIA_MINOR_VERSION}/bin
+export PATH=\$PATH:/usr/local/julia-${MAJOR_VERSION}.${MINOR_VERSION}/bin
 EOT
     chmod +x ${CONFIG_FILE}
 

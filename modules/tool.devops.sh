@@ -2,6 +2,9 @@
 
 # Root script
 function as_root() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # Install QEMU
     apt install -y qemu qemu-kvm
 
@@ -14,11 +17,11 @@ function as_root() {
     apt install -y kubectl helm
 
     # Install k9s
-    VERSION=0.24.2
+    VERSION="${K9S_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_Linux_x86_64.tar.gz
+        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_v${VERSION}_Linux_x86_64.tar.gz
     else
-        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_Linux_arm64.tar.gz
+        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_v${VERSION}_Linux_arm64.tar.gz
     fi
     tar -C /usr/local/bin -xzf /tmp/k9s.tar.gz k9s
     chmod +x /usr/local/bin/k9s
@@ -41,6 +44,9 @@ function as_root() {
 
 # User script
 function as_user() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
@@ -49,7 +55,7 @@ function as_user() {
     code-server --force --install-extension 'ms-kubernetes-tools.vscode-kubernetes-tools'
     code-server --force --install-extension 'ms-azuretools.vscode-docker'
 
-    VERSION=0.0.10
+    VERSION="${K3D_EXTENSION_VERSION}"
     FILE=/tmp/vscode-k3d.vsix
     curl -L -o ${FILE} https://github.com/inercia/vscode-k3d/releases/download/v${VERSION}/vscode-k3d.vsix
     code-server --force --install-extension ${FILE}

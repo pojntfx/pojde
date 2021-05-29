@@ -5,8 +5,11 @@ function as_root() {
     # Read configuration file
     . /opt/pojde/preferences/preferences.sh
 
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # Fetch Go binary package
-    VERSION=1.16
+    VERSION="${GO_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
         curl -L -o /tmp/go.tar.gz https://golang.org/dl/go${VERSION}.linux-amd64.tar.gz
     else
@@ -20,7 +23,7 @@ function as_root() {
     rm /tmp/go.tar.gz
 
     # Fetch TinyGo binary package
-    VERSION=0.17.0
+    VERSION="${TINYGO_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
         curl -L -o /tmp/tinygo.deb https://github.com/tinygo-org/tinygo/releases/download/v${VERSION}/tinygo_${VERSION}_amd64.deb
     else
@@ -49,6 +52,9 @@ function as_user() {
     # Read configuration file
     . /opt/pojde/preferences/preferences.sh
 
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
@@ -58,7 +64,7 @@ function as_user() {
     code-server --force --install-extension 'ethan-reesor.vscode-go-test-adapter'
 
     # Install the TinyGo VSCode extension
-    VERSION=0.2.0
+    VERSION="${TINYGO_EXTENSION_VERSION}"
     FILE=/tmp/tinygo.vsix
     curl -L -o ${FILE} https://github.com/tinygo-org/vscode-tinygo/releases/download/${VERSION}/vscode-tinygo-${VERSION}.vsix
     code-server --force --install-extension ${FILE}
