@@ -5,11 +5,14 @@ function as_root() {
     # Read configuration file
     . /opt/pojde/preferences/preferences.sh
 
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # Install Java, Maven and Gradle
     apt install -y default-jre default-jdk maven gradle
 
     # Download the Java Jupyter Kernel (see https://github.com/SpencerPark/IJava#install-pre-built-binary)
-    VERSION=1.3.0
+    VERSION="${JAVA_JUPYTER_VERSION}"
     curl -L -o /tmp/ijava.zip https://github.com/SpencerPark/IJava/releases/download/v${VERSION}/ijava-${VERSION}.zip
     unzip -d /tmp/ijava /tmp/ijava.zip
     python3 /tmp/ijava/install.py --sys-prefix

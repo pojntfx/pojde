@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Read versions
+. /opt/pojde/versions.sh
+
 # Download the binary
-VERSION="1.6.3"
+VERSION="${TTYD_VERSION}"
 curl -L -o /usr/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/${VERSION}/ttyd.$(uname -m)
 chmod +x /usr/bin/ttyd
 

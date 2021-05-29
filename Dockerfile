@@ -8,6 +8,13 @@ ENV POJDE_OPENRC ${POJDE_OPENRC}
 ENV DEBIAN_FRONTEND noninteractive
 
 # Setup environment
+RUN mkdir -p /opt/pojde
+WORKDIR /opt/pojde
+
+# Add versions
+COPY versions.sh .
+
+# Create build scripts directory
 RUN mkdir -p /opt/pojde/build
 WORKDIR /opt/pojde/build
 
