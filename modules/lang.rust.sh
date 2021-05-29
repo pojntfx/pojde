@@ -12,7 +12,7 @@ function as_user() {
     . /opt/pojde/preferences/preferences.sh
 
     # Install Rust
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
     . /home/${POJDE_USERNAME}/.cargo/env
 
     # We'll use Open-VSX

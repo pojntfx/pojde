@@ -78,8 +78,8 @@ input_required "POJDE_EMAIL" "Your email address (for Git):" "Please enter a val
 input_required "POJDE_FULL_NAME" "Your full name (for Git):" "Please enter a valid name." "inputbox"
 
 # IP and domain
-input_required "POJDE_IP" "IP address of this host (this has to be a valid IP address):" "Please enter a valid IP address." "inputbox"
-input_required "POJDE_DOMAIN" "Domain of this host (this has to be a valid domain):" "Please enter a valid domain." "inputbox"
+input_required "POJDE_IP" "IP address of this host (this has to be the valid IP address, or HTTPS will not work on this IP):" "Please enter a valid IP address." "inputbox"
+input_required "POJDE_DOMAIN" "Domain of this host (this has to be the valid domain, or HTTPS will not work on this domain):" "Please enter a valid domain." "inputbox"
 
 # Ask for SSH key URL; get from GitHub by default
 if [ -z "${POJDE_SSH_KEY_URL}" ]; then
@@ -87,7 +87,7 @@ if [ -z "${POJDE_SSH_KEY_URL}" ]; then
 
     export POJDE_SSH_KEY_URL="https://github.com/${POJDE_USERNAME}.keys"
 fi
-input_required "POJDE_SSH_KEY_URL" "Link to your SSH keys:" "Please enter a valid URL." "inputbox"
+input_required "POJDE_SSH_KEY_URL" "Link to your SSH keys (this has to be a valid URL to your SSH keys, or SSH will not work):" "Please enter a valid URL." "inputbox"
 
 # Ask for module customization
 available_modules=(
