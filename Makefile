@@ -4,6 +4,7 @@ all: build build-openrc
 
 pre:
 	chmod +x ./bin/*
+	chmod +x versions.sh
 	chmod +x ./build/*.sh
 	chmod +x ./configuration/*.sh
 	chmod +x ./modules/*.sh
