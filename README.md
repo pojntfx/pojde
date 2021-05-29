@@ -33,9 +33,15 @@ To install `pojdectl`, the management tool for pojde, run the following:
 $ curl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl | bash -s -- upgrade-pojdectl
 ```
 
-Works on Linux, macOS and Windows (WSL2).
+Works on Linux, macOS and Windows (WSL2). Now, continue to [Usage](#usage) to create your first instance.
 
 ## Usage
+
+I've created a brief YouTube video which guides you through the process:
+
+[<img src="https://img.youtube.com/vi/v2QB6Q1rCaQ/0.jpg" width="256" alt="Code from Anywhere with pojde YouTube video" title="Code from Anywhere with pojde">](https://www.youtube.com/watch?v=v2QB6Q1rCaQ)
+
+If you prefer the instructions in written form, continue reading.
 
 ### 1. Installing Docker or Podman
 
