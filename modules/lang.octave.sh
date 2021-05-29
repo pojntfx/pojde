@@ -18,7 +18,7 @@ function as_user() {
     # Install the Octave VSCode extensions
     VERSION="${OCTAVE_HACKING_EXTENSION_VERSION}"
     FILE=/tmp/octave-hacking.vsix
-    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/apjanke/vsextensions/octave-hacking/${VERSION}/vspackage
+    curl -L -o ${FILE} https://github.com/apjanke/vscode-octave-hacking/releases/download/v${VERSION}/octave-hacking-${VERSION}.vsix
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 

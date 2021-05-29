@@ -19,9 +19,9 @@ function as_root() {
     # Install k9s
     VERSION="${K9S_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
-        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_Linux_x86_64.tar.gz
+        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_v${VERSION}_Linux_x86_64.tar.gz
     else
-        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_Linux_arm64.tar.gz
+        curl -L -o /tmp/k9s.tar.gz https://github.com/derailed/k9s/releases/download/v${VERSION}/k9s_v${VERSION}_Linux_arm64.tar.gz
     fi
     tar -C /usr/local/bin -xzf /tmp/k9s.tar.gz k9s
     chmod +x /usr/local/bin/k9s

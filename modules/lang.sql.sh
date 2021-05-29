@@ -35,27 +35,8 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the SQL VSCode extensions
-    VERSION="${SQLTOOLS_EXTENSION_VERSION}"
-    FILE=/tmp/sqltools.vsix
-    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools/${VERSION}/vspackage
-    code-server --force --install-extension ${FILE}
-    rm ${FILE}
-
-    VERSION="${SQLTOOLS_EXTENSION_SQLITE_VERSION}"
-    FILE=/tmp/sqltools-driver-sqlite.vsix
-    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-sqlite/${VERSION}/vspackage
-    code-server --force --install-extension ${FILE}
-    rm ${FILE}
-
-    VERSION="${SQLTOOLS_EXTENSION_MYSQL_VERSION}"
-    FILE=/tmp/sqltools-driver-mysql.vsix
-    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-mysql/${VERSION}/vspackage
-    code-server --force --install-extension ${FILE}
-    rm ${FILE}
-
-    VERSION="${SQLTOOLS_EXTENSION_PG_VERSION}"
-    FILE=/tmp/sqltools-driver-pg.vsix
-    curl --compressed -L -o ${FILE} https://marketplace.visualstudio.com/_apis/public/gallery/publishers/mtxr/vsextensions/sqltools-driver-pg/${VERSION}/vspackage
-    code-server --force --install-extension ${FILE}
-    rm ${FILE}
+    code-server --force --install-extension 'mtxr.sqltools'
+    code-server --force --install-extension 'mtxr.sqltools-driver-sqlite'
+    code-server --force --install-extension 'mtxr.sqltools-driver-mysql'
+    code-server --force --install-extension 'mtxr.sqltools-driver-pg'
 }

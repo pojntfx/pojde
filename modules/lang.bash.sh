@@ -16,12 +16,7 @@ function as_user() {
     export ITEM_URL=https://open-vsx.org/vscode/item
 
     # Install the Bash VSCode extensions
-    VERSION="${SHELL_FORMAT_EXTENSION_VERSION}"
-    FILE=/tmp/shell-format.vsix
-    curl -L -o ${FILE} https://github.com/foxundermoon/vs-shell-format/releases/download/v${VERSION}/shell-format-${VERSION}.vsix
-    code-server --force --install-extension ${FILE}
-    rm ${FILE}
-
+    code-server --force --install-extension 'foxundermoon.shell-format'
     code-server --force --install-extension 'Remisa.shellman'
     code-server --force --install-extension 'timonwong.shellcheck'
     code-server --force --install-extension 'rogalmic.bash-debug'
