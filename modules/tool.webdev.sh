@@ -12,10 +12,13 @@ function as_root() {
     VERSION="${GRPCURL_VERSION}"
     if [ "$(uname -m)" = 'x86_64' ]; then
         curl -L -o /tmp/grpcurl.tar.gz https://github.com/fullstorydev/grpcurl/releases/download/v${VERSION}/grpcurl_${VERSION}_linux_x86_64.tar.gz
-        tar -C /usr/local/bin -xzf /tmp/grpcurl.tar.gz grpcurl
-        chmod +x /usr/local/bin/grpcurl
-        rm /tmp/grpcurl.tar.gz
+    else
+        curl -L -o /tmp/grpcurl.tar.gz https://github.com/fullstorydev/grpcurl/releases/download/v${VERSION}/grpcurl_${VERSION}_linux_arm64.tar.gz
     fi
+
+    tar -C /usr/local/bin -xzf /tmp/grpcurl.tar.gz grpcurl
+    chmod +x /usr/local/bin/grpcurl
+    rm /tmp/grpcurl.tar.gz
 }
 
 # User script
