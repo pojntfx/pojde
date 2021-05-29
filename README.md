@@ -1,11 +1,15 @@
 # pojde
 
+![Demo Video](./assets/demo.gif)
+
+Develop from any device with a browser.
+
 [![Docker CI](https://github.com/pojntfx/pojde/actions/workflows/docker.yaml/badge.svg)](https://github.com/pojntfx/pojde/actions/workflows/docker.yaml)
+[![Matrix](https://img.shields.io/matrix/pojde:matrix.org)](https://matrix.to/#/#pojde:matrix.org?via=matrix.org)
+[![Docker Pulls](https://img.shields.io/docker/pulls/pojntfx/pojde?label=docker%20pulls)](https://hub.docker.com/r/pojntfx/pojde)
 ![Chrome Support](https://img.shields.io/badge/Chrome-Latest%20version-%234285F4?logo=google-chrome)
 ![Firefox Support](https://img.shields.io/badge/Firefox-Latest%20version-%23FF7139?logo=firefox-browser)
 ![Safari Support](https://img.shields.io/badge/Safari-Latest%20version-%23000000?logo=safari)
-
-![Demo Video](./assets/demo.gif)
 
 ## Overview
 
@@ -23,17 +27,24 @@ With pojde, you can **develop from any device with a browser!**
 
 ## Installation
 
-To install `pojdectl`, the management tool for pojde, paste the following into your terminal:
+To install `pojdectl`, the management tool for pojde, run the following:
 
 ```shell
-curl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl | bash -s -- upgrade-pojdectl
+$ curl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl | bash -s -- upgrade-pojdectl
 ```
 
 Works on Linux, macOS and Windows (WSL2).
 
 ## Usage
 
-pojde supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please [install Docker](https://docs.docker.com/get-docker/) or [install Podman](https://podman.io/getting-started/installation) on the host that you wish to run the instance on. If you have SELinux enabled on your system, using Podman is the only supported option.
+### 1. Installing Docker or Podman
+
+pojde supports running many isolated instances on a host, where the host can be your local machine, a cloud server or even a Raspberry Pi. Before you continue to the next step, please install either [Docker](https://docs.docker.com/get-docker/) or [Podman](https://podman.io/getting-started/installation) on the host that you wish to run the instance on. Please note:
+
+- If you have CGroups V2 enabled on your system (i.e. if you're using Fedora), please check out the [Docker, Podman and CGroups V2 FAQ](#docker-podman-and-cgroups-v2) first.
+- Host systems using systemd have the best support, but on systems which don't support it (i.e. Docker on macOS or WSL), pojde falls back to using OpenRC instead.
+
+### 2. Creating a first Instance
 
 To create your first instance, use `pojdectl apply`:
 
@@ -41,7 +52,11 @@ To create your first instance, use `pojdectl apply`:
 $ pojdectl apply my-first-instance 5000 # Append `-n root@your-ip:ssh-port` to create the instance on a remote host instead
 ```
 
-Now follow the instructions. `pojdectl apply` will ask you to download the CA certificate to your system, which you should do when creating the first instance; future instances will share this certificate. To trust the CA certificate, follow the videos we've created for you:
+Now follow the instructions. `pojdectl apply` will ask you to download the CA certificate to your system, which you should do when creating the first instance; future instances will share this certificate.
+
+### 3. Trusting the CA Certificate
+
+To trust the CA certificate, follow the videos we've created for you:
 
 - [Trusting self-signed CA certificates (system-wide on Fedora)](https://www.youtube.com/watch?v=qefr7MU-H-s)
 - [Trusting self-signed SSL certificates (Chrome on Linux)](https://www.youtube.com/watch?v=byFN8vH2SaM)
@@ -50,7 +65,9 @@ Now follow the instructions. `pojdectl apply` will ask you to download the CA ce
 
 Note that you'll have to **select the CA certificate you've downloaded in the step before**, not download the certificate as described in the videos.
 
-Once you've done so, list your instances with `pojdectl list`:
+### 4. Listing the Instances
+
+Once you've done so, confirm that everything went well by listing your instances with `pojdectl list`:
 
 ```shell
 $ pojdectl list # Append `-n root@your-ip:ssh-port` to list the instances on a remote host instead
@@ -58,7 +75,11 @@ NAME                           STATUS     PORTS
 my-first-instance              running    5000-5005
 ```
 
-As you can see, our first instance (`my-first-instance`) is running and has exposed ports **5000** through **5005**. This port range has been selected when we ran `pojdectl apply` above. You can now access the services (replace `localhost` with your remote host's IP or domain if you deployed to a remote host):
+As you can see, our first instance (`my-first-instance`) is running and has exposed ports `5000` through `5005`. This port range has been selected when we ran `pojdectl apply` above.
+
+### 5. Accessing the Services
+
+You can now access the services (replace `localhost` with your remote host's IP or domain if you deployed to a remote host):
 
 | Icon                                                                                                                | Service                                           | Address                 | Description                            |
 | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------------- | -------------------------------------- |
@@ -76,13 +97,15 @@ $ pojdectl forward my-first-instance 127.0.0.1:4200:127.0.0.1:1234 127.0.0.1:420
 
 This, for example, forwards remote port `1234` in the instance to local port `4200` and remote port `1235` to local port `4201`.
 
-**🚀 That's it!** We hope you enjoy using pojde.
+If you can't access the services from outside `localhost`, make sure to open the ports on your firewall.
+
+**🚀 That's it!** We hope you enjoy using pojde. Please be sure to also check out the [Updates](#updates) and [FAQ](#faq) sections to keep your pojde setup up to date.
 
 ## Modules
 
 pojde is based on a minimal base image; additional functionality can be added by enabling any of the following modules when running `pojdectl apply`:
 
-## Language Modules
+### Language Modules
 
 | Icon                                                                                                                                                                                                                                                | Name           | Description                                                                     |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------- |
@@ -100,7 +123,7 @@ pojde is based on a minimal base image; additional functionality can be added by
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" width="25"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" width="25">           | **SQL**        | SQLite, MariaDB, PostgreSQL, the SQL VSCode extensions and SQL Jupyter kernel   |
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bash/bash-original.svg" width="25">                                                                                                                                       | **Bash**       | Bash, the Bash VSCode extensions and Bash Jupyter kernel                        |
 
-## Tool Modules
+### Tool Modules
 
 - **Vim**: Vim and the VSCodeVim extension
 - **QEMU, Docker and Kubernetes**: `kubectl`, `helm`, `k9s`, `skaffold`, `k3d` and more DevOps tools
@@ -156,6 +179,84 @@ reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde#Usage.
 ```
+
+## Contributing
+
+To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+To build and start a development version of pojde locally, run the following:
+
+```shell
+$ git clone https://github.com/pojntfx/pojde.git
+$ cd pojde
+$ make build
+$ ./bin/pojdectl apply my-first-instance 5000 -f -r
+```
+
+You should now have the pojde services running on [http://localhost:5000/](http://localhost:5000/) through [http://localhost:5004/](http://localhost:5004/) (see [Accessing the Services](#5-accessing-the-services)). Whenever you change something in the source code, run `make build` and `./bin/pojdectl apply my-first-instance 5000 -f -r` again, which will recompile and restart the services.
+
+Have any questions or need help? Chat with us [on Matrix](https://matrix.to/#/#pojde:matrix.org?via=matrix.org)!
+
+## FAQ
+
+### Updates
+
+#### Updating `pojdectl`
+
+`pojdectl` includes a self-update tool, which you can invoke by running the following:
+
+```shell
+$ pojdectl upgrade-pojdectl
+```
+
+#### Updating (or Reconfiguring) an Instance
+
+Updating an instance (to get the latest pojde version) and changing an instance's configuration are both done using the `pojdectl apply` command.
+
+To for example update the instance created in [Usage](#usage) or to change it's configuration, installed modules etc., run the following and follow the instructions:
+
+```shell
+$ pojdectl apply my-first-instance 5000 -f -r -u # Append `-n root@your-ip:ssh-port` to upgrade the instance on a remote host instead
+```
+
+There are multiple update and configuration strategies available; see [Reference](#reference) for more options.
+
+### Docker, Podman and CGroups V2
+
+The following combinations are known to work:
+
+- Podman and CGroups V2
+- Docker and CGroups V1
+
+Using Docker and CGroups V2 together on a systemd-based host does not work, as running systemd inside the container is not yet supported properly using this configuration. If you are using CGroups V2, i.e. if you're on Fedora, please use Podman. Alternatively, you can also switch to CGroups V1 and use Docker:
+
+```shell
+$ sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+$ sudo reboot
+```
+
+### Mounting Docker Volumes from an Instance
+
+Thanks to the `pojde-docker-env` script, mounting Docker volumes from within an instance is supported:
+
+```bash
+pojntfx@5d084b2bf2ca:~$ pojde-docker-env # Run this in the instance, using i.e. `ttyd` or code-server's terminal
+pojntfx@5d084b2bf2ca:/var/lib/docker/volumes/pojde-my-first-instance-home-user/_data/pojntfx$ # You can now use i.e. `docker run -v` in this shell!
+```
+
+You can also block Docker daemon access completely by specifiying the `-i` flag; see [Reference](#reference) for more information.
+
+### Transfering Files in and out of an Instance
+
+There are many options available to transfer files; you can for example use `scp`, another "traditional" option or use one of the following inbuilt ones.
+
+#### Transfer Folder
+
+A transfer folder is automatically created for even easier exchange of data between the host system and the instance; this folder is mounted into `~/Documents` in the instance and available at `~/Documents/pojde/your-instance-name` on the host system.
+
+#### WebWormhole
+
+[WebWormhole](https://webwormhole.io/) (available as `ww`) is pre-installed in every instance; it allows you to exchange files globally by using WebRTC. Find out more over at the [WebWormhole GitHub repo](https://github.com/saljam/webwormhole).
 
 ## Further Resources
 
