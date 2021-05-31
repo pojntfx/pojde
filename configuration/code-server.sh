@@ -191,6 +191,7 @@ EOT
   "sqltools.useNodeRuntime": true,
   "git.pullTags": false,
   "jest.autoEnable": false,
+  "markdown-preview-enhanced.previewTheme": "none.css",
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -210,6 +211,9 @@ EOT
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
