@@ -133,7 +133,7 @@ pojde is based on a minimal base image; additional functionality can be added by
 
 - **Vim**: Vim and the VSCodeVim extension
 - **QEMU, Docker and Kubernetes**: `kubectl`, `helm`, `k9s`, `skaffold`, `k3d` and more DevOps tools
-- **Technical Documentation**: `pandoc`, `plantuml`, `gnuplot`, media and Markdown/LaTeX support for VSCode
+- **Technical Documentation**: `pandoc`, `plantuml`, `gnuplot`, media, Office, PDF and Markdown/LaTeX support for VSCode
 - **Full LaTeX Support**: Full TeX Live installation
 - **Web Development**: Protobuf, GraphQL, OpenAPI, browser debugging and more VSCode extensions
 - **Common VSCode Extensions**: Prettier, GitLens, Git Graph and test explorer VSCode extensions

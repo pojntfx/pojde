@@ -16,7 +16,6 @@ export OCTAVE_DEBUGGER_VERSION="0.4.15"             # https://marketplace.visual
 export K9S_VERSION="0.24.10"                        # https://github.com/derailed/k9s/releases
 export K3D_EXTENSION_VERSION="0.0.10"               # https://github.com/inercia/vscode-k3d/releases
 export AERC_VERSION="latest"                        # https://github.com/pojntfx/aerc-binaries/releases
-export PDF_EXTENSION_VERSION="1.0.0"                # https://github.com/tomoki1207/vscode-pdfviewer/releases
 export GRPCURL_VERSION="1.8.1"                      # https://github.com/fullstorydev/grpcurl/releases
 export WEB_ACCESSIBILITY_EXTENSION_VERSION="0.2.83" # https://marketplace.visualstudio.com/items?itemName=MaxvanderSchee.web-accessibility
 export APOLLO_EXTENSION_VERSION="1.19.3"            # https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo
