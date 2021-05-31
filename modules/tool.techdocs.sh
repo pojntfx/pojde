@@ -8,6 +8,9 @@ function as_root() {
 
 # User script
 function as_user() {
+    # Read configuration file
+    . /opt/pojde/preferences/preferences.sh
+
     # Read versions
     . /opt/pojde/versions.sh
 
