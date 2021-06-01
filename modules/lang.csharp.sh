@@ -33,12 +33,21 @@ EOT
         systemctl restart "jupyter-lab@${POJDE_USERNAME}"
         systemctl restart "code-server@${POJDE_USERNAME}"
     fi
+
+    # Add PowerShell
+    curl -L -o /tmp/packages-microsoft-prod.deb https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb
+    dpkg -i /tmp/packages-microsoft-prod.deb
+    apt update
+    apt install -y powershell
 }
 
 # User script
 function as_user() {
     # Read configuration file
     . /opt/pojde/preferences/preferences.sh
+
+    # Read versions
+    . /opt/pojde/versions.sh
 
     # We'll use Open-VSX
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
@@ -50,4 +59,11 @@ function as_user() {
     # Download the C# Jupyter Kernel (see https://github.com/dotnet/interactive/blob/main/docs/NotebooksLocalExperience.md#installing-net-interactive-as-a-jupyter-kernel)
     dotnet tool install -g --add-source "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json" Microsoft.dotnet-interactive
     dotnet interactive jupyter install
+
+    # Install the PowerShell VSCode extension
+    VERSION="${POWERSHELL_EXTENSION_VERSION}"
+    FILE=/tmp/pwsh.vsix
+    curl -L -o ${FILE} https://github.com/PowerShell/vscode-powershell/releases/download/v${VERSION}/PowerShell-${VERSION}.vsix
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
 }

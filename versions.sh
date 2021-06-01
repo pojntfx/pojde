@@ -20,3 +20,4 @@ export GRPCURL_VERSION="1.8.1"                      # https://github.com/fullsto
 export WEB_ACCESSIBILITY_EXTENSION_VERSION="0.2.83" # https://marketplace.visualstudio.com/items?itemName=MaxvanderSchee.web-accessibility
 export APOLLO_EXTENSION_VERSION="1.19.3"            # https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo
 export VIM_EXTENSION_VERSION="1.20.3"               # https://open-vsx.org/extension/vscodevim/vim
+export POWERSHELL_EXTENSION_VERSION="2021.2.2"      # https://github.com/PowerShell/vscode-powershell/releases
