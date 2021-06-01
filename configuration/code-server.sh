@@ -21,26 +21,6 @@ EOT
   cat <<EOT >${CONFIG_DIR}/keybindings.json
 [
   {
-    "command": "-editor.action.marker.nextInFiles",
-    "keybinding": "f8",
-    "when": "editorFocus && !editorReadonly",
-    "resolved": [
-      {
-        "key": {
-          "code": "F8",
-          "keyCode": 119,
-          "easyString": "f8"
-        },
-        "ctrl": false,
-        "shift": false,
-        "alt": false,
-        "meta": false
-      }
-    ],
-    "scope": 1,
-    "key": "f8"
-  },
-  {
     "command": "editor.action.marker.nextInFiles",
     "keybinding": "alt+p",
     "when": "editorFocus && !editorReadonly",
@@ -59,26 +39,6 @@ EOT
     ],
     "scope": 1,
     "key": "alt+p"
-  },
-  {
-    "command": "-file.rename",
-    "keybinding": "f2",
-    "context": "navigatorActive",
-    "resolved": [
-      {
-        "key": {
-          "code": "F2",
-          "keyCode": 113,
-          "easyString": "f2"
-        },
-        "ctrl": false,
-        "shift": false,
-        "alt": false,
-        "meta": false
-      }
-    ],
-    "scope": 1,
-    "key": "f2"
   },
   {
     "command": "file.rename",
@@ -121,36 +81,10 @@ EOT
     "key": "alt+r"
   },
   {
-    "command": "-editor.action.rename",
-    "keybinding": "f2",
-    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly",
-    "resolved": [
-      {
-        "key": {
-          "code": "F2",
-          "keyCode": 113,
-          "easyString": "f2"
-        },
-        "ctrl": false,
-        "shift": false,
-        "alt": false,
-        "meta": false
-      }
-    ],
-    "scope": 1,
-    "key": "f2"
-  },
-  {
     "command": "editor.action.goToReferences",
     "keybinding": "alt+i",
     "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor",
     "key": "alt+i"
-  },
-  {
-    "command": "-editor.action.goToReferences",
-    "keybinding": "shift+f12",
-    "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor",
-    "key": "shift+f12"
   },
   {
     "key": "alt+w",
@@ -161,24 +95,17 @@ EOT
     "command": "workbench.action.showCommands"
   },
   {
-    "key": "f1",
-    "command": "-workbench.action.showCommands"
-  },
-  {
     "key": "ctrl+shift+\`",
     "command": "workbench.action.terminal.new"
-  },
-  {
-    "key": "ctrl+shift+c",
-    "command": "-workbench.action.terminal.new"
   },
   {
     "key": "alt+t",
     "command": "workbench.action.showAllSymbols"
   },
   {
-    "key": "ctrl+t",
-    "command": "-workbench.action.showAllSymbols"
+    "key": "ctrl+enter",
+    "command": "workbench.action.debug.start",
+    "when": "debuggersAvailable && debugState != 'initializing'"
   }
 ]
 EOT
@@ -192,6 +119,9 @@ EOT
   "git.pullTags": false,
   "jest.autoEnable": false,
   "markdown-preview-enhanced.previewTheme": "none.css",
+  "omnisharp.enableImportCompletion": true,
+  "omnisharp.organizeImportsOnFormat": true,
+  "omnisharp.enableRoslynAnalyzers": true,
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
