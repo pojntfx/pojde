@@ -7,6 +7,9 @@ function as_root() {
 
 # User script
 function as_user() {
+    # Read versions
+    . /opt/pojde/versions.sh
+
     # Install the VSCodeVim VSCode extension
     # We have do download manually due to https://github.com/cdr/code-server/pull/2659#issuecomment-780147098
     VERSION="${VIM_EXTENSION_VERSION}"
