@@ -66,4 +66,7 @@ function as_user() {
     curl -L -o ${FILE} https://github.com/PowerShell/vscode-powershell/releases/download/v${VERSION}/PowerShell-${VERSION}.vsix
     code-server --force --install-extension ${FILE}
     rm ${FILE}
+
+    # Install the XML extension
+    code-server --force --install-extension 'redhat.vscode-xml'
 }
