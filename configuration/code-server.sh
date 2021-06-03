@@ -106,6 +106,10 @@ EOT
     "key": "ctrl+enter",
     "command": "workbench.action.debug.start",
     "when": "debuggersAvailable && debugState != 'initializing'"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "-workbench.action.terminal.new"
   }
 ]
 EOT
