@@ -2,8 +2,8 @@
 
 # Root script
 function as_root() {
-    # Install texlive-base, pandoc and jq (for config file editing)
-    apt install -y texlive-base pandoc plantuml gnuplot jq
+    # Install texlive-base, pandoc, inotify-tools (for file watching) and jq (for config file editing)
+    apt install -y texlive-base pandoc plantuml gnuplot inotify-tools jq
 }
 
 # User script
