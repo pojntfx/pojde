@@ -117,6 +117,7 @@ EOT
   "keyboard.dispatch": "keyCode",
   "sqltools.useNodeRuntime": true,
   "git.pullTags": false,
+  "git.autofetch": true,
   "jest.autoEnable": false,
   "markdown-preview-enhanced.previewTheme": "none.css",
   "omnisharp.enableImportCompletion": true,
