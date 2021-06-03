@@ -105,7 +105,7 @@ EOT
   {
     "key": "ctrl+enter",
     "command": "workbench.action.debug.start",
-    "when": "debuggersAvailable && debugState != 'initializing'"
+    "when": "debuggersAvailable && debugState != 'initializing' && editorFocus"
   },
   {
     "key": "ctrl+shift+c",
