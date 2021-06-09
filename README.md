@@ -95,15 +95,21 @@ You can now access the services (replace `localhost` with your remote host's IP 
 | <img src="https://raw.githubusercontent.com/novnc/noVNC/master/app/images/icons/novnc-192x192.png" width="25">      | [noVNC](https://novnc.com/info.html)              | https://localhost:5003/ | Graphical access from the browser      |
 | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jupyter/jupyter-original.svg" width="25"> | [JupyterLab](http://jupyterlab.io/)               | https://localhost:5004/ | An interactive development environment |
 
-Additionally, there is a SSH server running on port `5005` which you can use to forward ports with `pojdectl forward`:
+If you can't access the services from outside `localhost`, make sure to open the ports on your firewall.
+
+Additionally, there is a SSH server running on port `5005` which you can use to forward ports from the instance with `pojdectl forward`:
 
 ```shell
-$ pojdectl forward my-first-instance 127.0.0.1:4200:127.0.0.1:1234 127.0.0.1:4201:127.0.0.1:1235 # Append `-n root@your-ip:ssh-port` to also forward from the remote host to the local host
+$ pojdectl forward local my-first-instance 127.0.0.1:4200:127.0.0.1:1234 127.0.0.1:4201:127.0.0.1:1235 # Append `-n root@your-ip:ssh-port` to also forward from the remote host to the local host
 ```
 
 This, for example, forwards remote port `1234` in the instance to local port `4200` and remote port `1235` to local port `4201`.
 
-If you can't access the services from outside `localhost`, make sure to open the ports on your firewall.
+You can also forward ports to the instance:
+
+```shell
+$ pojdectl forward remote my-first-instance 127.0.0.1:6969:127.0.0.1:6969 # Append `-n root@your-ip:ssh-port` to also forward from the local host to the remote host
+```
 
 **🚀 That's it!** We hope you enjoy using pojde. Please be sure to also check out the [Updates](#updates) and [FAQ](#faq) sections to keep your pojde setup up to date.
 
@@ -175,9 +181,9 @@ stop [name...]                      Stop instance(s).
 restart [name...]                   Restart instance(s).
 
 Utility Commands:
-logs <name>                                 Get the logs of an instance.
-enter <name>                                Get a shell in an instance.
-forward <name> [lhost:lport:rhost:rport...] Forward port(s) from an instance.
+logs <name>                                                 Get the logs of an instance.
+enter <name>                                                Get a shell in an instance.
+forward <name> <local|remote> [lhost:lport:rhost:rport...]  Forward port(s) to or from an instance.
 
 Miscellaneous Commands:
 upgrade-pojdectl                    Upgrade this tool.
