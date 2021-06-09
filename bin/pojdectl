@@ -54,9 +54,9 @@ stop [name...]                      Stop instance(s).
 restart [name...]                   Restart instance(s).
 
 Utility Commands:
-logs <name>                                 Get the logs of an instance.
-enter <name>                                Get a shell in an instance.
-forward <name> [lhost:lport:rhost:rport...] Forward port(s) from an instance.
+logs <name>                                                 Get the logs of an instance.
+enter <name>                                                Get a shell in an instance.
+forward <name> <local|remote> [lhost:lport:rhost:rport...]  Forward port(s) to or from an instance.
 
 Miscellaneous Commands:
 upgrade-pojdectl                    Upgrade this tool.
@@ -580,6 +580,13 @@ enter)
 # Forward port(s) from an instance.
 forward)
     name=$2
+    direction=$3
+
+    # Set the forwarding direction
+    directionFlag="-L"
+    if [ "${direction}" = "remote" ]; then
+        directionFlag="-R"
+    fi
 
     # Strip the `-n` flag if a remote command was specified
     forwardingSpecs="$(echo "$@" | sed 's@-n .*:[0-9]\+@@g')"
@@ -588,8 +595,8 @@ forward)
     forwardingFlags=""
     i=1
     for forwardingSpec in $forwardingSpecs; do
-        if [ "$i" -gt 2 ]; then
-            forwardingFlags="${forwardingFlags} -L ${forwardingSpec}"
+        if [ "$i" -gt 3 ]; then
+            forwardingFlags="${forwardingFlags} ${directionFlag} ${forwardingSpec}"
         fi
 
         i=$(($i + 1))
