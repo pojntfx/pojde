@@ -16,7 +16,7 @@ CONFIRMATION_PREFIX="This could lead to data loss. Really"
 SSH_FLAGS="-oPubkeyAcceptedKeyTypes=+rsa-sha2-512"
 # File which contains the current version
 VERSION_FILE="${HOME}/.pojdectl_version"
-# Endpoint which returns the latest commit hash for pjode
+# Endpoint which returns the latest commit hash for pojde
 COMMIT_HASH_ENDPOINT="https://api.github.com/repos/pojntfx/pojde/commits/main"
 
 # Shows pojdectl usage information.
