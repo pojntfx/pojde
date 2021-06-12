@@ -14,6 +14,10 @@ SCRIPTS="user apt code-server ttyd novnc jupyter-lab nginx docker pojdectl ssh g
 CONFIRMATION_PREFIX="This could lead to data loss. Really"
 # Global SSH flags for dropbear compatibility
 SSH_FLAGS="-oPubkeyAcceptedKeyTypes=+rsa-sha2-512"
+# File which contains the current version
+VERSION_FILE="${HOME}/.pojdectl_version"
+# Endpoint which returns the latest commit hash for pojde
+COMMIT_HASH_ENDPOINT="https://api.github.com/repos/pojntfx/pojde/commits/main"
 
 # Shows pojdectl usage information.
 print_help() {
@@ -659,15 +663,35 @@ forward)
 upgrade-pojdectl)
     # Read the following lines into memory first so that replacing the script while it is running doesn't lead to issues
     {
-        # Fetch the latest version from GitHub
-        sudo curl -L -o /usr/local/bin/pojdectl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl
+        # Get the current version
+        touch "${VERSION_FILE}"
+        current_version="$(cat ${VERSION_FILE})"
 
-        # Make it executable
-        sudo chmod +x /usr/local/bin/pojdectl
+        # Check the latest version by fetching the commit hash
+        latest_version="$(curl -s -H 'Accept: application/vnd.github.VERSION.sha' ${COMMIT_HASH_ENDPOINT})"
 
-        # Exit to use the new script
+        # Upgrade if the versions don't match
+        if [ "${current_version}" != "${latest_version}" ]; then
+            echo "Upgrading to version \"${latest_version}\" ..."
+
+            # Fetch the latest version from GitHub
+            sudo curl -L -o /usr/local/bin/pojdectl https://raw.githubusercontent.com/pojntfx/pojde/main/bin/pojdectl
+
+            # Make it executable
+            sudo chmod +x /usr/local/bin/pojdectl
+
+            # Add the new commit hash
+            echo "${latest_version}" >"${VERSION_FILE}"
+
+            # Exit to use the new script
+            exit
+        fi
+
+        echo "No update available. You have version \"${current_version}\", the latest version is \"${latest_version}\"."
+
         exit
     }
+
     ;;
 
 # Reset the CA.
