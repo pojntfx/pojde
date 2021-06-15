@@ -9,15 +9,22 @@ function as_root() {
     DOTNET_ROOT=/home/${POJDE_USERNAME}/.dotnet
     curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -c Current --install-dir ${DOTNET_ROOT}
 
+    # Create the pfx cert
+    CERTIFICATE_ROOT=${DOTNET_ROOT}/certificates
+    mkdir -p ${CERTIFICATE_ROOT}
+    openssl pkcs12 -export -out ${CERTIFICATE_ROOT}/server.pfx -inkey /etc/nginx/server.key -in /etc/nginx/server.crt -passout pass:
+
     # Fix permissions
     chown -R ${POJDE_USERNAME} ${DOTNET_ROOT}
 
-    # Add C# tools to PATH using profile
+    # Add C# tools to PATH and configure certificates using profile
     CONFIG_FILE=/etc/profile.d/csharp.sh
     cat <<EOT >$CONFIG_FILE
 export DOTNET_ROOT=${DOTNET_ROOT}
 export PATH=\$PATH:\${DOTNET_ROOT}
 export PATH=\$PATH:\${DOTNET_ROOT}/tools
+export CERTIFICATE_ROOT=\${DOTNET_ROOT}/certificates
+export ASPNETCORE_Kestrel__Certificates__Default__Path="\${CERTIFICATE_ROOT}/server.pfx"
 EOT
     chmod +x ${CONFIG_FILE}
 
