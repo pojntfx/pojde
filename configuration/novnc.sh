@@ -12,10 +12,10 @@ function upgrade() {
 
     # These are the services that will need to be managed
     services=(
-        xvfb
-        desktop
-        x11vnc
-        novnc
+        "xvfb"
+        "desktop"
+        "x11vnc"
+        "novnc"
     )
 
     # Enable & restart the services
