@@ -85,15 +85,15 @@ As you can see, our first instance (`my-first-instance`) is running and has expo
 
 ### 5. Accessing the Services
 
-You can now access the services (replace `localhost` with your remote host's IP or domain if you deployed to a remote host):
+You can now access the services you've enabled (replace `localhost` with your remote host's IP or domain if you deployed to a remote host):
 
-| Icon                                                                                                                | Service                                           | Address                 | Description                            |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------------- | -------------------------------------- |
-| <img src="https://avatars.githubusercontent.com/u/5765104?s=200&v=4" width="25">                                    | [Cockpit](https://cockpit-project.org/)           | https://localhost:5000/ | A general management interface         |
-| <img src="https://raw.githubusercontent.com/cdr/code-server/main/src/browser/media/pwa-icon.png" width="25">        | [code-server](https://github.com/cdr/code-server) | https://localhost:5001/ | VSCode in the browser                  |
-| <img src="https://raw.githubusercontent.com/tsl0922/ttyd/master/html/src/favicon.png" width="25">                   | [ttyd](https://tsl0922.github.io/ttyd/)           | https://localhost:5002/ | Shell access from the browser          |
-| <img src="https://raw.githubusercontent.com/novnc/noVNC/master/app/images/icons/novnc-192x192.png" width="25">      | [noVNC](https://novnc.com/info.html)              | https://localhost:5003/ | Graphical access from the browser      |
-| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jupyter/jupyter-original.svg" width="25"> | [JupyterLab](http://jupyterlab.io/)               | https://localhost:5004/ | An interactive development environment |
+| Icon                                                                                                                | Service                                           | Address                 | Description                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ----------------------- | ----------------------------------- |
+| <img src="https://avatars.githubusercontent.com/u/5765104?s=200&v=4" width="25">                                    | [Cockpit](https://cockpit-project.org/)           | https://localhost:5000/ | General management interface        |
+| <img src="https://raw.githubusercontent.com/cdr/code-server/main/src/browser/media/pwa-icon.png" width="25">        | [code-server](https://github.com/cdr/code-server) | https://localhost:5001/ | VSCode in the browser               |
+| <img src="https://raw.githubusercontent.com/tsl0922/ttyd/master/html/src/favicon.png" width="25">                   | [ttyd](https://tsl0922.github.io/ttyd/)           | https://localhost:5002/ | Shell access from the browser       |
+| <img src="https://raw.githubusercontent.com/novnc/noVNC/master/app/images/icons/novnc-192x192.png" width="25">      | [noVNC](https://novnc.com/info.html)              | https://localhost:5003/ | Graphical access from the browser   |
+| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jupyter/jupyter-original.svg" width="25"> | [JupyterLab](http://jupyterlab.io/)               | https://localhost:5004/ | Interactive development environment |
 
 If you can't access the services from outside `localhost`, make sure to open the ports on your firewall.
 
