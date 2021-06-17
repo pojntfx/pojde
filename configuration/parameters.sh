@@ -147,6 +147,26 @@ echo export "'"POJDE_MODULE_MULTIMEDIA_ENABLED=$([[ "$selected_modules" == *"too
 # Persist checklist selection
 echo export "'"POJDE_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}
 
+# Ask for service customization
+available_services=(
+    cockpit "Cockpit (general management interface)" $([ "${POJDE_SERVICE_COCKPIT_ENABLED}" = "true" ] && echo on || echo off)
+    codeserver "code-server (VSCode in the browser)" $([ "${POJDE_SERVICE_CODESERVER_ENABLED}" = "true" ] && echo on || echo off)
+    ttyd "ttyd (shell access from the browser)" $([ "${POJDE_SERVICE_TTYD_ENABLED}" = "true" ] && echo on || echo off)
+    novnc "noVNC (graphical access from the browser)" $([ "${POJDE_SERVICE_NOVNC_ENABLED}" = "true" ] && echo on || echo off)
+    jupyterlab "JupyterLab (interactive development environment)" $([ "${POJDE_SERVICE_JUPYTERLAB_ENABLED}" = "true" ] && echo on || echo off)
+)
+selected_services="$(dialog --stdout --nocancel --checklist "Services to enable:" 0 0 0 "${available_services[@]}") "
+
+# Persist checklist state
+echo export "'"POJDE_SERVICE_COCKPIT_ENABLED=$([[ "$selected_services" == *"cockpit "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_SERVICE_CODESERVER_ENABLED=$([[ "$selected_services" == *"codeserver "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_SERVICE_TTYD_ENABLED=$([[ "$selected_services" == *"ttyd "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_SERVICE_NOVNC_ENABLED=$([[ "$selected_services" == *"novnc "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export "'"POJDE_SERVICE_JUPYTERLAB_ENABLED=$([[ "$selected_services" == *"jupyterlab "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+
+# Persist checklist selection
+echo export "'"POJDE_SERVICES=${selected_services}"'" >>${TMP_PREFERENCE_FILE}
+
 # Ask for confirmation
 dialog --yesno 'Are you sure you want apply the configuration?' 0 0 || exit 1
 
