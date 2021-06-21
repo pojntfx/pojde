@@ -52,6 +52,12 @@ function as_user() {
     code-server --force --install-extension ${FILE}
     rm ${FILE}
 
+    VERSION="${SCSS_EXTENSION_VERSION}"
+    FILE=/tmp/vscode-scss.vsix
+    curl --compressed -L -o ${FILE} https://github.com/mrmlnc/vscode-scss/releases/download/${VERSION}/vscode-scss-${VERSION}.vsix
+    code-server --force --install-extension ${FILE}
+    rm ${FILE}
+
     # Install wasmer
     curl https://get.wasmer.io -sSfL | sh
 }
