@@ -31,6 +31,7 @@ function as_user() {
     code-server --force --install-extension 'kavod-io.vscode-jest-test-adapter'
     code-server --force --install-extension 'hbenl.vscode-mocha-test-adapter'
     code-server --force --install-extension 'hbenl.vscode-jasmine-test-adapter'
+    code-server --force --install-extension 'dbaeumer.vscode-eslint'
 
     # Register the IJavaScript kernel
     ijsinstall
