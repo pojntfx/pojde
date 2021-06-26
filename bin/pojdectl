@@ -8,6 +8,8 @@ DOCKER=""
 DOCKER_PREFIX=pojde-
 # Name of the CA
 CA_VOLUME_NAME=${DOCKER_PREFIX}ca
+# Container-internal path of the CA
+CA_VOLUME_PATH="/opt/pojde/ca"
 # Scripts to run to apply/refresh instances. Order matters. "parameters" is run before all others.
 SCRIPTS="user apt code-server ttyd novnc jupyter-lab nginx docker pojdectl ssh git modules webwormhole init clean"
 # Prefix to display before destructive operations.
@@ -64,6 +66,7 @@ forward <name> <local|remote> [lhost:lport:rhost:rport...]  Forward port(s) to o
 
 Miscellaneous Commands:
 upgrade-pojdectl                    Upgrade this tool.
+get-ca-cert [-p]rint                Get the CA cert.
 reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde#Usage."
@@ -322,7 +325,7 @@ apply)
             -d \
             --name ${DOCKER_PREFIX}${name} \
             -v ${DOCKER_PREFIX}${name}-preferences:/opt/pojde/preferences:z \
-            -v ${CA_VOLUME_NAME}:/opt/pojde/ca:z \
+            -v "${CA_VOLUME_NAME}:${CA_VOLUME_PATH}:z" \
             -v ${DOCKER_PREFIX}${name}-home-root:/root:z \
             -v ${DOCKER_PREFIX}${name}-home-user:/home:z \
             -v ${DOCKER_PREFIX}${name}-apt-cache:/var/cache/apt/archives:z \
@@ -706,6 +709,15 @@ reset-ca)
         ${DOCKER} volume rm ${CA_VOLUME_NAME}
 
         echo "Please run \"pojdectl apply\" again for all instances to re-initialize; if you don't do so, you'll loose secure access to them."
+    fi
+    ;;
+
+# Get the CA.
+get-ca-cert)
+    if [ "${2}" = "-p" ]; then
+        cat "$(${DOCKER} volume inspect -f {{.Mountpoint}} ${CA_VOLUME_NAME})/ca.pem"
+    else
+        ${DOCKER} exec -it "$(${DOCKER} ps -q -a -f name=${DOCKER_PREFIX} | head -n 1)" ww send "${CA_VOLUME_PATH}/ca.pem"
     fi
     ;;
 
