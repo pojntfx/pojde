@@ -58,7 +58,7 @@ To create your first instance, use `pojdectl apply`:
 $ pojdectl apply my-first-instance 5000 # Append `-n root@your-ip:ssh-port` to create the instance on a remote host instead
 ```
 
-Now follow the instructions. `pojdectl apply` will ask you to download the CA certificate to your system, which you should do when creating the first instance; future instances will share this certificate.
+Now follow the instructions. `pojdectl apply` will ask you to download the CA certificate to your system, which you should do when creating the first instance; future instances will share this certificate. You can also get the certificate at any later point using `pojdectl get-ca-cert`.
 
 ### 3. Trusting the CA Certificate
 
@@ -187,6 +187,7 @@ forward <name> <local|remote> [lhost:lport:rhost:rport...]  Forward port(s) to o
 
 Miscellaneous Commands:
 upgrade-pojdectl                    Upgrade this tool.
+get-ca-cert [-p]rint                Get the CA cert.
 reset-ca [-f]orce                   Reset the CA.
 
 For more information, please visit https://github.com/pojntfx/pojde#Usage.
