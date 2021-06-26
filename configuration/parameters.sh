@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Section title
+SECTION_TITLE="pojde Configuration"
+
 # Display welcome message
-dialog --msgbox "Welcome to pojde! Please press ENTER to start the configuration process." 0 0
+dialog --backtitle "${SECTION_TITLE}" --msgbox "Welcome to pojde! Please press ENTER to start the configuration process." 0 0
 
 # Create preferences directory and preference file
 PREFERENCE_FILE="/opt/pojde/preferences/preferences.sh"
@@ -20,10 +23,10 @@ input_required() {
 
     input=""
     while [ "${input}" = "" ]; do
-        input=$(dialog --stdout --nocancel --insecure --${boxtype} "${prompt}" 0 0 "${!key}")
+        input=$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --insecure --${boxtype} "${prompt}" 0 0 "${!key}")
 
         if [ "${input}" = "" ]; then
-            dialog --msgbox "${error_message}" 0 0
+            dialog --backtitle "${SECTION_TITLE}" --msgbox "${error_message}" 0 0
 
             continue
         fi
@@ -52,7 +55,7 @@ input_required_confirmed() {
             break
         fi
 
-        dialog --msgbox "${retry_message}" 0 0
+        dialog --backtitle "${SECTION_TITLE}" --msgbox "${retry_message}" 0 0
     done
 }
 
@@ -116,7 +119,7 @@ available_modules=(
     tool.inetgui "Browsers and Mail (GUI)" $([ "${POJDE_MODULE_INETGUI_ENABLED}" = "true" ] && echo on || echo off)
     tool.multimedia Multimedia $([ "${POJDE_MODULE_MULTIMEDIA_ENABLED}" = "true" ] && echo on || echo off)
 )
-selected_modules="$(dialog --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}") "
+selected_modules="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}")"
 
 # Persist checklist state
 echo export "'"POJDE_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
@@ -155,7 +158,7 @@ available_services=(
     novnc "noVNC (graphical access from the browser)" $([ "${POJDE_SERVICE_NOVNC_ENABLED}" = "true" ] && echo on || echo off)
     jupyterlab "JupyterLab (interactive development environment)" $([ "${POJDE_SERVICE_JUPYTERLAB_ENABLED}" = "true" ] && echo on || echo off)
 )
-selected_services="$(dialog --stdout --nocancel --checklist "Services to enable:" 0 0 0 "${available_services[@]}") "
+selected_services="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Services to enable:" 0 0 0 "${available_services[@]}")"
 
 # Persist checklist state
 echo export "'"POJDE_SERVICE_COCKPIT_ENABLED=$([[ "$selected_services" == *"cockpit "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
@@ -168,7 +171,7 @@ echo export "'"POJDE_SERVICE_JUPYTERLAB_ENABLED=$([[ "$selected_services" == *"j
 echo export "'"POJDE_SERVICES=${selected_services}"'" >>${TMP_PREFERENCE_FILE}
 
 # Ask for confirmation
-dialog --yesno 'Are you sure you want apply the configuration?' 0 0 || exit 1
+dialog --backtitle "${SECTION_TITLE}" --yesno 'Are you sure you want apply the configuration?' 0 0 || exit 1
 
 # Write to configuration file if accepted
 mv ${TMP_PREFERENCE_FILE} ${PREFERENCE_FILE}
