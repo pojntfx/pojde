@@ -43,6 +43,7 @@ apply <name> <startPort>            Create or upgrade an instance.
     [-u]pgrade                          Pull latest image.
     [-r]ecreate                         Re-create the container.
     [-i]solate                          Block Docker daemon access.
+    [-p]rivileged                       Run in privileged mode.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
     [-c]ustomization                    Remove customizations.
@@ -223,6 +224,7 @@ apply)
     pull_latest_image=false
     recreate_container=false
     isolate=false
+    privileged=false
     i=-1
     for arg; do
         i=$((${i} + 1))
@@ -251,6 +253,12 @@ apply)
 
         if [ "${arg}" = "-i" ]; then
             isolate=true
+
+            continue
+        fi
+
+        if [ "${arg}" = "-p" ]; then
+            privileged=true
 
             continue
         fi
@@ -294,6 +302,11 @@ apply)
         if [ "${PODMAN}" = "true" ]; then
             docker_create_flags="-v /run/podman/podman.sock:/var/run/docker.sock:z --security-opt label=disable"
         fi
+    fi
+
+    # Enable privileged mode
+    if [ "${privileged}" = "true" ]; then
+        docker_create_flags="${docker_create_flags} --privileged"
     fi
 
     # Re-create the container
