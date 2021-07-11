@@ -63,9 +63,6 @@ pidfile="/run/\$RC_SVCNAME.pid"
 command_background="yes"
 EOT
     chmod +x /etc/init.d/novnc
-
-    # Disable LightDM so that it doesn't take over in privileged mode
-    rc-update del lightdm default
 else
     # Create systemd service for Xvfb
     cat <<EOT >/usr/lib/systemd/system/xvfb@.service
