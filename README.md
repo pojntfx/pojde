@@ -164,6 +164,7 @@ apply <name> <startPort>            Create or upgrade an instance.
     [-u]pgrade                          Pull latest image.
     [-r]ecreate                         Re-create the container.
     [-i]solate                          Block Docker daemon access.
+    [-p]rivileged                       Run in privileged mode.
 remove [name...]                    Remove instances(s).
     [-f]orce                            Skip confirmation prompts.
     [-c]ustomization                    Remove customizations.
