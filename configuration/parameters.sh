@@ -119,7 +119,7 @@ available_modules=(
     tool.inetgui "Browsers and Mail (GUI)" $([ "${POJDE_MODULE_INETGUI_ENABLED}" = "true" ] && echo on || echo off)
     tool.multimedia Multimedia $([ "${POJDE_MODULE_MULTIMEDIA_ENABLED}" = "true" ] && echo on || echo off)
 )
-selected_modules="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}")"
+selected_modules="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}") "
 
 # Persist checklist state
 echo export "'"POJDE_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
@@ -148,7 +148,7 @@ echo export "'"POJDE_MODULE_INETGUI_ENABLED=$([[ "$selected_modules" == *"tool.i
 echo export "'"POJDE_MODULE_MULTIMEDIA_ENABLED=$([[ "$selected_modules" == *"tool.multimedia "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
 # Persist checklist selection
-echo export "'"POJDE_MODULES=${selected_modules}"'" >>${TMP_PREFERENCE_FILE}
+echo export "POJDE_MODULES=\"${selected_modules}\"" >>${TMP_PREFERENCE_FILE}
 
 # Ask for service customization
 available_services=(
@@ -158,7 +158,7 @@ available_services=(
     novnc "noVNC (graphical access from the browser)" $([ "${POJDE_SERVICE_NOVNC_ENABLED}" = "true" ] && echo on || echo off)
     jupyterlab "JupyterLab (interactive development environment)" $([ "${POJDE_SERVICE_JUPYTERLAB_ENABLED}" = "true" ] && echo on || echo off)
 )
-selected_services="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Services to enable:" 0 0 0 "${available_services[@]}")"
+selected_services="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Services to enable:" 0 0 0 "${available_services[@]}") "
 
 # Persist checklist state
 echo export "'"POJDE_SERVICE_COCKPIT_ENABLED=$([[ "$selected_services" == *"cockpit "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
@@ -168,7 +168,7 @@ echo export "'"POJDE_SERVICE_NOVNC_ENABLED=$([[ "$selected_services" == *"novnc 
 echo export "'"POJDE_SERVICE_JUPYTERLAB_ENABLED=$([[ "$selected_services" == *"jupyterlab "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
 
 # Persist checklist selection
-echo export "'"POJDE_SERVICES=${selected_services}"'" >>${TMP_PREFERENCE_FILE}
+echo export "POJDE_SERVICES=\"${selected_services}\"" >>${TMP_PREFERENCE_FILE}
 
 # Ask for confirmation
 dialog --backtitle "${SECTION_TITLE}" --yesno 'Are you sure you want apply the configuration?' 0 0 || exit 1
