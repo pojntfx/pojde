@@ -15,5 +15,5 @@ EOT
 # Refresh script
 function refresh() {
     # Remove cached packages
-    rm /var/cache/apt/archives/*.deb
+    rm -f /var/cache/apt/archives/*.deb
 }
