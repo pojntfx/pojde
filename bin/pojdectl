@@ -325,7 +325,7 @@ apply)
     # Create the container if it doesn't already exist
     if [ ! -n "$(${DOCKER} ps -q -a -f name=${DOCKER_PREFIX}${name})" ]; then
         # Add addtional flags for systemd compatibility (not needed on podman)
-        docker_systemd_flags="--tmpfs /tmp:exec --tmpfs /run:exec --tmpfs /run/lock:exec -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
+        docker_systemd_flags="-e container=oci --tmpfs /tmp:exec --tmpfs /run:exec --tmpfs /run/lock:exec -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
         if [ "${PODMAN}" = "true" ]; then
             # Enable systemd to manipulate it's cgroups configuration
             sudo setsebool -P container_manage_cgroup true
