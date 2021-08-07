@@ -31,7 +31,7 @@ input_required() {
             continue
         fi
 
-        echo export "'""${key}"="${input}""'" >>${TMP_PREFERENCE_FILE}
+        echo export "${key}"="'""${input}""'" >>${TMP_PREFERENCE_FILE}
     done
 }
 
@@ -122,30 +122,30 @@ available_modules=(
 selected_modules="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Additional modules to install:" 0 0 0 "${available_modules[@]}") "
 
 # Persist checklist state
-echo export "'"POJDE_MODULE_CCPP_ENABLED=$([[ "$selected_modules" == *"lang.ccpp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_GO_ENABLED=$([[ "$selected_modules" == *"lang.go "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_PYTHON_ENABLED=$([[ "$selected_modules" == *"lang.python "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_RUST_ENABLED=$([[ "$selected_modules" == *"lang.rust "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_JAVASCRIPT_ENABLED=$([[ "$selected_modules" == *"lang.javascript "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_RUBY_ENABLED=$([[ "$selected_modules" == *"lang.ruby "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_CSHARP_ENABLED=$([[ "$selected_modules" == *"lang.csharp "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_JAVA_ENABLED=$([[ "$selected_modules" == *"lang.java "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_JULIA_ENABLED=$([[ "$selected_modules" == *"lang.julia "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_OCTAVE_ENABLED=$([[ "$selected_modules" == *"lang.octave "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_R_ENABLED=$([[ "$selected_modules" == *"lang.r "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_SQL_ENABLED=$([[ "$selected_modules" == *"lang.sql "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_BASH_ENABLED=$([[ "$selected_modules" == *"lang.bash "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_VIM_ENABLED=$([[ "$selected_modules" == *"tool.vim "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_DEVOPS_ENABLED=$([[ "$selected_modules" == *"tool.devops "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_TECHDOCS_ENABLED=$([[ "$selected_modules" == *"tool.techdocs "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_LATEX_ENABLED=$([[ "$selected_modules" == *"tool.latex "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_WEBDEV_ENABLED=$([[ "$selected_modules" == *"tool.webdev "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_EXTENSIONS_ENABLED=$([[ "$selected_modules" == *"tool.extensions "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_CLIS_ENABLED=$([[ "$selected_modules" == *"tool.clis "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_NETWORKING_ENABLED=$([[ "$selected_modules" == *"tool.networking "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_INETTUI_ENABLED=$([[ "$selected_modules" == *"tool.inettui "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_INETGUI_ENABLED=$([[ "$selected_modules" == *"tool.inetgui "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_MODULE_MULTIMEDIA_ENABLED=$([[ "$selected_modules" == *"tool.multimedia "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_CCPP_ENABLED="'""$([[ "$selected_modules" == *"lang.ccpp "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_GO_ENABLED="'""$([[ "$selected_modules" == *"lang.go "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_PYTHON_ENABLED="'""$([[ "$selected_modules" == *"lang.python "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_RUST_ENABLED="'""$([[ "$selected_modules" == *"lang.rust "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_JAVASCRIPT_ENABLED="'""$([[ "$selected_modules" == *"lang.javascript "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_RUBY_ENABLED="'""$([[ "$selected_modules" == *"lang.ruby "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_CSHARP_ENABLED="'""$([[ "$selected_modules" == *"lang.csharp "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_JAVA_ENABLED="'""$([[ "$selected_modules" == *"lang.java "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_JULIA_ENABLED="'""$([[ "$selected_modules" == *"lang.julia "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_OCTAVE_ENABLED="'""$([[ "$selected_modules" == *"lang.octave "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_R_ENABLED="'""$([[ "$selected_modules" == *"lang.r "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_SQL_ENABLED="'""$([[ "$selected_modules" == *"lang.sql "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_BASH_ENABLED="'""$([[ "$selected_modules" == *"lang.bash "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_VIM_ENABLED="'""$([[ "$selected_modules" == *"tool.vim "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_DEVOPS_ENABLED="'""$([[ "$selected_modules" == *"tool.devops "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_TECHDOCS_ENABLED="'""$([[ "$selected_modules" == *"tool.techdocs "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_LATEX_ENABLED="'""$([[ "$selected_modules" == *"tool.latex "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_WEBDEV_ENABLED="'""$([[ "$selected_modules" == *"tool.webdev "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_EXTENSIONS_ENABLED="'""$([[ "$selected_modules" == *"tool.extensions "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_CLIS_ENABLED="'""$([[ "$selected_modules" == *"tool.clis "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_NETWORKING_ENABLED="'""$([[ "$selected_modules" == *"tool.networking "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_INETTUI_ENABLED="'""$([[ "$selected_modules" == *"tool.inettui "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_INETGUI_ENABLED="'""$([[ "$selected_modules" == *"tool.inetgui "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_MODULE_MULTIMEDIA_ENABLED="'""$([[ "$selected_modules" == *"tool.multimedia "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
 
 # Persist checklist selection
 echo export "POJDE_MODULES=\"${selected_modules}\"" >>${TMP_PREFERENCE_FILE}
@@ -161,11 +161,11 @@ available_services=(
 selected_services="$(dialog --backtitle "${SECTION_TITLE}" --stdout --nocancel --checklist "Services to enable:" 0 0 0 "${available_services[@]}") "
 
 # Persist checklist state
-echo export "'"POJDE_SERVICE_COCKPIT_ENABLED=$([[ "$selected_services" == *"cockpit "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_SERVICE_CODESERVER_ENABLED=$([[ "$selected_services" == *"codeserver "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_SERVICE_TTYD_ENABLED=$([[ "$selected_services" == *"ttyd "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_SERVICE_NOVNC_ENABLED=$([[ "$selected_services" == *"novnc "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
-echo export "'"POJDE_SERVICE_JUPYTERLAB_ENABLED=$([[ "$selected_services" == *"jupyterlab "* ]] && echo true || echo false)"'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_SERVICE_COCKPIT_ENABLED="'""$([[ "$selected_services" == *"cockpit "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_SERVICE_CODESERVER_ENABLED="'""$([[ "$selected_services" == *"codeserver "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_SERVICE_TTYD_ENABLED="'""$([[ "$selected_services" == *"ttyd "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_SERVICE_NOVNC_ENABLED="'""$([[ "$selected_services" == *"novnc "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
+echo export POJDE_SERVICE_JUPYTERLAB_ENABLED="'""$([[ "$selected_services" == *"jupyterlab "* ]] && echo true || echo false)""'" >>${TMP_PREFERENCE_FILE}
 
 # Persist checklist selection
 echo export "POJDE_SERVICES=\"${selected_services}\"" >>${TMP_PREFERENCE_FILE}
