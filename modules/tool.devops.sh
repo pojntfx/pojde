@@ -51,13 +51,7 @@ function as_user() {
     export SERVICE_URL=https://open-vsx.org/vscode/gallery
     export ITEM_URL=https://open-vsx.org/vscode/item
 
-    # Install the Kubernetes, Docker and k3d VSCode extensions
+    # Install the Kubernetes and Docker extensions
     code-server --force --install-extension 'ms-kubernetes-tools.vscode-kubernetes-tools'
     code-server --force --install-extension 'ms-azuretools.vscode-docker'
-
-    VERSION="${K3D_EXTENSION_VERSION}"
-    FILE=/tmp/vscode-k3d.vsix
-    curl -L -o ${FILE} https://github.com/inercia/vscode-k3d/releases/download/v${VERSION}/vscode-k3d.vsix
-    code-server --force --install-extension ${FILE}
-    rm ${FILE}
 }
